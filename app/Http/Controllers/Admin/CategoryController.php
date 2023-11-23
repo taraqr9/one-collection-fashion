@@ -15,7 +15,10 @@ class CategoryController extends Controller
     {
         view()->share('page', config('app.nav.category'));
 
-        $categories = Category::query()->whereNull('parent_id')->orderByDesc('id')->get();
+        $categories = Category::query()
+            ->whereNull('parent_id')
+            ->orderByDesc('id')
+            ->get();
 
         return view('admin.product.category.index', compact('categories'));
     }
@@ -33,8 +36,7 @@ class CategoryController extends Controller
 
         $category = Category::create($request->validated());
 
-        if(!$category)
-        {
+        if (!$category) {
             return redirect()->back()->with('error', 'Category create failed!');
         }
 
@@ -52,8 +54,7 @@ class CategoryController extends Controller
     {
         view()->share('page', config('app.nav.category'));
 
-        if(!$category->update($request->validated()))
-        {
+        if (!$category->update($request->validated())) {
             return redirect()->back()->with('error', 'Category update failed!');
         }
 
@@ -64,8 +65,7 @@ class CategoryController extends Controller
     {
         view()->share('page', config('app.nav.category'));
 
-        if(!$category->delete())
-        {
+        if (!$category->delete()) {
             return redirect()->back()->with('error', 'Category delete failed!');
         }
 

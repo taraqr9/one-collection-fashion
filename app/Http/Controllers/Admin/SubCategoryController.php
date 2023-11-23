@@ -3,12 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\StoreCategoryRequest;
 use App\Http\Requests\Admin\StoreSubCategoryRequest;
-use App\Http\Requests\Admin\UpdateCategoryRequest;
+use App\Http\Requests\Admin\UpdateSubCategoryRequest;
 use App\Models\Category;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class SubCategoryController extends Controller
@@ -45,34 +43,36 @@ class SubCategoryController extends Controller
         return redirect()->back()->with('success', 'Sub category created successfully!');
     }
 
-    public function edit(Category $category): View|RedirectResponse
+    public function edit(Category $sub_category): View|RedirectResponse
     {
         view()->share('page', config('app.nav.sub_category'));
 
-        return view('admin.product.sub_category.edit', compact('category'));
+        $categories = Category::query()->whereNull('parent_id')->get();
+
+        return view('admin.product.sub_category.edit', compact('categories', 'sub_category'));
     }
 
-    public function update(UpdateCategoryRequest $request, Category $category): View|RedirectResponse
+    public function update(UpdateSubCategoryRequest $request, Category $sub_category): View|RedirectResponse
     {
         view()->share('page', config('app.nav.sub_category'));
 
-        if(!$category->update($request->validated()))
+        if(!$sub_category->update($request->validated()))
         {
-            return redirect()->back()->with('error', 'Category update failed!');
+            return redirect()->back()->with('error', 'Sub category update failed!');
         }
 
-        return redirect()->back()->with('success', 'Category updated successfully');
+        return redirect()->back()->with('success', 'Sub category updated successfully');
     }
 
-    public function delete(Category $category): View|RedirectResponse
+    public function delete(Category $sub_category): View|RedirectResponse
     {
         view()->share('page', config('app.nav.sub_category'));
 
-        if(!$category->delete())
+        if(!$sub_category->delete())
         {
-            return redirect()->back()->with('error', 'Category delete failed!');
+            return redirect()->back()->with('error', 'Sub category delete failed!');
         }
 
-        return redirect()->back()->with('success', 'Category deleted successfully');
+        return redirect()->back()->with('success', 'Sub category deleted successfully');
     }
 }

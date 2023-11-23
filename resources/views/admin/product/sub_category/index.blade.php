@@ -47,14 +47,14 @@
                                     <td>{{ $sub_category->name }}</td>
                                     <td>{{ $sub_category->parent->name }}</td>
                                     <td>
-                                        <a href="{{ url('admin/products/category/'.$sub_category->id.'/edit') }}"
+                                        <a href="{{ url('admin/products/sub_category/'.$sub_category->id.'/edit') }}"
                                            class="btn btn-outline-dark btn-sm">
                                             <i class="ph-pencil-line"></i>
                                         </a>
 
                                         <a
                                             onclick="return confirm('Are you sure?')"
-                                            href="{{ url('admin/products/category/'.$sub_category->id.'/delete') }}"
+                                            href="{{ url('admin/products/sub_category/'.$sub_category->id.'/delete') }}"
                                             class="btn btn-outline-danger btn-sm">
                                             <i class="ph-minus-circle"></i>
                                         </a>
