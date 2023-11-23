@@ -31,6 +31,7 @@ return [
         /* Card */
         'category'                                   => 3,
         'sub_category'                               => 4,
+        'product'                                    => 5,
     ],
 
     /*

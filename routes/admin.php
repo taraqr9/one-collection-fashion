@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\LoginController;
+use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\SubCategoryController;
 use Illuminate\Support\Facades\Route;
 
@@ -48,6 +49,15 @@ Route::middleware('auth')->group(function () {
             Route::get('/{sub_category}/edit', [SubCategoryController::class, 'edit']);
             Route::post('/{sub_category}/edit', [SubCategoryController::class, 'update']);
             Route::get('/{sub_category}/delete', [SubCategoryController::class, 'delete']);
+        });
+
+        Route::group(['prefix' => 'product'], function () {
+            Route::get('/', [ProductController::class, 'index']);
+            Route::get('/create', [ProductController::class, 'create']);
+            Route::post('/', [ProductController::class, 'store']);
+            Route::get('/{product}/edit', [ProductController::class, 'edit']);
+            Route::post('/{product}/edit', [ProductController::class, 'update']);
+            Route::get('/{product}/delete', [ProductController::class, 'delete']);
         });
 
     });
