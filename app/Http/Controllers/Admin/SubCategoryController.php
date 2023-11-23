@@ -17,7 +17,7 @@ class SubCategoryController extends Controller
     {
         view()->share('page', config('app.nav.sub_category'));
 
-        $sub_categories = Category::query()->whereNotNull('parent_id')->get();
+        $sub_categories = Category::query()->whereNotNull('parent_id')->with('parent')->get();
 
         return view('admin.product.sub_category.index', compact('sub_categories'));
     }

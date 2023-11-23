@@ -15,7 +15,7 @@ class CategoryController extends Controller
     {
         view()->share('page', config('app.nav.category'));
 
-        $categories = Category::query()->orderByDesc('id')->get();
+        $categories = Category::query()->whereNull('parent_id')->orderByDesc('id')->get();
 
         return view('admin.product.category.index', compact('categories'));
     }
