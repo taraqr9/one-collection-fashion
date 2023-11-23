@@ -1,17 +1,10 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\LoginController;
-use App\Http\Controllers\CardAreaController;
-use App\Http\Controllers\CareerApplicationController;
-use App\Http\Controllers\CareerBannerController;
-use App\Http\Controllers\CardCounterController;
-use App\Http\Controllers\CardDivisionController;
-use App\Http\Controllers\CardHelpRequestController;
-use App\Http\Controllers\CareerDepartmentController;
-use App\Http\Controllers\CareerJobController;
-use App\Http\Controllers\SettingController;
+use App\Http\Controllers\Admin\SubCategoryController;
 use Illuminate\Support\Facades\Route;
 
 Route::controller(LoginController::class)->group(function () {
@@ -37,21 +30,32 @@ Route::middleware('auth')->group(function () {
 //    });
 
 
-//    Route::group(['prefix' => 'cards'], function () {
-//        Route::group(['prefix' => 'division'], function () {
-//            Route::get('/', [CardDivisionController::class, 'index']);
-//            Route::get('/create', [CardDivisionController::class, 'create']);
-//            Route::post('/', [CardDivisionController::class, 'store']);
-//            Route::get('/{division}', [CardDivisionController::class, 'getDivisionWiseAreas']);
-//            Route::get('/{division}/edit', [CardDivisionController::class, 'edit']);
-//            Route::post('/{division}/edit', [CardDivisionController::class, 'update']);
-//        });
-//    });
+    Route::group(['prefix' => 'products'], function () {
 
-    Route::group(['prefix' => 'setting'], function () {
-        Route::get('/', [SettingController::class, 'index']);
-        Route::post('/', [SettingController::class, 'update']);
+        Route::group(['prefix' => 'category'], function () {
+            Route::get('/', [CategoryController::class, 'index']);
+            Route::get('/create', [CategoryController::class, 'create']);
+            Route::post('/', [CategoryController::class, 'store']);
+            Route::get('/{category}/edit', [CategoryController::class, 'edit']);
+            Route::post('/{category}/edit', [CategoryController::class, 'update']);
+            Route::get('/{category}/delete', [CategoryController::class, 'delete']);
+        });
+
+        Route::group(['prefix' => 'sub_category'], function () {
+            Route::get('/', [SubCategoryController::class, 'index']);
+            Route::get('/create', [SubCategoryController::class, 'create']);
+            Route::post('/', [SubCategoryController::class, 'store']);
+            Route::get('/{category}/edit', [SubCategoryController::class, 'edit']);
+            Route::post('/{category}/edit', [SubCategoryController::class, 'update']);
+            Route::get('/{category}/delete', [SubCategoryController::class, 'delete']);
+        });
+
     });
+
+//    Route::group(['prefix' => 'setting'], function () {
+//        Route::get('/', [SettingController::class, 'index']);
+//        Route::post('/', [SettingController::class, 'update']);
+//    });
 });
 
 

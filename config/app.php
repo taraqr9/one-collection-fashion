@@ -29,7 +29,8 @@ return [
 //        'admins'                                    => 2,
 
         /* Card */
-        'product'                                   => 3,
+        'category'                                   => 3,
+        'sub_category'                               => 4,
     ],
 
     /*

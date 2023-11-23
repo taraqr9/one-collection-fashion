@@ -24,7 +24,7 @@ return new class extends Migration
             $table->integer('price');
             $table->integer('offer_price')->default(0);
             $table->integer('stock')->default(0);
-            $table->tinyInteger('status')->default(ProductStatusEnum::ACTIVE);
+            $table->string('status')->default(ProductStatusEnum::ACTIVE);
             $table->timestamps();
         });
     }

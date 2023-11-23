@@ -4,53 +4,57 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreCategoryRequest;
+use App\Http\Requests\Admin\StoreSubCategoryRequest;
 use App\Http\Requests\Admin\UpdateCategoryRequest;
 use App\Models\Category;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\View\View;
 
-class CategoryController extends Controller
+class SubCategoryController extends Controller
 {
     public function index(): View
     {
-        view()->share('page', config('app.nav.category'));
+        view()->share('page', config('app.nav.sub_category'));
 
-        $categories = Category::query()->orderByDesc('id')->get();
+        $sub_categories = Category::query()->whereNotNull('parent_id')->get();
 
-        return view('admin.product.category.index', compact('categories'));
+        return view('admin.product.sub_category.index', compact('sub_categories'));
     }
 
     public function create(): View
     {
-        view()->share('page', config('app.nav.category'));
+        view()->share('page', config('app.nav.sub_category'));
 
-        return view('admin.product.category.create');
+        $categories = Category::query()->whereNull('parent_id')->get();
+
+        return view('admin.product.sub_category.create', compact('categories'));
     }
 
-    public function store(StoreCategoryRequest $request): View|RedirectResponse
+    public function store(StoreSubCategoryRequest $request): View|RedirectResponse
     {
-        view()->share('page', config('app.nav.category'));
+        view()->share('page', config('app.nav.sub_category'));
 
         $category = Category::create($request->validated());
 
         if(!$category)
         {
-            return redirect()->back()->with('error', 'Category create failed!');
+            return redirect()->back()->with('error', 'Sub category create failed!');
         }
 
-        return redirect()->back()->with('success', 'Category created successfully!');
+        return redirect()->back()->with('success', 'Sub category created successfully!');
     }
 
     public function edit(Category $category): View|RedirectResponse
     {
-        view()->share('page', config('app.nav.category'));
+        view()->share('page', config('app.nav.sub_category'));
 
-        return view('admin.product.category.edit', compact('category'));
+        return view('admin.product.sub_category.edit', compact('category'));
     }
 
     public function update(UpdateCategoryRequest $request, Category $category): View|RedirectResponse
     {
-        view()->share('page', config('app.nav.category'));
+        view()->share('page', config('app.nav.sub_category'));
 
         if(!$category->update($request->validated()))
         {
@@ -62,7 +66,7 @@ class CategoryController extends Controller
 
     public function delete(Category $category): View|RedirectResponse
     {
-        view()->share('page', config('app.nav.category'));
+        view()->share('page', config('app.nav.sub_category'));
 
         if(!$category->delete())
         {
@@ -71,5 +75,4 @@ class CategoryController extends Controller
 
         return redirect()->back()->with('success', 'Category deleted successfully');
     }
-
 }

@@ -123,7 +123,7 @@
                         <div class="breadcrumb py-2">
                             <a href="{{ url('admin/') }}" class="breadcrumb-item"><i class="ph-house"></i></a>
 
-                            @yield('dddbreadcrumb')
+                            @yield('breadcrumb')
 
                         </div>
 
