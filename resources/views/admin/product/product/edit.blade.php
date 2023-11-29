@@ -23,7 +23,7 @@
                             <select name="parent_id" class="form-control" required>
                                 <option value="">Select Category</option>
                                 @foreach($categories as $category)
-                                    <option value="{{$category->id}}" @selected($category->id == $sub_category->parent_id)>
+                                    <option value="{{$category->id}}" @selected($sub_category->parent_id == $category->id)>
                                         {{ $category->name }}
                                     </option>
                                 @endforeach
