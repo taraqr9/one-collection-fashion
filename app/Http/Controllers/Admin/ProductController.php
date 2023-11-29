@@ -58,6 +58,10 @@ class ProductController extends Controller
             $validatedData['image'] = json_encode($productImages);
         }
 
+        if ($request->hasFile('thumbnail')) {
+            $validatedData['thumbnail'] = $request->file('thumbnail')->store('product_thumbnails', 'public');
+        }
+
         $product = Product::create($validatedData);
 
         if (!$product) {

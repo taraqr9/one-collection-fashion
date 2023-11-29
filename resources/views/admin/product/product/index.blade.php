@@ -35,7 +35,7 @@
                         <div class="card-img-actions mb-3">
                             <div class="d-flex justify-content-center align-items-center position-relative">
                                 <img class="card-img img-fluid w-80px h-80px"
-                                     src="{{ Storage::url(json_decode($product->image)[0]) }}"
+                                     src="{{ Storage::url($product->thumbnail) }}"
                                      alt="Product Image">
                                 <div class="card-img-actions-overlay card-img position-absolute">
                                     <a href="#" class="btn btn-outline-white btn-icon rounded-pill">

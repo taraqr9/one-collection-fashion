@@ -25,7 +25,7 @@ class StoreProductRequest extends FormRequest
             'category_id' => ['required', 'exists:categories,id'],
             'parent_id' => ['nullable', 'exists:categories,id'],
             'name' => ['required', 'string', 'max:200'],
-            'description' => ['required', 'string', 'max:200'],
+            'description' => ['required', 'string', 'max:1000'],
             'price' => ['required', 'numeric'],
             'offer_price' => ['nullable', 'numeric'],
             'size' => ['nullable', 'string', 'max:50'],
@@ -34,6 +34,7 @@ class StoreProductRequest extends FormRequest
             'color.*' => ['nullable', 'image', 'mimes:jpeg,png,jpg', 'max:2048'],
             'image' => ['required', 'array'],
             'image.*' => ['required', 'image', 'mimes:jpeg,png,jpg', 'max:5242'],
+            'thumbnail' => ['required', 'image', 'mimes:jpeg,png,jpg', 'max:2048'],
             'status' => ['nullable'],
         ];
     }

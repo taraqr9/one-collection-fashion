@@ -13,120 +13,117 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="{{ url()->asset('assets/js/bootstrap/fileinput.min.js') }}"></script>
     <script src="{{ url()->asset('assets/js/bootstrap/uploader_bootstrap.js') }}"></script>
+    <script src="{{ url()->asset('assets/js/ckeditor/ckeditor_classic.js') }}"></script>
+    <script src="{{ url()->asset('assets/js/ckeditor/editor_ckeditor_classic.js') }}"></script>
 @endsection
 
 @section('page_content')
-    <section style="background-color: #ffffff;">
-        <div class="container py-5">
-            <div class="row justify-content-center align-items-center">
-                <form method="post" class="col-lg-8 border rounded-xl p-2"
-                      action="{{ url('admin/products/product') }}"
-                      enctype="multipart/form-data">
-                    @csrf
-                    <div class="form-group row m-1">
-                        <label class="col-sm-2 col-form-label">Name</label>
-                        <div class="col-sm-10">
-                            <input type="text" name="name" class="form-control" placeholder="Category name"
-                                   value="{{ old('name') }}" required>
+    <div class="d-md-flex align-items-md-start">
+        <form class="tab-content flex-lg-fill" action="{{ url('admin/products/product') }}" method="post"
+              enctype="multipart/form-data">
+            @csrf
+
+            <div class="tab-pane fade active show" id="generalInfo">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title">Create Product</h5>
+                    </div>
+
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label class="fw-bold">Name <span class="text-danger">*</span>:</label>
+                                <input type="text" class="form-control" name="name" value="{{ old('name') }}"
+                                       placeholder="Enter name" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="fw-bold">Size:</label>
+                                <input type="text" class="form-control" name="size"
+                                       value="{{ old('size') }}"
+                                       placeholder="Enter size like this: M, L, XL">
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label class="fw-bold">Category <span class="text-danger">*</span>:</label>
+                                <select name="category_id" class="form-control" required>
+                                    <option value="" selected>Select Category</option>
+                                    @foreach($categories->whereNull('parent_id') as $category)
+                                        <option
+                                            value="{{ $category->id }}" @selected(old('category') == $category->id)>{{ $category->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="sub-category col-md-6">
+                                <label class="fw-bold">Sub Category:</label>
+                                <select name="parent_id" class="form-control">
+                                    <option value="" selected>Select Sub Category</option>
+                                    <!-- Options will be dynamically loaded using Ajax -->
+                                </select>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label class="fw-bold">Price <span class="text-danger">*</span>:</label>
+                                <input type="number" class="form-control" name="price" value="{{ old('price') }}"
+                                       placeholder="Enter price" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="fw-bold">Old Price:</label>
+                                <input type="text" class="form-control" name="old_price" value="{{ old('old_price') }}"
+                                       placeholder="Enter old price"
+                                       autocomplete="off" required>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label class="fw-bold">Stock <span class="text-danger">*</span>:</label>
+                                <input type="number" class="form-control" name="stock" value="{{ old('stock') }}"
+                                       placeholder="Enter stock" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="fw-bold">Color:</label>
+                                <input type="file" name="color[]" class="file-input-caption" multiple>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label class="fw-bold">Image <span class="text-danger">*</span>:</label>
+                                <input type="file" name="image[]" class="file-input-caption" multiple required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="fw-bold">Thumbnail <span class="text-danger">*</span>:</label>
+                                <input type="file" name="thumbnail" class="file-input-caption" required>
+                            </div>
+                        </div>
+                        <br>
+                        <label class="fw-bold">Description <span class="text-danger">*</span>:</label>
+                        <div class="mb-3">
+                            <textarea class="form-control" id="ckeditor_classic_empty" name="description"
+                                      placeholder="Enter your product description">{!! old('description') !!}</textarea>
+                        </div>
+                        <div class="text-end">
+                            <button type="submit" class="btn btn-outline-primary">Create</button>
                         </div>
                     </div>
-                    <hr>
-                    <div class="form-group row m-1">
-                        <label class="col-sm-2 col-form-label">Category</label>
-                        <div class="col-sm-10">
-                            <select name="category_id" class="form-control" required>
-                                <option value="" selected>Select Category</option>
-                                @foreach($categories->whereNull('parent_id') as $category)
-                                    <option
-                                        value="{{ $category->id }}" @selected(old('category') == $category->id)>{{ $category->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                    <hr>
-                    <div class="sub-category form-group row m-1">
-                        <label class="col-sm-2 col-form-label">Sub Category</label>
-                        <div class="col-sm-10">
-                            <select name="parent_id" class="form-control">
-                                <option value="" selected>Select Sub Category</option>
-                                <!-- Options will be dynamically loaded using Ajax -->
-                            </select>
-                        </div>
-                    </div>
-                    <hr class="sub-category">
-                    <div class="form-group row m-1">
-                        <label class="col-sm-2 col-form-label">Price</label>
-                        <div class="col-sm-10">
-                            <input type="text" name="price" class="form-control" placeholder="Price"
-                                   value="{{ old('price') }}" required>
-                        </div>
-                    </div>
-                    <hr>
-                    <div class="form-group row m-1">
-                        <label class="col-sm-2 col-form-label">Offer Price</label>
-                        <div class="col-sm-10">
-                            <input type="text" name="offer_price" class="form-control" placeholder="Offer price"
-                                   value="{{ old('offer_price') }}" required>
-                        </div>
-                    </div>
-                    <hr>
-                    <div class="form-group row m-1">
-                        <label class="col-sm-2 col-form-label">Color</label>
-                        <div class="col-sm-10">
-                            <input type="file" name="color[]" class="file-input-caption" multiple>
-                        </div>
-                    </div>
-                    <hr>
-                    <div class="form-group row m-1">
-                        <label class="col-sm-2 col-form-label">Size</label>
-                        <div class="col-sm-10">
-                            <input type="text" name="size" class="form-control" placeholder="Enter size like this: M, L, XL"
-                                   value="{{ old('size') }}">
-                        </div>
-                    </div>
-                    <hr>
-                    <div class="form-group row m-1">
-                        <label class="col-sm-2 col-form-label">Stock</label>
-                        <div class="col-sm-10">
-                            <input type="number" name="stock" class="form-control" placeholder="Stock"
-                                   value="{{ old('stock') }}" required>
-                        </div>
-                    </div>
-                    <hr>
-                    <div class="form-group row m-1">
-                        <label class="col-sm-2 col-form-label">Description</label>
-                        <div class="col-sm-10">
-                            <textarea type="text" name="description" class="form-control" placeholder="Description"
-                                      required>
-                                {{ old('description') }}
-                            </textarea>
-                        </div>
-                    </div>
-                    <hr>
-                    <div class="form-group row m-1">
-                        <label class="col-sm-2 col-form-label">Image</label>
-                        <div class="col-sm-10">
-                            <input type="file" name="image[]" class="file-input-caption" multiple>
-                        </div>
-                    </div>
-                    <hr>
-                    <div class="text-end mt-4">
-                        <button type="submit" class="btn btn-outline-primary">Create</button>
-                    </div>
-                </form>
+                </div>
             </div>
-        </div>
-    </section>
+        </form>
+    </div>
 @endsection
 
 @section('footer_js')
     <script>
         $(document).ready(function () {
             // Cache the Sub Category section
-            var subCategorySection = $('.sub-category');
+            var subCategorySelect = $('select[name="parent_id"]');
 
-            // Initial hide
-            subCategorySection.hide();
+            // Initial disable
+            subCategorySelect.prop('disabled', true);
 
             $('select[name="category_id"]').on('change', function () {
                 var categoryId = $(this).val();
@@ -137,29 +134,27 @@
                         type: 'GET',
                         dataType: 'json',
                         success: function (data) {
-                            var subCategorySelect = $('select[name="parent_id"]');
                             subCategorySelect.empty(); // Clear existing options
 
                             if (data.length > 0) {
-                                // If subcategories are available, show the Sub Category section
-                                subCategorySection.show();
-                                // Populate and update the Sub Category select as needed
+                                // If subcategories are available, enable and update the Sub Category select
+                                subCategorySelect.prop('disabled', false);
                                 $.each(data, function (key, value) {
                                     subCategorySelect.append('<option value="' + value.id + '">' + value.name + '</option>');
                                 });
                                 // Hide the sub-category message
                                 $('.sub-category-message').hide();
                             } else {
-                                // If no subcategories, hide the Sub Category section
-                                subCategorySection.hide();
+                                // If no subcategories, disable the Sub Category select
+                                subCategorySelect.prop('disabled', true);
                                 // Show the sub-category message
                                 $('.sub-category-message').show();
                             }
                         }
                     });
                 } else {
-                    // If no category selected, hide the Sub Category section
-                    subCategorySection.hide();
+                    // If no category selected, disable the Sub Category select
+                    subCategorySelect.prop('disabled', true);
                 }
             });
         });

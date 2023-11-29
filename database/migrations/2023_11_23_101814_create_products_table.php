@@ -24,6 +24,7 @@ return new class extends Migration
             $table->text('size')->nullable();
             $table->integer('stock')->default(0);
             $table->text('image')->nullable();
+            $table->string('thumbnail')->nullable();
             $table->string('status')->default(ProductStatusEnum::ACTIVE);
             $table->timestamps();
         });
