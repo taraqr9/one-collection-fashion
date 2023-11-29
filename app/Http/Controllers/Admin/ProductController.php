@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\StoreSubCategoryRequest;
+use App\Http\Requests\Admin\StoreProductRequest;
 use App\Http\Requests\Admin\UpdateSubCategoryRequest;
 use App\Models\Category;
 use App\Models\Product;
@@ -16,7 +16,11 @@ class ProductController extends Controller
     {
         view()->share('page', config('app.nav.product'));
 
-        $products = Product::query()->orderByDesc('id')->paginate(10);
+        $products = Product::query()
+            ->with('category')
+            ->with('subCategory')
+            ->orderByDesc('id')
+            ->paginate(10);
 
         return view('admin.product.product.index', compact('products'));
     }
@@ -25,23 +29,42 @@ class ProductController extends Controller
     {
         view()->share('page', config('app.nav.product'));
 
-        $categories = Category::query()->whereNull('parent_id')->get();
+        $categories = Category::query()->get();
 
         return view('admin.product.product.create', compact('categories'));
     }
 
-    public function store(StoreSubCategoryRequest $request): View|RedirectResponse
+    public function store(StoreProductRequest $request): View|RedirectResponse
     {
         view()->share('page', config('app.nav.product'));
 
-        $category = Category::create($request->validated());
+        $validatedData = $request->validated();
 
-        if(!$category)
-        {
-            return redirect()->back()->with('error', 'Sub category create failed!');
+        if ($request->hasFile('color')) {
+            $colorImages = [];
+            foreach ($request->file('color') as $colorImage) {
+                $colorImages[] = $colorImage->store('/product_colors', 'public');
+            }
+
+            $validatedData['color'] = json_encode($colorImages);
         }
 
-        return redirect()->back()->with('success', 'Sub category created successfully!');
+        if ($request->hasFile('image')) {
+            $productImages = [];
+            foreach ($request->file('image') as $productImage) {
+                $productImages[] = $productImage->store('product_images', 'public');
+            }
+
+            $validatedData['image'] = json_encode($productImages);
+        }
+
+        $product = Product::create($validatedData);
+
+        if (!$product) {
+            return redirect()->back()->with('error', 'Product create failed!');
+        }
+
+        return redirect()->back()->with('success', 'Product created successfully!');
     }
 
     public function edit(Category $sub_category): View|RedirectResponse
@@ -57,8 +80,7 @@ class ProductController extends Controller
     {
         view()->share('page', config('app.nav.product'));
 
-        if(!$sub_category->update($request->validated()))
-        {
+        if (!$sub_category->update($request->validated())) {
             return redirect()->back()->with('error', 'Sub category update failed!');
         }
 
@@ -69,8 +91,7 @@ class ProductController extends Controller
     {
         view()->share('page', config('app.nav.product'));
 
-        if(!$sub_category->delete())
-        {
+        if (!$sub_category->delete()) {
             return redirect()->back()->with('error', 'Sub category delete failed!');
         }
 

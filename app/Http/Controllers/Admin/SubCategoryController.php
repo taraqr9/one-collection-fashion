@@ -8,6 +8,7 @@ use App\Http\Requests\Admin\StoreSubCategoryRequest;
 use App\Http\Requests\Admin\UpdateCategoryRequest;
 use App\Http\Requests\Admin\UpdateSubCategoryRequest;
 use App\Models\Category;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -85,5 +86,12 @@ class SubCategoryController extends Controller
         }
 
         return redirect()->back()->with('success', 'Sub category deleted successfully');
+    }
+
+    public function getSubcategories(Category $sub_category_id): JsonResponse
+    {
+        $subcategories = Category::query()->where('parent_id', $sub_category_id->id)->get();
+
+        return response()->json($subcategories);
     }
 }

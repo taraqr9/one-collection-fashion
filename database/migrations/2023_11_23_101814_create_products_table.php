@@ -15,15 +15,15 @@ return new class extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->id();
             $table->foreignId('category_id')->nullable();
-            $table->foreignId('parent_id')->nullable()
-                ->constrained('products')
-                ->onUpdate('cascade')->onDelete('cascade');
-
+            $table->foreignId('parent_id')->nullable();
             $table->string('name');
             $table->text('description')->nullable();
             $table->integer('price');
             $table->integer('offer_price')->default(0);
+            $table->text('color')->nullable();
+            $table->text('size')->nullable();
             $table->integer('stock')->default(0);
+            $table->text('image')->nullable();
             $table->string('status')->default(ProductStatusEnum::ACTIVE);
             $table->timestamps();
         });

@@ -49,14 +49,19 @@ Route::middleware('auth')->group(function () {
             Route::get('/{sub_category}/edit', [SubCategoryController::class, 'edit']);
             Route::post('/{sub_category}/edit', [SubCategoryController::class, 'update']);
             Route::get('/{sub_category}/delete', [SubCategoryController::class, 'delete']);
+            Route::get('/{sub_category_id}', [SubCategoryController::class, 'getSubcategories']);
+        });
+
+        Route::group(['prefix' => 'product'], function () {
+            Route::get('/', [ProductController::class, 'index']);
+            Route::get('/create', [ProductController::class, 'create']);
+            Route::post('/', [ProductController::class, 'store']);
+            Route::get('/{sub_category}/edit', [ProductController::class, 'edit']);
+            Route::post('/{sub_category}/edit', [ProductController::class, 'update']);
+            Route::get('/{sub_category}/delete', [ProductController::class, 'delete']);
         });
 
     });
-
-//    Route::group(['prefix' => 'setting'], function () {
-//        Route::get('/', [SettingController::class, 'index']);
-//        Route::post('/', [SettingController::class, 'update']);
-//    });
 });
 
 

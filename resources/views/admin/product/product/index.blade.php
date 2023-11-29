@@ -1,3 +1,4 @@
+@php use Illuminate\Support\Facades\Storage; @endphp
 @extends('admin.master')
 
 @section('title')
@@ -28,37 +29,42 @@
 @section('page_content')
     <div class="content">
         <div class="row justify-content-center">
-            <div class="card col-lg-3 m-1">
-                <div class="card-body">
-                    <div class="card-img-actions mb-3">
-                        <img class="card-img img-fluid"
-                             src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                             alt="">
-                        <div class="card-img-actions-overlay card-img">
-                            <a href="#" class="btn btn-outline-white btn-icon rounded-pill">
-                                <i class="ph-link"></i>
-                            </a>
+            @foreach($products as $product)
+                <div class="card col-lg-2 m-1">
+                    <div class="card-body">
+                        <div class="card-img-actions mb-3">
+                            <div class="d-flex justify-content-center align-items-center position-relative">
+                                <img class="card-img img-fluid w-80px h-80px"
+                                     src="{{ Storage::url(json_decode($product->image)[0]) }}"
+                                     alt="Product Image">
+                                <div class="card-img-actions-overlay card-img position-absolute">
+                                    <a href="#" class="btn btn-outline-white btn-icon rounded-pill">
+                                        <i class="ph-pencil-line"></i>
+                                    </a>
+                                </div>
+                            </div>
                         </div>
+
+
+                        <h5 class="card-title pt-1 mb-1 title-truncate">
+                            <a href="#" class="text-body">{{ $product->name }}</a>
+                        </h5>
+
+                        <ul class="list-inline list-inline-bullet text-muted mb-3">
+                            <li>Category : {{ $product->category->name }}</li>
+                            <li>{{ $product->subCategory ? 'Sub Category : '.$product->subCategory->name : '' }}</li>
+                            <li>Price : {{ $product->price }} BDT</li>
+                            <li>Offer Price : {{ $product->offer_price }} BDT</li>
+                            <li>Stock : {{ $product->stock }}</li>
+                        </ul>
                     </div>
 
-                    <h5 class="card-title pt-1 mb-1 title-truncate">
-                        <a href="#" class="text-body">Domestic confined any but son Domestic confined any but son
-                            Domestic confined any but son</a>
-                    </h5>
-
-                    <ul class="list-inline list-inline-bullet text-muted mb-3">
-                        <li>Category : Men</li>
-                        <li>Sub Category : T-shirt</li>
-                        <li>Price : 2000 BDT</li>
-                        <li>Stock : 100</li>
-                    </ul>
+                    <div class="card-footer">
+                        <a href="#" class="d-inline-flex align-items-center ms-auto">Edit <i
+                                class="ph-arrow-circle-right ms-2"></i></a>
+                    </div>
                 </div>
-
-                <div class="card-footer">
-                    <a href="#" class="d-inline-flex align-items-center ms-auto">Edit <i
-                            class="ph-arrow-circle-right ms-2"></i></a>
-                </div>
-            </div>
+            @endforeach
         </div>
     </div>
 @endsection
