@@ -71,13 +71,13 @@ class ProductController extends Controller
         return redirect()->back()->with('success', 'Product created successfully!');
     }
 
-    public function edit(Category $sub_category): View|RedirectResponse
+    public function edit(Product $product): View|RedirectResponse
     {
         view()->share('page', config('app.nav.product'));
 
         $categories = Category::query()->whereNull('parent_id')->get();
 
-        return view('admin.product.product.edit', compact('categories', 'sub_category'));
+        return view('admin.product.product.edit', compact('product', 'categories'));
     }
 
     public function update(UpdateSubCategoryRequest $request, Category $sub_category): View|RedirectResponse

@@ -67,14 +67,11 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <label class="fw-bold">Price <span class="text-danger">*</span>:</label>
-                                <input type="number" class="form-control" name="price" value="{{ old('price') }}"
-                                       placeholder="Enter price" required>
+                                <input type="number" class="form-control" name="price" value="{{ old('price') }}" placeholder="Enter price" required>
                             </div>
                             <div class="col-md-6">
                                 <label class="fw-bold">Old Price:</label>
-                                <input type="text" class="form-control" name="old_price" value="{{ old('old_price') }}"
-                                       placeholder="Enter old price"
-                                       autocomplete="off" required>
+                                <input type="number" class="form-control" name="old_price" value="{{ old('old_price') }}" placeholder="Enter old price" required>
                             </div>
                         </div>
                         <br>
@@ -85,17 +82,26 @@
                                        placeholder="Enter stock" required>
                             </div>
                             <div class="col-md-6">
-                                <label class="fw-bold">Color:</label>
-                                <input type="file" name="color[]" class="file-input-caption" multiple>
+                                <label class="fw-bold">Status:</label>
+                                <select name="status" class="form-control" required>
+                                    <option value="">Select Status</option>
+                                    @foreach(App\Enums\ProductStatusEnum::cases() as $status)
+                                        <option value="{{ $status }}" @selected($status == App\Enums\ProductStatusEnum::ACTIVE)>{{ $status->value }}</option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
                         <br>
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-4">
+                                <label class="fw-bold">Color:</label>
+                                <input type="file" name="color[]" class="file-input-caption" multiple>
+                            </div>
+                            <div class="col-md-4">
                                 <label class="fw-bold">Image <span class="text-danger">*</span>:</label>
                                 <input type="file" name="image[]" class="file-input-caption" multiple required>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <label class="fw-bold">Thumbnail <span class="text-danger">*</span>:</label>
                                 <input type="file" name="thumbnail" class="file-input-caption" required>
                             </div>

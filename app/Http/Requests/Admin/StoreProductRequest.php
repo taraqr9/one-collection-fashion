@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests\Admin;
 
+use App\Enums\ProductStatusEnum;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreProductRequest extends FormRequest
 {
@@ -35,7 +37,7 @@ class StoreProductRequest extends FormRequest
             'image' => ['required', 'array'],
             'image.*' => ['required', 'image', 'mimes:jpeg,png,jpg', 'max:5242'],
             'thumbnail' => ['required', 'image', 'mimes:jpeg,png,jpg', 'max:2048'],
-            'status' => ['nullable'],
+            'status' => ['required', Rule::in(array_column(ProductStatusEnum::cases(), 'value'))],
         ];
     }
 }

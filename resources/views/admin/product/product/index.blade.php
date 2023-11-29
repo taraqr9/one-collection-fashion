@@ -38,7 +38,7 @@
                                      src="{{ Storage::url($product->thumbnail) }}"
                                      alt="Product Image">
                                 <div class="card-img-actions-overlay card-img position-absolute">
-                                    <a href="#" class="btn btn-outline-white btn-icon rounded-pill">
+                                    <a href="{{ url('admin/products/product/'.$product->id.'/edit') }}" class="btn btn-outline-white btn-icon rounded-pill">
                                         <i class="ph-pencil-line"></i>
                                     </a>
                                 </div>
@@ -60,7 +60,7 @@
                     </div>
 
                     <div class="card-footer">
-                        <a href="#" class="d-inline-flex align-items-center ms-auto">Edit <i
+                        <a href="{{ url('admin/products/product/'.$product->id.'/edit') }}" class="d-inline-flex align-items-center ms-auto">Edit <i
                                 class="ph-arrow-circle-right ms-2"></i></a>
                     </div>
                 </div>
