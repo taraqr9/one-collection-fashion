@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreProductRequest;
+use App\Http\Requests\Admin\UpdateProductRequest;
 use App\Http\Requests\Admin\UpdateSubCategoryRequest;
 use App\Models\Category;
 use App\Models\Product;
@@ -80,15 +81,45 @@ class ProductController extends Controller
         return view('admin.product.product.edit', compact('product', 'categories'));
     }
 
-    public function update(UpdateSubCategoryRequest $request, Category $sub_category): View|RedirectResponse
+    public function update(Product $product, UpdateProductRequest $request): View|RedirectResponse
     {
-        view()->share('page', config('app.nav.product'));
+        $validatedData = $request->validated();
 
-        if (!$sub_category->update($request->validated())) {
-            return redirect()->back()->with('error', 'Sub category update failed!');
+        if ($request->hasFile('color')) {
+            $colorImages = [];
+
+            if(isset($product->color)){
+                $colorImages = json_decode($product->color);
+            }
+            foreach ($request->file('color') as $colorImage) {
+                $colorImages[] = $colorImage->store('/product_colors', 'public');
+            }
+
+            $validatedData['color'] = json_encode($colorImages);
         }
 
-        return redirect()->back()->with('success', 'Sub category updated successfully');
+        if ($request->hasFile('image')) {
+            $images = [];
+
+            if(isset($product->image)){
+                $images = json_decode($product->color);
+            }
+            foreach ($request->file('image') as $colorImage) {
+                $images[] = $colorImage->store('/product_colors', 'public');
+            }
+
+            $validatedData['image'] = json_encode($images);
+        }
+
+        if ($request->hasFile('thumbnail')) {
+            $validatedData['thumbnail'] = $request->file('thumbnail')->store('product_thumbnails', 'public');
+        }
+
+        if (!$product->update($validatedData)) {
+            return redirect()->back()->with('error', 'Product update failed!');
+        }
+
+        return redirect()->back()->with('success', 'Product updated successfully!');
     }
 
     public function delete(Category $sub_category): View|RedirectResponse
@@ -100,5 +131,19 @@ class ProductController extends Controller
         }
 
         return redirect()->back()->with('success', 'Sub category deleted successfully');
+    }
+
+    public function colorDelete(Product $product, $type, $index): RedirectResponse
+    {
+        $colors = json_decode($product[$type]);
+        array_splice($colors, $index, 1);
+
+        $product[$type] = count($colors) > 0 ? json_encode($colors) : null;
+
+        if (!$product->update()) {
+            return redirect()->back()->with('error', 'product ' . $type . ' delete failed!');
+        }
+
+        return redirect()->back()->with('success', 'product ' . $type . ' delete successfully');
     }
 }

@@ -19,7 +19,7 @@
 
 @section('page_content')
     <div class="d-md-flex align-items-md-start">
-        <form class="tab-content flex-lg-fill" action="{{ url('admin/products/product'.$product->id) }}" method="post"
+        <form class="tab-content flex-lg-fill" action="{{ url('admin/products/product/'.$product->id.'/edit') }}" method="post"
               enctype="multipart/form-data">
             @csrf
 
@@ -33,7 +33,8 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <label class="fw-bold">Name <span class="text-danger">*</span>:</label>
-                                <input type="text" class="form-control" name="name" value="{{ old('name') ?? $product->name }}"
+                                <input type="text" class="form-control" name="name"
+                                       value="{{ old('name') ?? $product->name }}"
                                        placeholder="Enter name" required>
                             </div>
                             <div class="col-md-6">
@@ -50,7 +51,8 @@
                                 <select name="category_id" class="form-control" required>
                                     <option value="" selected>Select Category</option>
                                     @foreach($categories->whereNull('parent_id') as $category)
-                                        <option value="{{ $category->id }}" @selected($product->category_id == $category->id)>{{ $category->name }}</option>
+                                        <option
+                                            value="{{ $category->id }}" @selected($product->category_id == $category->id)>{{ $category->name }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -66,12 +68,14 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <label class="fw-bold">Price <span class="text-danger">*</span>:</label>
-                                <input type="number" class="form-control" name="price" value="{{ old('price') ?? $product->price }}"
+                                <input type="number" class="form-control" name="price"
+                                       value="{{ old('price') ?? $product->price }}"
                                        placeholder="Enter price" required>
                             </div>
                             <div class="col-md-6">
                                 <label class="fw-bold">Offer Price:</label>
-                                <input type="number" class="form-control" name="offer_price" value="{{ old('offer_price') ?? $product->offer_price }}"
+                                <input type="number" class="form-control" name="offer_price"
+                                       value="{{ old('offer_price') ?? $product->offer_price }}"
                                        placeholder="Enter old price"
                                        autocomplete="off" required>
                             </div>
@@ -80,7 +84,8 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <label class="fw-bold">Stock <span class="text-danger">*</span>:</label>
-                                <input type="number" class="form-control" name="stock" value="{{ old('stock') ?? $product->stock }}"
+                                <input type="number" class="form-control" name="stock"
+                                       value="{{ old('stock') ?? $product->stock }}"
                                        placeholder="Enter stock" required>
                             </div>
                             <div class="col-md-6">
@@ -97,27 +102,76 @@
                         </div>
                         <br>
                         <div class="row">
+                            @isset($product->color)
+                            <label class="fw-bold">Colors:</label>
+                                @foreach(json_decode($product->color) as $key => $value)
+                                    <div class="col-md-2 mt-3">
+                                        <div class="card">
+                                            <img class="card-img-top" src="{{ Storage::url($value) }}" alt="color"
+                                                 style="width: 100%; height: 150px; object-fit: cover;">
+                                            <div class="card-body">
+                                                <a onclick="return confirm('Are you sure?')"
+                                                   href="{{ url('admin/products/product/'.$product->id.'/color/'.$key.'/delete') }}"
+                                                   class="btn btn-danger btn-sm delete-btn">Delete</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            @endisset
+                        </div>
+
+                        <div class="row">
+                            @isset($product->color)
+                            <label class="fw-bold">Images:</label>
+                                @foreach(json_decode($product->image) as $key => $value)
+                                    <div class="col-md-2 mt-3">
+                                        <div class="card">
+                                            <img class="card-img-top" src="{{ Storage::url($value) }}" alt="color"
+                                                 style="width: 100%; height: 150px; object-fit: cover;">
+                                            <div class="card-body">
+                                                <a onclick="return confirm('Are you sure?')"
+                                                   href="{{ url('admin/products/product/'.$product->id.'/image/'.$key.'/delete') }}"
+                                                   class="btn btn-danger btn-sm delete-btn">Delete</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            @endisset
+                        </div>
+
+                        <div class="row">
+                            <label class="fw-bold">Thumbnail:</label>
+                            <div class="col-md-2 mt-3">
+                                <div class="card">
+                                    <img class="card-img-top" src="{{ Storage::url($product->thumbnail) }}" alt="color"
+                                         style="width: 100%; height: 150px; object-fit: cover;">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
                             <div class="col-md-4">
                                 <label class="fw-bold">Color:</label>
                                 <input type="file" name="color[]" class="file-input-caption" multiple>
                             </div>
                             <div class="col-md-4">
                                 <label class="fw-bold">Image <span class="text-danger">*</span>:</label>
-                                <input type="file" name="image[]" class="file-input-caption" multiple required>
+                                <input type="file" name="image[]" class="file-input-caption" multiple>
                             </div>
                             <div class="col-md-4">
                                 <label class="fw-bold">Thumbnail <span class="text-danger">*</span>:</label>
-                                <input type="file" name="thumbnail" class="file-input-caption" required>
+                                <input type="file" name="thumbnail" class="file-input-caption">
                             </div>
                         </div>
                         <br>
+
                         <label class="fw-bold">Description <span class="text-danger">*</span>:</label>
                         <div class="mb-3">
                             <textarea class="form-control" id="ckeditor_classic_empty" name="description"
                                       placeholder="Enter your product description">{!! old('description') ?? $product->description !!}</textarea>
                         </div>
                         <div class="text-end">
-                            <button type="submit" class="btn btn-outline-primary">Create</button>
+                            <button type="submit" class="btn btn-outline-primary">Update</button>
                         </div>
                     </div>
                 </div>
