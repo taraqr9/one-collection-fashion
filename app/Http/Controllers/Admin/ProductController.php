@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\FilterProductRequest;
 use App\Http\Requests\Admin\StoreProductRequest;
 use App\Http\Requests\Admin\UpdateProductRequest;
-use App\Http\Requests\Admin\UpdateSubCategoryRequest;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\RedirectResponse;
@@ -13,17 +13,32 @@ use Illuminate\View\View;
 
 class ProductController extends Controller
 {
-    public function index(): View
+    public function index(FilterProductRequest $request): View
     {
         view()->share('page', config('app.nav.product'));
 
-        $products = Product::query()
-            ->with('category')
+        $products = Product::query();
+
+        if (isset($request->name)) {
+            $products->where('name', 'like', '%' . $request->name . '%');
+        }
+
+        if (isset($request->category_id)) {
+            $products->where('category_id', $request->category_id);
+        }
+
+        if (isset($request->status)) {
+            $products->where('status', $request->status);
+        }
+
+        $products = $products->with('category')
             ->with('subCategory')
             ->orderByDesc('id')
             ->paginate(10);
 
-        return view('admin.product.product.index', compact('products'));
+        $categories = Category::query()->where('parent_id', null)->get();
+
+        return view('admin.product.product.index', compact('products', 'categories'));
     }
 
     public function create(): View
@@ -76,7 +91,9 @@ class ProductController extends Controller
     {
         view()->share('page', config('app.nav.product'));
 
-        $categories = Category::query()->whereNull('parent_id')->get();
+        $categories = Category::query()
+            ->where('parent_id', null)
+            ->get();
 
         return view('admin.product.product.edit', compact('product', 'categories'));
     }
@@ -88,7 +105,7 @@ class ProductController extends Controller
         if ($request->hasFile('color')) {
             $colorImages = [];
 
-            if(isset($product->color)){
+            if (isset($product->color)) {
                 $colorImages = json_decode($product->color);
             }
             foreach ($request->file('color') as $colorImage) {
@@ -101,7 +118,7 @@ class ProductController extends Controller
         if ($request->hasFile('image')) {
             $images = [];
 
-            if(isset($product->image)){
+            if (isset($product->image)) {
                 $images = json_decode($product->color);
             }
             foreach ($request->file('image') as $colorImage) {
@@ -122,15 +139,15 @@ class ProductController extends Controller
         return redirect()->back()->with('success', 'Product updated successfully!');
     }
 
-    public function delete(Category $sub_category): View|RedirectResponse
+    public function delete(Product $product): View|RedirectResponse
     {
         view()->share('page', config('app.nav.product'));
 
-        if (!$sub_category->delete()) {
-            return redirect()->back()->with('error', 'Sub category delete failed!');
+        if (!$product->delete()) {
+            return redirect()->back()->with('error', 'Product delete failed!');
         }
 
-        return redirect()->back()->with('success', 'Sub category deleted successfully');
+        return redirect()->back()->with('success', 'Product deleted successfully');
     }
 
     public function colorDelete(Product $product, $type, $index): RedirectResponse

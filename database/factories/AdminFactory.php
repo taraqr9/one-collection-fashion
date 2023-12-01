@@ -17,7 +17,7 @@ class AdminFactory extends Factory
         return [
             'name' => 'Developer',
             'phone' => '01800000000',
-            'email' => 'developers@jatri.co',
+            'email' => 'developers@gmail.co',
             'password' => '$2y$10$jXVY75E1KZJuxHFU.08k6udGe36z0jcwdGuoqGq0BQ/QFBoWCOAKC', // 12345678
             'designation' => 'Software Engineer',
             'status' => '1',
