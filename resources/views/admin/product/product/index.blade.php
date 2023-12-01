@@ -56,6 +56,16 @@
                             </div>
                         </div>
 
+                        <div class="sub-category form-group col-md-2" id="subCategoryDiv">
+                            <label class="control-label col-md-12 col-sm-12 col-xs-12">Sub Category:</label>
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <select name="parent_id" class="form-control style-input">
+                                    <option value="" selected>Select Sub Category</option>
+                                    <!-- You may dynamically load sub-categories here using AJAX -->
+                                </select>
+                            </div>
+                        </div>
+
                         <div class="form-group col-md-2">
                             <label class="control-label col-md-12 col-sm-12 col-xs-12">Status:</label>
                             <div class="col-md-12 col-sm-12 col-xs-12">
@@ -134,12 +144,58 @@
 
 @section('footer_js')
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            var titleElements = document.querySelectorAll('.title-truncate');
+        $(document).ready(function () {
+            // Cache the Sub Category section
+            var subCategorySelect = $('select[name="parent_id"]');
 
-            titleElements.forEach(function (titleElement) {
-                var originalTitle = titleElement.innerText;
-                titleElement.innerText = originalTitle.split(' ').slice(0, 5).join(' ') + '...';
+            // Initial disable
+            subCategorySelect.prop('disabled', true);
+
+            // Function to load and select sub-categories based on category_id and parent_id
+            function loadAndSelectSubCategories(categoryId, parent_id) {
+                $.ajax({
+                    url: '/admin/products/sub_category/' + categoryId,
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (data) {
+                        subCategorySelect.empty(); // Clear existing options
+
+                        // Add an option to select all subcategories
+                        subCategorySelect.append('<option value="" selected>Select Sub Category</option>');
+
+                        if (data.length > 0) {
+                            // If subcategories are available, enable and update the Sub Category select
+                            subCategorySelect.prop('disabled', false);
+                            $.each(data, function (key, value) {
+                                var isSelected = (value.id == parent_id) ? 'selected' : '';
+                                subCategorySelect.append('<option value="' + value.id + '" ' + isSelected + '>' + value.name + '</option>');
+                            });
+                            // Hide the sub-category message
+                            $('.sub-category-message').hide();
+                        } else {
+                            // If no subcategories, disable the Sub Category select
+                            subCategorySelect.prop('disabled', true);
+                            // Show the sub-category message
+                            $('.sub-category-message').show();
+                        }
+                    }
+                });
+            }
+
+            // Trigger category change event on page load
+            $('select[name="category_id"]').change();
+
+            // Event listener for category change
+            $('select[name="category_id"]').on('change', function () {
+                var categoryId = $(this).val();
+                var parent_id = @json($product->parent_id ?? null); // Get existing parent_id
+
+                if (categoryId) {
+                    loadAndSelectSubCategories(categoryId, parent_id);
+                } else {
+                    // If no category selected, disable the Sub Category select
+                    subCategorySelect.prop('disabled', true);
+                }
             });
         });
     </script>

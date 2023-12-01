@@ -27,6 +27,10 @@ class ProductController extends Controller
             $products->where('category_id', $request->category_id);
         }
 
+        if (isset($request->parent_id)) {
+            $products->where('parent_id', $request->parent_id);
+        }
+
         if (isset($request->status)) {
             $products->where('status', $request->status);
         }

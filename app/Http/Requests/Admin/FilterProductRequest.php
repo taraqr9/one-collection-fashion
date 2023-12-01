@@ -26,7 +26,7 @@ class FilterProductRequest extends FormRequest
         return [
             'name' => ['nullable', 'string', 'max:200'],
             'category_id' => ['nullable', 'exists:categories,id'],
-//            'parent_id' => ['nullable', 'exists:categories,id'],
+            'parent_id' => ['nullable', 'exists:categories,id'],
             'status' => ['nullable', Rule::in(array_column(ProductStatusEnum::cases(), 'value'))],
         ];
     }
