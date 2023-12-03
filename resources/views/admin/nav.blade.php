@@ -19,5 +19,6 @@
 {{--        @endif--}}
 
         @include('admin.nav.product')
+        @include('admin.nav.setting')
     </ul>
 </div>

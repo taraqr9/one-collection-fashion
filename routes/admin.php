@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\LoginController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\SubCategoryController;
+use App\Http\Controllers\Admin\TopBannerController;
 use Illuminate\Support\Facades\Route;
 
 Route::controller(LoginController::class)->group(function () {
@@ -20,15 +21,15 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index']);
 
     //Admin roles permission
-//    Route::group(['prefix' => 'admins'], function () {
+    Route::group(['prefix' => 'admins'], function () {
 //        Route::get('/', [AdminController::class, 'index']);
 //        Route::get('/create', [AdminController::class, 'create']);
 //        Route::post('/', [AdminController::class, 'store']);
 //        Route::get('/{admin}/edit', [AdminController::class, 'edit']);
 //        Route::put('/{admin}', [AdminController::class, 'update']);
-//        Route::get('/profile', [AdminController::class, 'profile']);
-//        Route::post('/profile-update', [AdminController::class, 'profileUpdate']);
-//    });
+        Route::get('/profile', [AdminController::class, 'profile']);
+        Route::post('/profile-update', [AdminController::class, 'profileUpdate']);
+    });
 
 
     Route::group(['prefix' => 'products'], function () {
@@ -60,6 +61,17 @@ Route::middleware('auth')->group(function () {
             Route::post('/{product}/edit', [ProductController::class, 'update']);
             Route::get('/{product}/delete', [ProductController::class, 'delete']);
             Route::get('/{product}/{type}/{index}/delete', [ProductController::class, 'colorDelete']);
+        });
+
+    });
+
+    Route::group(['prefix' => 'settings'], function () {
+
+        Route::group(['prefix' => 'top_banner'], function () {
+            Route::get('/', [TopBannerController::class, 'index']);
+            Route::post('/', [TopBannerController::class, 'store']);
+            Route::post('/{banner}/edit', [TopBannerController::class, 'update']);
+            Route::get('/{banner}/delete', [TopBannerController::class, 'delete'])->name('settings.top_banner.delete');
         });
 
     });

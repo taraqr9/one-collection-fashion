@@ -28,10 +28,15 @@ return [
         /* Users */
 //        'admins'                                    => 2,
 
-        /* Card */
+        /* Products */
         'category'                                   => 3,
         'sub_category'                               => 4,
         'product'                                    => 5,
+
+        /* Settings */
+        'top_banner'                                 => 6,
+        'mid_banner'                                 => 7,
+        'footer'                                     => 8,
     ],
 
     /*
