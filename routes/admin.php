@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\LoginController;
+use App\Http\Controllers\Admin\MidBannerController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\SubCategoryController;
 use App\Http\Controllers\Admin\TopBannerController;
@@ -72,6 +73,13 @@ Route::middleware('auth')->group(function () {
             Route::post('/', [TopBannerController::class, 'store']);
             Route::post('/{banner}/edit', [TopBannerController::class, 'update']);
             Route::get('/{banner}/delete', [TopBannerController::class, 'delete'])->name('settings.top_banner.delete');
+        });
+
+        Route::group(['prefix' => 'mid_banner'], function () {
+            Route::get('/', [MidBannerController::class, 'index'])->name('settings.mid_banner.index');
+            Route::post('/', [MidBannerController::class, 'store'])->name('settings.mid_banner.create');
+            Route::post('/{banner}/edit', [MidBannerController::class, 'update'])->name('settings.mid_banner');
+            Route::get('/{banner}/delete', [MidBannerController::class, 'delete'])->name('settings.mid_banner.delete');
         });
 
     });
