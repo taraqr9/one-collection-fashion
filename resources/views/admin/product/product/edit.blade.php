@@ -121,7 +121,7 @@
                         </div>
 
                         <div class="row">
-                            @isset($product->color)
+                            @isset($product->image)
                             <label class="fw-bold">Images:</label>
                                 @foreach(json_decode($product->image) as $key => $value)
                                     <div class="col-md-2 mt-3">
@@ -149,22 +149,21 @@
                             </div>
                         </div>
 
-                        <div class="row">
-                            <div class="col-md-4">
-                                <label class="fw-bold">Color:</label>
-                                <input type="file" name="color[]" class="file-input-caption" multiple>
-                            </div>
-                            <div class="col-md-4">
-                                <label class="fw-bold">Image <span class="text-danger">*</span>:</label>
-                                <input type="file" name="image[]" class="file-input-caption" multiple>
-                            </div>
-                            <div class="col-md-4">
-                                <label class="fw-bold">Thumbnail <span class="text-danger">*</span>:</label>
-                                <input type="file" name="thumbnail" class="file-input-caption">
-                            </div>
+                        <div>
+                            <label class="fw-bold">Color:</label>
+                            <input type="file" name="color[]" class="file-input-caption" multiple>
                         </div>
-                        <br>
-
+                        <hr>
+                        <div class="col-md-4">
+                            <label class="fw-bold">Image <span class="text-danger">*</span>:</label>
+                            <input type="file" name="image[]" class="file-input-caption" multiple>
+                        </div>
+                        <hr>
+                        <div class="col-md-4">
+                            <label class="fw-bold">Thumbnail <span class="text-danger">*</span>:</label>
+                            <input type="file" name="thumbnail" class="file-input-caption">
+                        </div>
+                        <hr>
                         <label class="fw-bold">Description <span class="text-danger">*</span>:</label>
                         <div class="mb-3">
                             <textarea class="form-control" id="ckeditor_classic_empty" name="description"
@@ -189,38 +188,49 @@
             // Initial disable
             subCategorySelect.prop('disabled', true);
 
+            // Function to load and select sub-categories based on category_id and parent_id
+            function loadAndSelectSubCategories(categoryId, parent_id) {
+                $.ajax({
+                    url: '/admin/products/sub_category/' + categoryId,
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (data) {
+                        subCategorySelect.empty(); // Clear existing options
+
+                        if (data.length > 0) {
+                            // If subcategories are available, enable and update the Sub Category select
+                            subCategorySelect.prop('disabled', false);
+                            $.each(data, function (key, value) {
+                                subCategorySelect.append('<option value="' + value.id + '" ' + (value.id == parent_id ? 'selected' : '') + '>' + value.name + '</option>');
+                            });
+                            // Hide the sub-category message
+                            $('.sub-category-message').hide();
+                        } else {
+                            // If no subcategories, disable the Sub Category select
+                            subCategorySelect.prop('disabled', true);
+                            // Show the sub-category message
+                            $('.sub-category-message').show();
+                        }
+                    }
+                });
+            }
+
+            // Trigger category change event on page load
+            $('select[name="category_id"]').change();
+
+            // Event listener for category change
             $('select[name="category_id"]').on('change', function () {
                 var categoryId = $(this).val();
+                var parent_id = @json($product->parent_id ?? null); // Get existing parent_id
 
                 if (categoryId) {
-                    $.ajax({
-                        url: '/admin/products/sub_category/' + categoryId,
-                        type: 'GET',
-                        dataType: 'json',
-                        success: function (data) {
-                            subCategorySelect.empty(); // Clear existing options
-
-                            if (data.length > 0) {
-                                // If subcategories are available, enable and update the Sub Category select
-                                subCategorySelect.prop('disabled', false);
-                                $.each(data, function (key, value) {
-                                    subCategorySelect.append('<option value="' + value.id + '">' + value.name + '</option>');
-                                });
-                                // Hide the sub-category message
-                                $('.sub-category-message').hide();
-                            } else {
-                                // If no subcategories, disable the Sub Category select
-                                subCategorySelect.prop('disabled', true);
-                                // Show the sub-category message
-                                $('.sub-category-message').show();
-                            }
-                        }
-                    });
+                    loadAndSelectSubCategories(categoryId, parent_id);
                 } else {
                     // If no category selected, disable the Sub Category select
                     subCategorySelect.prop('disabled', true);
                 }
             });
         });
+
     </script>
 @endsection

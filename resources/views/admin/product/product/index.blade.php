@@ -1,4 +1,4 @@
-@php use Illuminate\Support\Facades\Storage; @endphp
+@php use App\Enums\ProductStatusEnum;use Illuminate\Support\Facades\Storage; @endphp
 @extends('admin.master')
 
 @section('title')
@@ -27,9 +27,73 @@
 @endsection
 
 @section('page_content')
+    <div class="card">
+        <div class="card-body">
+            <div class="col-md-12">
+                <form class="form-horizontal form-label-left" method="get"
+                      action="{{ url('admin/products/product') }}">
+                    <div class="row">
+
+                        <div class="form-group col-md-2">
+                            <label class="control-label col-md-12 col-sm-12 col-xs-12">Name:</label>
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <input class="form-control style-input" type="text" name="name"
+                                       value="{{ request('name') ?? '' }}" placeholder="Name">
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-2">
+                            <label class="control-label col-md-12 col-sm-12 col-xs-12">Category:</label>
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <select name="category_id" class="form-control style-input">
+                                    <option value="">All</option>
+                                    @foreach($categories as $category)
+                                        <option value="{{ $category->id }}" @selected((request('category_id') == $category->id))>
+                                            {{ $category->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="sub-category form-group col-md-2" id="subCategoryDiv">
+                            <label class="control-label col-md-12 col-sm-12 col-xs-12">Sub Category:</label>
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <select name="parent_id" class="form-control style-input">
+                                    <option value="" selected>Select Sub Category</option>
+                                    <!-- You may dynamically load sub-categories here using AJAX -->
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-2">
+                            <label class="control-label col-md-12 col-sm-12 col-xs-12">Status:</label>
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <select name="status" class="form-control style-input">
+                                    <option value="" selected>All</option>
+                                    @foreach(ProductStatusEnum::cases() as $status)
+                                        <option value="{{ $status }}" @selected($status->value == request('status'))>
+                                            {{ $status->value }}
+                                        </option>
+                                    @endforeach
+                                </select>
+
+                            </div>
+                        </div>
+
+                        <div class="col-md-1">
+                            <label class="fw-bold col-md-12 col-sm-0 col-xs-0">&nbsp;</label>
+                            <button type="submit" class="btn bg-dark text-white">Search</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <div class="content">
         <div class="row justify-content-center">
-            @foreach($products as $product)
+            @forelse($products as $product)
                 <div class="card col-lg-2 m-1">
                     <div class="card-body">
                         <div class="card-img-actions mb-3">
@@ -38,13 +102,13 @@
                                      src="{{ Storage::url($product->thumbnail) }}"
                                      alt="Product Image">
                                 <div class="card-img-actions-overlay card-img position-absolute">
-                                    <a href="{{ url('admin/products/product/'.$product->id.'/edit') }}" class="btn btn-outline-white btn-icon rounded-pill">
+                                    <a href="{{ url('admin/products/product/'.$product->id.'/edit') }}"
+                                       class="btn btn-outline-white btn-icon rounded-pill">
                                         <i class="ph-pencil-line"></i>
                                     </a>
                                 </div>
                             </div>
                         </div>
-
 
                         <h5 class="card-title pt-1 mb-1 title-truncate">
                             <a href="#" class="text-body">{{ $product->name }}</a>
@@ -56,27 +120,82 @@
                             <li>Price : {{ $product->price }} BDT</li>
                             <li>Offer Price : {{ $product->offer_price }} BDT</li>
                             <li>Stock : {{ $product->stock }}</li>
+                            <span
+                                class="badge bg-{{ ProductStatusEnum::ACTIVE->value == $product->status ? 'success' : 'warning' }}">
+                                 {{ $product->status }}
+                            </span>
                         </ul>
                     </div>
 
-                    <div class="card-footer">
-                        <a href="{{ url('admin/products/product/'.$product->id.'/edit') }}" class="d-inline-flex align-items-center ms-auto">Edit <i
-                                class="ph-arrow-circle-right ms-2"></i></a>
+                    <div class="card-footer d-flex">
+                        <a href="{{ url('admin/products/product/'.$product->id.'/edit') }}"
+                           class="d-inline-flex align-items-center me-2">Edit <i class="ph-arrow-circle-right ms-2"></i></a>
+                        <a href="{{ url('admin/products/product/'.$product->id.'/delete') }}"
+                           onclick="return confirm('Are you sure?')"
+                           class="d-inline-flex align-items-center ms-auto">Delete <i class="ph-minus-circle ms-2"></i></a>
                     </div>
                 </div>
-            @endforeach
+            @empty
+                <h4 class="col-lg-2 m-1">No data found!</h4>
+            @endforelse
         </div>
     </div>
 @endsection
 
 @section('footer_js')
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            var titleElements = document.querySelectorAll('.title-truncate');
+        $(document).ready(function () {
+            // Cache the Sub Category section
+            var subCategorySelect = $('select[name="parent_id"]');
 
-            titleElements.forEach(function (titleElement) {
-                var originalTitle = titleElement.innerText;
-                titleElement.innerText = originalTitle.split(' ').slice(0, 5).join(' ') + '...';
+            // Initial disable
+            subCategorySelect.prop('disabled', true);
+
+            // Function to load and select sub-categories based on category_id and parent_id
+            function loadAndSelectSubCategories(categoryId, parent_id) {
+                $.ajax({
+                    url: '/admin/products/sub_category/' + categoryId,
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (data) {
+                        subCategorySelect.empty(); // Clear existing options
+
+                        // Add an option to select all subcategories
+                        subCategorySelect.append('<option value="" selected>Select Sub Category</option>');
+
+                        if (data.length > 0) {
+                            // If subcategories are available, enable and update the Sub Category select
+                            subCategorySelect.prop('disabled', false);
+                            $.each(data, function (key, value) {
+                                var isSelected = (value.id == parent_id) ? 'selected' : '';
+                                subCategorySelect.append('<option value="' + value.id + '" ' + isSelected + '>' + value.name + '</option>');
+                            });
+                            // Hide the sub-category message
+                            $('.sub-category-message').hide();
+                        } else {
+                            // If no subcategories, disable the Sub Category select
+                            subCategorySelect.prop('disabled', true);
+                            // Show the sub-category message
+                            $('.sub-category-message').show();
+                        }
+                    }
+                });
+            }
+
+            // Trigger category change event on page load
+            $('select[name="category_id"]').change();
+
+            // Event listener for category change
+            $('select[name="category_id"]').on('change', function () {
+                var categoryId = $(this).val();
+                var parent_id = @json($product->parent_id ?? null); // Get existing parent_id
+
+                if (categoryId) {
+                    loadAndSelectSubCategories(categoryId, parent_id);
+                } else {
+                    // If no category selected, disable the Sub Category select
+                    subCategorySelect.prop('disabled', true);
+                }
             });
         });
     </script>
