@@ -35,8 +35,10 @@ return [
 
         /* Settings */
         'top_banner'                                 => 6,
-        'mid_banner'                                 => 7,
-        'footer'                                     => 8,
+        'mini_top_banner'                                 => 7,
+        'mini_bottom_banner'                                 => 8,
+        'mid_banner'                                 => 9,
+        'footer'                                     => 10,
     ],
 
     /*

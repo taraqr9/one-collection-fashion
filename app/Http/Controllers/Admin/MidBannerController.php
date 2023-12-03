@@ -26,13 +26,6 @@ class MidBannerController extends Controller
         return view('admin.setting.mid_banner.index', compact('mid_banners'));
     }
 
-    public function create(): View
-    {
-        view()->share('page', config('app.nav.mid_banner'));
-
-        return view('admin.setting.mid_banner.create');
-    }
-
     public function store(StoreMidBannerRequest $request): View|RedirectResponse
     {
         view()->share('page', config('app.nav.mid_banner'));
