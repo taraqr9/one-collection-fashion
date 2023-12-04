@@ -5,9 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Enums\SettingBannerEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreMidBannerRequest;
-use App\Http\Requests\Admin\StoreTopBannerRequest;
 use App\Http\Requests\Admin\UpdateMidBannerRequest;
-use App\Http\Requests\Admin\UpdateTopBannerRequest;
 use App\Models\Setting;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\RedirectResponse;
@@ -32,14 +30,14 @@ class MidBannerController extends Controller
 
         $mid_banner = Setting::query()->where('key', 'mid_banner')->first();
 
-        if (!$mid_banner) {
+        if (! $mid_banner) {
             $mid_banner_store_on_local[] = $request->file('mid_banner')->store('/setting/mid_banners', 'public');
             $mid_banner_store = Setting::create([
                 'key' => SettingBannerEnum::MID_BANNER->value,
-                'value' => json_encode($mid_banner_store_on_local)
+                'value' => json_encode($mid_banner_store_on_local),
             ]);
 
-            if (!$mid_banner_store) {
+            if (! $mid_banner_store) {
                 return redirect()->back()->with('error', 'Banner upload failed!');
             }
 
@@ -49,7 +47,7 @@ class MidBannerController extends Controller
         $banners = json_decode($mid_banner->value);
         $banners[] = $request->file('mid_banner')->store('setting/mid_banners', 'public');
 
-        if (!$mid_banner->update(['value' => json_encode($banners)])) {
+        if (! $mid_banner->update(['value' => json_encode($banners)])) {
             return redirect()->back()->with('error', 'Banner upload failed!');
         }
 
@@ -73,6 +71,7 @@ class MidBannerController extends Controller
 
                 if ($banner_update) {
                     $this->deleteOldImage($old_image);
+
                     return redirect()->back()->with('success', 'Banner updated successfully!');
                 }
             }
@@ -90,9 +89,9 @@ class MidBannerController extends Controller
         array_splice($banners, $banner, 1);
         $all_banners['value'] = count($all_banners['value']) > 0 ? json_encode($banners) : [];
 
-
         if ($all_banners->update()) {
             $this->deleteOldImage($old_image);
+
             return redirect()->back()->with('success', 'Banner deleted successfully!');
         }
 
@@ -106,7 +105,6 @@ class MidBannerController extends Controller
 
         return $banners;
     }
-
 
     private function deleteOldImage($oldImage): void
     {

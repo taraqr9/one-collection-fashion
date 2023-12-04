@@ -3,13 +3,14 @@
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\FooterController;
 use App\Http\Controllers\Admin\LoginController;
 use App\Http\Controllers\Admin\MidBannerController;
 use App\Http\Controllers\Admin\MiniBottomBannerController;
+use App\Http\Controllers\Admin\MiniTopBannerController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\SubCategoryController;
 use App\Http\Controllers\Admin\TopBannerController;
-use App\Http\Controllers\Admin\MiniTopBannerController;
 use Illuminate\Support\Facades\Route;
 
 Route::controller(LoginController::class)->group(function () {
@@ -25,15 +26,14 @@ Route::middleware('auth')->group(function () {
 
     //Admin roles permission
     Route::group(['prefix' => 'admins'], function () {
-//        Route::get('/', [AdminController::class, 'index']);
-//        Route::get('/create', [AdminController::class, 'create']);
-//        Route::post('/', [AdminController::class, 'store']);
-//        Route::get('/{admin}/edit', [AdminController::class, 'edit']);
-//        Route::put('/{admin}', [AdminController::class, 'update']);
+        //        Route::get('/', [AdminController::class, 'index']);
+        //        Route::get('/create', [AdminController::class, 'create']);
+        //        Route::post('/', [AdminController::class, 'store']);
+        //        Route::get('/{admin}/edit', [AdminController::class, 'edit']);
+        //        Route::put('/{admin}', [AdminController::class, 'update']);
         Route::get('/profile', [AdminController::class, 'profile']);
         Route::post('/profile-update', [AdminController::class, 'profileUpdate']);
     });
-
 
     Route::group(['prefix' => 'products'], function () {
 
@@ -98,11 +98,12 @@ Route::middleware('auth')->group(function () {
             Route::get('/{banner}/delete', [MiniBottomBannerController::class, 'delete'])->name('settings.mini_bottom_banner.delete');
         });
 
+        Route::group(['prefix' => 'footer'], function () {
+            Route::get('/', [FooterController::class, 'index'])->name('footer');
+            Route::get('/{type}/create', [FooterController::class, 'create'])->name('footer.create');
+            Route::post('/', [FooterController::class, 'storeOrUpdate'])->name('footer.store');
+            Route::get('/{type}/details', [FooterController::class, 'details'])->name('footer.details');
+        });
 
     });
 });
-
-
-
-
-

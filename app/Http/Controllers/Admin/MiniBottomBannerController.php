@@ -28,14 +28,14 @@ class MiniBottomBannerController extends Controller
     {
         $mini_bottom_banner = Setting::query()->where('key', 'mini_bottom_banner')->first();
 
-        if (!$mini_bottom_banner) {
+        if (! $mini_bottom_banner) {
             $mini_bottom_banner_store_on_local[] = $request->file('mini_bottom_banner')->store('/setting/mini_bottom_banners', 'public');
             $mini_bottom_banner_store = Setting::create([
                 'key' => SettingBannerEnum::MINI_BOTTOM_BANNER->value,
-                'value' => json_encode($mini_bottom_banner_store_on_local)
+                'value' => json_encode($mini_bottom_banner_store_on_local),
             ]);
 
-            if (!$mini_bottom_banner_store) {
+            if (! $mini_bottom_banner_store) {
                 return redirect()->back()->with('error', 'Banner upload failed!');
             }
 
@@ -45,7 +45,7 @@ class MiniBottomBannerController extends Controller
         $banners = json_decode($mini_bottom_banner->value);
         $banners[] = $request->file('mini_bottom_banner')->store('setting/mini_bottom_banners', 'public');
 
-        if (!$mini_bottom_banner->update(['value' => json_encode($banners)])) {
+        if (! $mini_bottom_banner->update(['value' => json_encode($banners)])) {
             return redirect()->back()->with('error', 'Banner upload failed!');
         }
 
@@ -67,6 +67,7 @@ class MiniBottomBannerController extends Controller
 
                 if ($banner_update) {
                     $this->deleteOldImage($old_image);
+
                     return redirect()->back()->with('success', 'Banner updated successfully!');
                 }
             }
@@ -84,9 +85,9 @@ class MiniBottomBannerController extends Controller
         array_splice($banners, $banner, 1);
         $all_banners['value'] = count($all_banners['value']) > 0 ? json_encode($banners) : [];
 
-
         if ($all_banners->update()) {
             $this->deleteOldImage($old_image);
+
             return redirect()->back()->with('success', 'Banner deleted successfully!');
         }
 
@@ -100,7 +101,6 @@ class MiniBottomBannerController extends Controller
 
         return $banners;
     }
-
 
     private function deleteOldImage($oldImage): void
     {

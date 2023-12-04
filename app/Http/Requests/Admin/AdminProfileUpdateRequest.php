@@ -26,7 +26,7 @@ class AdminProfileUpdateRequest extends FormRequest
             'name' => ['required', 'string'],
             'phone' => ['required', 'unique:admins,phone,'.auth()->user()->id, 'string', 'min:11', 'max:14'],
             'password' => ['nullable', 'confirmed', 'min:6', 'max:250'],
-            'avatar' => ['nullable', 'mimes:jpeg,jpg,png,gif|required|max:5000']
+            'avatar' => ['nullable', 'mimes:jpeg,jpg,png,gif|required|max:5000'],
         ];
     }
 }

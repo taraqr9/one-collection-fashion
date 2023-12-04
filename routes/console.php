@@ -13,8 +13,7 @@ use Illuminate\Support\Facades\Artisan;
 |
 */
 
-
-if ('production' === App::environment()) {
+if (App::environment() === 'production') {
     Artisan::command('migrate:fresh', function () {
         $this->comment('You are not allowed to do this in production!');
     })->describe('Override default command in production.');
@@ -31,4 +30,3 @@ if ('production' === App::environment()) {
         $this->comment('You are not allowed to do this in production!');
     })->describe('Override default command in production.');
 }
-

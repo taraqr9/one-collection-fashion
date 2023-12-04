@@ -14,9 +14,9 @@ class Kernel extends ConsoleKernel
     {
 
         $schedule->command('app:update-leaderboard')
-                 ->everyFifteenMinutes()
-                 ->evenInMaintenanceMode()
-                 ->onOneServer();
+            ->everyFifteenMinutes()
+            ->evenInMaintenanceMode()
+            ->onOneServer();
     }
 
     /**

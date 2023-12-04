@@ -25,7 +25,7 @@ class AdminCreateRequest extends FormRequest
             'password' => ['required', 'confirmed', 'min:6', 'max:255'],
             'designation' => ['required', 'min:3', 'max:200'],
             'admin_type' => ['required', Rule::in(array_column(AdminTypeEnum::cases(), 'value'))],
-            'avatar' => ['nullable', 'mimes:jpeg,jpg,png,gif|max:5000']
+            'avatar' => ['nullable', 'mimes:jpeg,jpg,png,gif|max:5000'],
         ];
     }
 }

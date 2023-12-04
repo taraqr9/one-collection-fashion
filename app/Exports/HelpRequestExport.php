@@ -4,8 +4,8 @@ namespace App\Exports;
 
 use App\Models\CardHelpRequest;
 use Maatwebsite\Excel\Concerns\Exportable;
-use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\FromQuery;
+use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
 
 class HelpRequestExport implements FromQuery, WithHeadings, WithMapping
@@ -25,17 +25,17 @@ class HelpRequestExport implements FromQuery, WithHeadings, WithMapping
     public function query()
     {
         $from_date = $to_date = date('Y-m-d');
-        if (!empty($this->date_range)) {
+        if (! empty($this->date_range)) {
             $dates_from_function = getDateDBFormatFromDateRange($this->date_range);
-            $from_date           = $dates_from_function['from_date'];
-            $to_date             = $dates_from_function['to_date'];
+            $from_date = $dates_from_function['from_date'];
+            $to_date = $dates_from_function['to_date'];
         }
 
         return CardHelpRequest::query()
-                              ->select('id', 'name', 'mobile_number', 'city', 'profession', 'created_at')
-                              ->where('created_at', '>=', $from_date)
-                              ->where('created_at', '<=', $to_date . ' 23.59.59')
-                              ->orderBy('id', 'desc');
+            ->select('id', 'name', 'mobile_number', 'city', 'profession', 'created_at')
+            ->where('created_at', '>=', $from_date)
+            ->where('created_at', '<=', $to_date.' 23.59.59')
+            ->orderBy('id', 'desc');
     }
 
     public function map($row): array
@@ -52,6 +52,6 @@ class HelpRequestExport implements FromQuery, WithHeadings, WithMapping
 
     public function headings(): array
     {
-        return ['ID', 'Name', 'City', 'Profession','Mobile No', 'Created At'];
+        return ['ID', 'Name', 'City', 'Profession', 'Mobile No', 'Created At'];
     }
 }

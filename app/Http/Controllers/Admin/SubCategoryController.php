@@ -36,8 +36,7 @@ class SubCategoryController extends Controller
 
         $category = Category::create($request->validated());
 
-        if(!$category)
-        {
+        if (! $category) {
             return redirect()->back()->with('error', 'Sub category create failed!');
         }
 
@@ -65,8 +64,7 @@ class SubCategoryController extends Controller
             return redirect()->back()->with('error', 'Sorry, you can not update category from sub category!');
         }
 
-        if(!$sub_category->update($request->validated()))
-        {
+        if (! $sub_category->update($request->validated())) {
             return redirect()->back()->with('error', 'Sub category update failed!');
         }
 
@@ -77,8 +75,7 @@ class SubCategoryController extends Controller
     {
         view()->share('page', config('app.nav.sub_category'));
 
-        if(!$sub_category->delete())
-        {
+        if (! $sub_category->delete()) {
             return redirect()->back()->with('error', 'Sub category delete failed!');
         }
 

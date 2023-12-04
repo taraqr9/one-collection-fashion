@@ -30,14 +30,14 @@ class TopBannerController extends Controller
 
         $top_banner = Setting::query()->where('key', 'top_banner')->first();
 
-        if (!$top_banner) {
+        if (! $top_banner) {
             $top_banner_store_on_local[] = $request->file('top_banner')->store('/setting/top_banners', 'public');
             $top_banner_store = Setting::create([
                 'key' => SettingBannerEnum::TOP_BANNER->value,
-                'value' => json_encode($top_banner_store_on_local)
+                'value' => json_encode($top_banner_store_on_local),
             ]);
 
-            if (!$top_banner_store) {
+            if (! $top_banner_store) {
                 return redirect()->back()->with('error', 'Banner upload failed!');
             }
 
@@ -47,7 +47,7 @@ class TopBannerController extends Controller
         $banners = json_decode($top_banner->value);
         $banners[] = $request->file('top_banner')->store('setting/top_banners', 'public');
 
-        if (!$top_banner->update(['value' => json_encode($banners)])) {
+        if (! $top_banner->update(['value' => json_encode($banners)])) {
             return redirect()->back()->with('error', 'Banner upload failed!');
         }
 
@@ -71,6 +71,7 @@ class TopBannerController extends Controller
 
                 if ($banner_update) {
                     $this->deleteOldImage($old_image);
+
                     return redirect()->back()->with('success', 'Banner updated successfully!');
                 }
             }
@@ -88,9 +89,9 @@ class TopBannerController extends Controller
         array_splice($banners, $banner, 1);
         $all_banners['value'] = count($all_banners['value']) > 0 ? json_encode($banners) : [];
 
-
         if ($all_banners->update()) {
             $this->deleteOldImage($old_image);
+
             return redirect()->back()->with('success', 'Banner deleted successfully!');
         }
 
@@ -104,7 +105,6 @@ class TopBannerController extends Controller
 
         return $banners;
     }
-
 
     private function deleteOldImage($oldImage): void
     {

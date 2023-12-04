@@ -30,14 +30,14 @@ class MiniTopBannerController extends Controller
 
         $mini_top_banner = Setting::query()->where('key', 'mini_top_banner')->first();
 
-        if (!$mini_top_banner) {
+        if (! $mini_top_banner) {
             $mini_top_banner_store_on_local[] = $request->file('mini_top_banner')->store('/setting/mini_top_banners', 'public');
             $mini_top_banner_store = Setting::create([
                 'key' => SettingBannerEnum::MINI_TOP_BANNER->value,
-                'value' => json_encode($mini_top_banner_store_on_local)
+                'value' => json_encode($mini_top_banner_store_on_local),
             ]);
 
-            if (!$mini_top_banner_store) {
+            if (! $mini_top_banner_store) {
                 return redirect()->back()->with('error', 'Banner upload failed!');
             }
 
@@ -47,7 +47,7 @@ class MiniTopBannerController extends Controller
         $banners = json_decode($mini_top_banner->value);
         $banners[] = $request->file('mini_top_banner')->store('setting/mini_top_banners', 'public');
 
-        if (!$mini_top_banner->update(['value' => json_encode($banners)])) {
+        if (! $mini_top_banner->update(['value' => json_encode($banners)])) {
             return redirect()->back()->with('error', 'Banner upload failed!');
         }
 
@@ -71,6 +71,7 @@ class MiniTopBannerController extends Controller
 
                 if ($banner_update) {
                     $this->deleteOldImage($old_image);
+
                     return redirect()->back()->with('success', 'Banner updated successfully!');
                 }
             }
@@ -88,9 +89,9 @@ class MiniTopBannerController extends Controller
         array_splice($banners, $banner, 1);
         $all_banners['value'] = count($all_banners['value']) > 0 ? json_encode($banners) : [];
 
-
         if ($all_banners->update()) {
             $this->deleteOldImage($old_image);
+
             return redirect()->back()->with('success', 'Banner deleted successfully!');
         }
 
@@ -104,7 +105,6 @@ class MiniTopBannerController extends Controller
 
         return $banners;
     }
-
 
     private function deleteOldImage($oldImage): void
     {

@@ -49,7 +49,6 @@ class Handler extends ExceptionHandler
         });
     }
 
-
     public function render($request, Throwable $ex)
     {
         if (config('app.env') == 'production') {
@@ -57,6 +56,7 @@ class Handler extends ExceptionHandler
                 return response()->fail(message: 'Something went wrong!', code: 500);
             }
         }
+
         return parent::render($request, $ex);
     }
 }

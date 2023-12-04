@@ -15,30 +15,30 @@ return [
     |
     */
 
-    'name'                              => env('APP_NAME', 'Laravel'),
-    'allowed_domain'                    => env('ALLOWED_DOMAIN', ''),
-    'allowed_number_of_days_reporting'  => env('ALLOWED_NUMBER_OF_DAYS_REPORTING',31),
-    'storage_prefix'                    => env('APP_ENV','local').'/'.env('SERVICE_IDENTIFIER','onecollectionfashion'),
+    'name' => env('APP_NAME', 'Laravel'),
+    'allowed_domain' => env('ALLOWED_DOMAIN', ''),
+    'allowed_number_of_days_reporting' => env('ALLOWED_NUMBER_OF_DAYS_REPORTING', 31),
+    'storage_prefix' => env('APP_ENV', 'local').'/'.env('SERVICE_IDENTIFIER', 'onecollectionfashion'),
 
     'nav' => [
 
         /* Global */
-        'dashboard'                                 => 1,
+        'dashboard' => 1,
 
         /* Users */
-//        'admins'                                    => 2,
+        //        'admins'                                    => 2,
 
         /* Products */
-        'category'                                   => 3,
-        'sub_category'                               => 4,
-        'product'                                    => 5,
+        'category' => 3,
+        'sub_category' => 4,
+        'product' => 5,
 
         /* Settings */
-        'top_banner'                                 => 6,
-        'mini_top_banner'                                 => 7,
-        'mini_bottom_banner'                                 => 8,
-        'mid_banner'                                 => 9,
-        'footer'                                     => 10,
+        'top_banner' => 6,
+        'mini_top_banner' => 7,
+        'mini_bottom_banner' => 8,
+        'mid_banner' => 9,
+        'footer' => 10,
     ],
 
     /*

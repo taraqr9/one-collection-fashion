@@ -14,16 +14,18 @@ class CacheService
     {
         return Cache::rememberForever(CacheKey::CAREER_BANNER_CACHE_KEY, function () {
             $data = DB::table('settings')
-                      ->where('key', 'card_banners')
-                      ->first();
+                ->where('key', 'card_banners')
+                ->first();
+
             return $data != null ? json_decode($data->value, true) : [];
         });
     }
+
     public function getActiveCareerJobs()
     {
         return Cache::rememberForever(CacheKey::CAREER_JOBS_CACHE_KEY, function () {
             return DB::table('career_jobs')
-                ->select('id', 'title', 'department', 'salary_range', 'employment_status', 'deadline', 'location', 'no_of_vacancy', 'status', 'created_at' )
+                ->select('id', 'title', 'department', 'salary_range', 'employment_status', 'deadline', 'location', 'no_of_vacancy', 'status', 'created_at')
                 ->where('status', CareerJobStatus::ACTIVE)->get();
         });
     }
@@ -32,20 +34,20 @@ class CacheService
     {
         return Cache::rememberForever(CacheKey::CARD_DIVISION_WISE_COUNTER_CACHE_KEY, function () {
             return CardDivision::query()
-                               ->select('id', 'name', 'name_in_bangla')
-                               ->with([
-                                   'areas' => function ($query) {
-                                       $query->select('id', 'name', 'name_in_bangla', 'card_division_id', 'status');
-                                       $query->where('status', 1);
-                                   },
-                                   'areas.counters' => function ($query) {
-                                       $query->select('id', 'name', 'name_in_bangla', 'card_area_id', 'status');
-                                       $query->where('status', 1);
-                                   },
-                               ])
-                               ->where('status', 1)
-                               ->orderBy('id', 'asc')
-                               ->get();
+                ->select('id', 'name', 'name_in_bangla')
+                ->with([
+                    'areas' => function ($query) {
+                        $query->select('id', 'name', 'name_in_bangla', 'card_division_id', 'status');
+                        $query->where('status', 1);
+                    },
+                    'areas.counters' => function ($query) {
+                        $query->select('id', 'name', 'name_in_bangla', 'card_area_id', 'status');
+                        $query->where('status', 1);
+                    },
+                ])
+                ->where('status', 1)
+                ->orderBy('id', 'asc')
+                ->get();
         });
     }
 
@@ -58,9 +60,9 @@ class CacheService
     {
         return Cache::forget(CacheKey::CARD_DIVISION_WISE_COUNTER_CACHE_KEY);
     }
+
     public function forgetActiveCareerJobs(): bool
     {
         return Cache::forget(CacheKey::CAREER_JOBS_CACHE_KEY);
     }
-
 }

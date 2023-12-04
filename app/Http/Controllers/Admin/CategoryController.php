@@ -33,7 +33,7 @@ class CategoryController extends Controller
 
         $category = Category::create($request->validated());
 
-        if (!$category) {
+        if (! $category) {
             return redirect()->back()->with('error', 'Category create failed!');
         }
 
@@ -59,7 +59,7 @@ class CategoryController extends Controller
             return redirect()->back()->with('error', 'Sorry, you can not update sub category from category!');
         }
 
-        if (!$category->update($request->validated())) {
+        if (! $category->update($request->validated())) {
             return redirect()->back()->with('error', 'Category update failed!');
         }
 
@@ -70,7 +70,7 @@ class CategoryController extends Controller
     {
         view()->share('page', config('app.nav.category'));
 
-        if ($category->children()->exists() || !$category->delete()) {
+        if ($category->children()->exists() || ! $category->delete()) {
             return redirect()->back()->with('error', 'Category delete failed, may be sub category exist!');
         }
 

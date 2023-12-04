@@ -20,7 +20,7 @@ class ProductController extends Controller
         $products = Product::query();
 
         if (isset($request->name)) {
-            $products->where('name', 'like', '%' . $request->name . '%');
+            $products->where('name', 'like', '%'.$request->name.'%');
         }
 
         if (isset($request->category_id)) {
@@ -84,7 +84,7 @@ class ProductController extends Controller
 
         $product = Product::create($validatedData);
 
-        if (!$product) {
+        if (! $product) {
             return redirect()->back()->with('error', 'Product create failed!');
         }
 
@@ -136,7 +136,7 @@ class ProductController extends Controller
             $validatedData['thumbnail'] = $request->file('thumbnail')->store('product_thumbnails', 'public');
         }
 
-        if (!$product->update($validatedData)) {
+        if (! $product->update($validatedData)) {
             return redirect()->back()->with('error', 'Product update failed!');
         }
 
@@ -147,7 +147,7 @@ class ProductController extends Controller
     {
         view()->share('page', config('app.nav.product'));
 
-        if (!$product->delete()) {
+        if (! $product->delete()) {
             return redirect()->back()->with('error', 'Product delete failed!');
         }
 
@@ -161,10 +161,10 @@ class ProductController extends Controller
 
         $product[$type] = count($colors) > 0 ? json_encode($colors) : null;
 
-        if (!$product->update()) {
-            return redirect()->back()->with('error', 'product ' . $type . ' delete failed!');
+        if (! $product->update()) {
+            return redirect()->back()->with('error', 'product '.$type.' delete failed!');
         }
 
-        return redirect()->back()->with('success', 'product ' . $type . ' delete successfully');
+        return redirect()->back()->with('success', 'product '.$type.' delete successfully');
     }
 }

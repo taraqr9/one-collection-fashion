@@ -20,7 +20,7 @@ class AdminController extends Controller
     {
         view()->share('page', config('app.nav.admins'));
 
-//        if(!checkAuthorization(config('access.users.admin-read'),auth()->user()->roles)) return view('welcome');
+        //        if(!checkAuthorization(config('access.users.admin-read'),auth()->user()->roles)) return view('welcome');
 
         $request->validate([
             'status' => ['nullable', Rule::in(array_column(AdminStatusEnum::cases(), 'value'))],
@@ -28,13 +28,16 @@ class AdminController extends Controller
 
         $status = 1;
 
-        if (isset($request->status) && $request->status == AdminStatusEnum::INACTIVE->value) $status = 0;
+        if (isset($request->status) && $request->status == AdminStatusEnum::INACTIVE->value) {
+            $status = 0;
+        }
 
-        if (auth()->user()->admin_type == AdminTypeEnum::REGULAR->value){
+        if (auth()->user()->admin_type == AdminTypeEnum::REGULAR->value) {
             $admins = Admin::where('line_manager_id', auth()->user()->id)->where('status', $status)->orderBy('id', 'ASC')->get();
             $admins->push(Admin::find(auth()->user()->id));
+        } else {
+            $admins = Admin::where('status', $status)->orderBy('id', 'ASC')->get();
         }
-        else $admins = Admin::where('status', $status)->orderBy('id', 'ASC')->get();
 
         return view('admin.admin.index', compact('admins'));
     }
@@ -43,92 +46,102 @@ class AdminController extends Controller
     {
         view()->share('page', config('app.nav.admins'));
 
-//        if(!checkAuthorization(config('access.users.admin-write'), auth()->user()->roles)) return view('welcome');
+        //        if(!checkAuthorization(config('access.users.admin-write'), auth()->user()->roles)) return view('welcome');
 
         return view('admin.admin.create');
     }
 
     public function store(AdminCreateRequest $request)
     {
-//        if (!checkAuthorization(config('access.users.admin-write'), auth()->user()->roles)) return view('welcome');
+        //        if (!checkAuthorization(config('access.users.admin-write'), auth()->user()->roles)) return view('welcome');
 
         $roles = array_map('intval', $request->roles ?? []);
 
-        $phone = "+880" . substr($request->phone, -10);
+        $phone = '+880'.substr($request->phone, -10);
 
         $admin = new Admin();
-        $admin->name            = $request->name;
-        $admin->designation     = $request->designation;
-        $admin->phone           = $phone;
-        $admin->email           = $request->email;
-        $admin->admin_type      = $request->admin_type;
-        $admin->password        = Hash::make($request->password);
-        $admin->roles           = json_encode($roles);
+        $admin->name = $request->name;
+        $admin->designation = $request->designation;
+        $admin->phone = $phone;
+        $admin->email = $request->email;
+        $admin->admin_type = $request->admin_type;
+        $admin->password = Hash::make($request->password);
+        $admin->roles = json_encode($roles);
 
-        if ($request->admin_type == "REGULAR") $admin->line_manager_id = auth()->user()->id;
-        else $admin->line_manager_id = NULL;
+        if ($request->admin_type == 'REGULAR') {
+            $admin->line_manager_id = auth()->user()->id;
+        } else {
+            $admin->line_manager_id = null;
+        }
 
-        if (!empty($request->avatar)) $admin->avatar = $request->file('avatar')->store(config('app.storage_prefix').'/admin_avatar');
+        if (! empty($request->avatar)) {
+            $admin->avatar = $request->file('avatar')->store(config('app.storage_prefix').'/admin_avatar');
+        }
 
         $admin->save();
 
         try {
             $description = [
-                'action_type'   => 'add_new_admin',
-                'admin'         => $admin,
+                'action_type' => 'add_new_admin',
+                'admin' => $admin,
             ];
 
             $action_by = [
                 'user_type' => 'admin',
-                'user_id'   => auth()->user()->id,
+                'user_id' => auth()->user()->id,
                 'user_name' => auth()->user()->name,
             ];
 
             (new LogEventController())->saveLogEvent(null, null, $description, $action_by);
 
-        } catch (\Exception $e) { }
+        } catch (\Exception $e) {
+        }
 
         return redirect()->back()->with('success', 'New admin added successfully');
     }
-
 
     public function edit(Admin $admin)
     {
         view()->share('page', config('app.nav.admins'));
 
-        if(!checkAuthorization(config('access.users.admin-write'), auth()->user()->roles)) return view('welcome');
+        if (! checkAuthorization(config('access.users.admin-write'), auth()->user()->roles)) {
+            return view('welcome');
+        }
 
-        $all_admins = Admin::select('id','name')->where('status',1)->orderBy('name','asc')->get();
+        $all_admins = Admin::select('id', 'name')->where('status', 1)->orderBy('name', 'asc')->get();
 
-
-        return view('admin.admin.edit',compact('admin', 'all_admins'));
+        return view('admin.admin.edit', compact('admin', 'all_admins'));
     }
 
-    public function update(Request $request,Admin $admin)
+    public function update(Request $request, Admin $admin)
     {
-        if(!checkAuthorization(config('access.users.admin-write'), auth()->user()->roles)) return view('welcome');
+        if (! checkAuthorization(config('access.users.admin-write'), auth()->user()->roles)) {
+            return view('welcome');
+        }
 
         $request->validate([
-            'name'              => 'required|string',
-            'phone'             => 'required|unique:admins,phone,'.$admin->id,
-            'email'             => 'required|string|email|max:255|unique:admins,email,'.$admin->id,
-            'password'          => 'nullable|string|min:6|confirmed',
-            'admin_type'        => ['required', Rule::in(array_column(AdminTypeEnum::cases(),'value'))],
-            'status'            => ['required', Rule::in(array_column(AdminStatusEnum::cases(),'value'))],
-            'avatar'            => ['nullable', 'mimes:jpeg,jpg,png,gif|required|max:5000']
+            'name' => 'required|string',
+            'phone' => 'required|unique:admins,phone,'.$admin->id,
+            'email' => 'required|string|email|max:255|unique:admins,email,'.$admin->id,
+            'password' => 'nullable|string|min:6|confirmed',
+            'admin_type' => ['required', Rule::in(array_column(AdminTypeEnum::cases(), 'value'))],
+            'status' => ['required', Rule::in(array_column(AdminStatusEnum::cases(), 'value'))],
+            'avatar' => ['nullable', 'mimes:jpeg,jpg,png,gif|required|max:5000'],
         ]);
 
         $roles = [];
-        if (!empty($request->roles)) $roles = array_map('intval', $request->roles);
+        if (! empty($request->roles)) {
+            $roles = array_map('intval', $request->roles);
+        }
 
         //log event
-        $previous_data = array();
-        $updated_data = array();
-        $description = array();
+        $previous_data = [];
+        $updated_data = [];
+        $description = [];
 
         if ($admin->name != $request->name) {
             $previous_data['name'] = $admin->name;
-            $updated_data['name']  = $request->name;
+            $updated_data['name'] = $request->name;
         }
 
         if ($admin->designation != $request->designation) {
@@ -136,18 +149,22 @@ class AdminController extends Controller
             $updated_data['designation'] = $request->designation;
         }
 
-        $phone = "+880".substr($request->phone,-10);
+        $phone = '+880'.substr($request->phone, -10);
         if ($admin->phone != $phone) {
             $phone_check = Admin::query()->where('phone', $phone)->first();
-            if (!empty($phone_check)) return redirect()->back()->with('error', 'This Phone Number is already exist');
+            if (! empty($phone_check)) {
+                return redirect()->back()->with('error', 'This Phone Number is already exist');
+            }
 
             $previous_data['phone'] = $admin->phone;
-            $updated_data['phone']  = $phone;
+            $updated_data['phone'] = $phone;
         }
 
         if ($admin->email != $request->email) {
             $email_check = Admin::query()->where('email', $request->email)->first();
-            if (!empty($email_check)) return redirect()->back()->with('error', 'This Email is already exist');
+            if (! empty($email_check)) {
+                return redirect()->back()->with('error', 'This Email is already exist');
+            }
 
             $previous_data['email'] = $admin->email;
             $updated_data['email'] = $request->email;
@@ -155,7 +172,7 @@ class AdminController extends Controller
 
         if ($admin->roles != json_encode($roles)) {
             $previous_data['roles'] = $admin->roles;
-            $updated_data['roles']  = json_encode($roles);
+            $updated_data['roles'] = json_encode($roles);
         }
 
         if ($admin->status != $request->status) {
@@ -164,43 +181,45 @@ class AdminController extends Controller
         }
 
         if ($admin->admin_type != $request->admin_type) {
-            $previous_data['admin_type']    = $admin->admin_type;
-            $updated_data['admin_type']     = $request->admin_type;
+            $previous_data['admin_type'] = $admin->admin_type;
+            $updated_data['admin_type'] = $request->admin_type;
         }
 
         $description['action_type'] = 'admin_update';
-        $description['mobile']      = $admin->phone;
-        $description['admin_id']    = $admin->id;
-        $action_by =[
+        $description['mobile'] = $admin->phone;
+        $description['admin_id'] = $admin->id;
+        $action_by = [
             'user_type' => 'admin',
-            'user_id'   => auth()->user()->id,
+            'user_id' => auth()->user()->id,
             'user_name' => auth()->user()->name,
         ];
 
-        $admin->name        = $request->name;
+        $admin->name = $request->name;
         $admin->designation = $request->designation;
-        $admin->phone       = $phone;
-        $admin->email       = $request->email;
-        $admin->roles       = json_encode($roles);
-        $admin->status      = $request->status;
-        $admin->admin_type  = $request->admin_type;
+        $admin->phone = $phone;
+        $admin->email = $request->email;
+        $admin->roles = json_encode($roles);
+        $admin->status = $request->status;
+        $admin->admin_type = $request->admin_type;
 
-        if ($request->admin_type == "REGULAR") {
+        if ($request->admin_type == 'REGULAR') {
             if ($request->line_manager_id != $admin->line_manager_id) {
                 $previous_data['line_manager'] = $admin->line_manager_id;
-                $updated_data['line_manager']  = $request->line_manager_id;
+                $updated_data['line_manager'] = $request->line_manager_id;
             }
 
             $admin->line_manager_id = $request->line_manager_id;
 
-        } else $admin->line_manager_id = NULL;
+        } else {
+            $admin->line_manager_id = null;
+        }
 
-        if(!empty($request->password)){
+        if (! empty($request->password)) {
             $admin->password = Hash::make($request->password);
             $updated_data['password'] = 'password_changed';
         }
 
-        if(!empty($request->avatar)){
+        if (! empty($request->avatar)) {
             if ($admin->avatar) {
                 Storage::delete($admin->avatar);
             }
@@ -211,6 +230,7 @@ class AdminController extends Controller
         $admin->save();
 
         (new LogEventController())->saveLogEvent($previous_data, $updated_data, $description, $action_by);
+
         return Redirect()->back()->with('success', 'Admin updated successfully');
     }
 
@@ -227,19 +247,23 @@ class AdminController extends Controller
     {
         $admin = Admin::find(auth()->user()->id);
 
-        $phone = "+880" . substr($request->phone, -10);
+        $phone = '+880'.substr($request->phone, -10);
         if ($admin->phone != $phone) {
             $phone_check = Admin::where('phone', $phone)->first();
-            if (!empty($phone_check)) return redirect()->back()->with('error', 'This Phone Number is already exist');
+            if (! empty($phone_check)) {
+                return redirect()->back()->with('error', 'This Phone Number is already exist');
+            }
         }
 
-        $admin->name    = $request->name;
-        $admin->phone   = $phone;
+        $admin->name = $request->name;
+        $admin->phone = $phone;
 
-        if (!empty($request->password)) $admin->password = Hash::make($request->password);
+        if (! empty($request->password)) {
+            $admin->password = Hash::make($request->password);
+        }
 
-        if(!empty($request->avatar)){
-            if($admin->avatar){
+        if (! empty($request->avatar)) {
+            if ($admin->avatar) {
                 Storage::delete($admin->avatar);
             }
             $admin->avatar = $request->file('avatar')->store(config('app.storage_prefix').'/admin_avatar');

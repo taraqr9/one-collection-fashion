@@ -11,7 +11,7 @@ class Admin extends AuthTable
     use HasFactory;
 
     protected $fillable = [
-        'email', 'password', 'roles'
+        'email', 'password', 'roles',
     ];
 
     protected $connection = 'mysql';

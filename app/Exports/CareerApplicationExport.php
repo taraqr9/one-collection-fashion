@@ -4,8 +4,8 @@ namespace App\Exports;
 
 use App\Models\CareerApplication;
 use Maatwebsite\Excel\Concerns\Exportable;
-use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\FromQuery;
+use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
 
 class CareerApplicationExport implements FromQuery, WithHeadings, WithMapping
@@ -25,10 +25,10 @@ class CareerApplicationExport implements FromQuery, WithHeadings, WithMapping
     public function query()
     {
         return CareerApplication::query()
-                                ->select('id', 'career_job_id', 'name', 'email', 'mobile_number', 'linkedin_profile', 'created_at')
-                                ->with('job:id,title')
-                                ->where('career_job_id', $this->job_id)
-                                ->orderBy('id', 'desc');
+            ->select('id', 'career_job_id', 'name', 'email', 'mobile_number', 'linkedin_profile', 'created_at')
+            ->with('job:id,title')
+            ->where('career_job_id', $this->job_id)
+            ->orderBy('id', 'desc');
     }
 
     public function map($row): array
