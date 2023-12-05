@@ -16,8 +16,9 @@ return [
     */
 
     'name' => env('APP_NAME', 'Laravel'),
-    'allowed_domain' => env('ALLOWED_DOMAIN', ''),
-    'allowed_number_of_days_reporting' => env('ALLOWED_NUMBER_OF_DAYS_REPORTING', 31),
+    'email' => env('APP_EMAIL', 'hello@example.com'),
+    'address' => env('APP_ADDRESS', '1216 Mirpur, Dhaka, Bangladesh'),
+    'phone' => env('APP_PHONE', '018000000'),
     'storage_prefix' => env('APP_ENV', 'local').'/'.env('SERVICE_IDENTIFIER', 'onecollectionfashion'),
 
     'nav' => [
