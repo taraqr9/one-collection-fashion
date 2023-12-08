@@ -8,15 +8,14 @@ use Illuminate\Support\Facades\Route;
 Route::controller(AuthController::class)->group(function () {
     Route::get('/registration', 'registrationView')->name('registration.view');
     Route::post('/registration', 'registration')->name('registration.store');
-    Route::get('/login', 'loginView')->name('login')->name('login.view');
-    Route::post('/auth/login', 'login')->name('login')->name('login.store');
-    Route::get('/auth/logout', 'logout')->name('logout')->name('logout');
+    Route::get('/login', 'loginView')->name('login')->name('user.login.view');
+    Route::post('/auth/login', 'login')->name('login')->name('user.login.store');
+    Route::get('/auth/logout', 'logout')->name('logout')->name('user.logout');
 });
 
 //Route::middleware(['web', 'auth:web'])->group(function () {
-    Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/', [HomeController::class, 'index'])->name('home');
 //});
-
 
 //Route::middleware('auth')->group(function () {
 

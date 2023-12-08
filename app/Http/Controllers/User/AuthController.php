@@ -13,7 +13,7 @@ class AuthController extends Controller
     public function loginView(): View|RedirectResponse
     {
         if (Auth::check()) {
-            return redirect('admin/');
+            return redirect('/login');
         }
 
         return view('user.auth.login');
