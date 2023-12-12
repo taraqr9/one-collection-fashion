@@ -1,3 +1,4 @@
+@php use App\Models\Category; @endphp
 <nav class="header axil-header header-style-5 home-2 ">
 
     <!-- Start Main Menu Area  -->
@@ -18,35 +19,30 @@
                             </div>
 
                             <ul class="nav-menu-list">
-                                <li>
-                                    <a href="#" class="nav-link has-megamenu">
-                                        <span class="menu-text">Fashion</span>
-                                    </a>
-                                    <div class="department-megamenu">
-                                        <div class="department-megamenu-wrap">
-                                            <div class="department-submenu-wrap">
-                                                <div class="department-submenu">
-                                                    <h3 class="submenu-heading">Sub Menu A</h3>
-                                                    <ul>
-                                                        <li><a href="#">Sub Menu 1</a></li>
-                                                        <li><a href="#">Sub Menu 2</a></li>
-                                                        <li><a href="#">Sub Menu 3</a></li>
-                                                    </ul>
+                                @foreach (Category::whereNull('parent_id')->with('children')->get() as $category)
+                                    <li>
+                                        <a href="#"
+                                           class="nav-link {{ $category->children->count() > 0 ? 'has-megamenu' : ''}}">
+                                            <span class="menu-text">{{ $category->name }}</span>
+                                        </a>
+                                        @if ($category->children->count() > 0)
+                                            <div class="department-megamenu">
+                                                <div class="department-megamenu-wrap">
+                                                    <div class="department-submenu-wrap">
+                                                        <div class="department-submenu">
+                                                            <h3 class="submenu-heading">{{ $category->name }}</h3>
+                                                            <ul>
+                                                                @foreach ($category->children as $child)
+                                                                    <li><a href="#">{{ $child->name }}</a></li>
+                                                                @endforeach
+                                                            </ul>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <a href="#" class="nav-link has-megamenu">
-                                        <span class="menu-text">Electronics</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" class="nav-link">
-                                        <span class="menu-text">Medicine</span>
-                                    </a>
-                                </li>
+                                        @endif
+                                    </li>
+                                @endforeach
                             </ul>
                         </nav>
                     </aside>

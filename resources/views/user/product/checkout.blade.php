@@ -57,24 +57,19 @@
                                     <input type="text" id="town_city" />
                                 </div>
                             </div>
-                            <!-- <div class="col-12">
-                                <div class="single_billing_inp">
-                                    <label for="zip_code">Zip Code <span>*</span></label>
-                                    <input type="text" id="zip_code" />
+                            <div class="col-12">
+                                <div class="single_billing_inp select-container">
+                                    <label for="option">Select Option <span>*</span></label>
+                                    <select type="text" id="option" class="select-box">
+                                        <option class="" disabled>select option</option>
+                                        <option value="inSide_Dhaka">Inside Dhaka</option>
+                                        <option value="outSide_Dhaka">Outside Dhaka</option>
+                                    </select>
+                                    <div class="icon-container">
+                                        <i class="fa-solid fa-caret-down"></i>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-12">
-                                <div class="single_billing_inp">
-                                    <label for="phone_number">Phone Number <span>*</span></label>
-                                    <input type="text" id="phone_number" />
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <div class="single_billing_inp">
-                                    <label for="email_addr">Email Address <span>*</span></label>
-                                    <input type="text" id="email_addr" />
-                                </div>
-                            </div> -->
                         </div>
                     </form>
                 </div>

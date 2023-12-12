@@ -8,7 +8,7 @@
     <!-- breadcrumbs -->
     <div class="container">
         <div class="breadcrumbs">
-            <a href="index-1.html"><i class="las la-home"></i></a>
+            <a href="#"><i class="las la-home"></i></a>
             <a href="#" class="active">Shopping Cart</a>
         </div>
     </div>
