@@ -21,7 +21,7 @@ Route::controller(LoginController::class)->group(function () {
 
 Route::middleware('auth')->group(function () {
     //Dashboard
-    Route::get('/', [DashboardController::class, 'index']);
+    Route::get('/', [DashboardController::class, 'index'])->name('admin.dashboard');
     Route::get('/dashboard', [DashboardController::class, 'index']);
 
     //Admin roles permission

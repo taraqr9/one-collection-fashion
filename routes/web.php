@@ -1,22 +1,16 @@
 <?php
 
-use App\Http\Controllers\User\AuthController;
 use App\Http\Controllers\User\HomeController;
+use App\Http\Controllers\User\ProductController;
 use Illuminate\Support\Facades\Route;
 
-//Authentication
-Route::controller(AuthController::class)->group(function () {
-    Route::get('/registration', 'registrationView')->name('registration.view');
-    Route::post('/registration', 'registration')->name('registration.store');
-    Route::get('/login', 'loginView')->name('login')->name('user.login.view');
-    Route::post('/auth/login', 'login')->name('login')->name('user.login.store');
-    Route::get('/auth/logout', 'logout')->name('logout')->name('user.logout');
-});
-
-//Route::middleware(['web', 'auth:web'])->group(function () {
 Route::get('/', [HomeController::class, 'index'])->name('home');
-//});
 
-//Route::middleware('auth')->group(function () {
+Route::group(['prefix' => 'products'], function () {
+        Route::get('/list', [ProductController::class, 'list']);
+        Route::get('/detail', [ProductController::class, 'detail']);
+        Route::get('/checkout', [ProductController::class, 'checkout']);
+        Route::get('/cart', [ProductController::class, 'cart']);
+    });
 
-//});
+

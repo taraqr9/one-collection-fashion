@@ -4335,10 +4335,19 @@ button#mobile_filter_btn {
   color: #ffffff;
 }
 
-.color_selector .single_size_opt .size_inp:checked + label {
-  border: 2px solid #eceef0;
+.color_selector :checked + label img {
+  border: 1px solid #794404;
   -webkit-box-shadow: 0 0 0 2px var(--primary-color);
   box-shadow: 0 0 0 2px var(--primary-color);
+}
+
+.single_size_opt img {
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.single_size_opt input[type="radio"]:checked + img {
+  border-color: red; /* Add red border to the image when the radio button is checked */
 }
 
 /* shop products */
@@ -4350,6 +4359,9 @@ button#mobile_filter_btn {
   margin-bottom: 30px;
 }
 
+/* checkbox */
+
+/* checkbox end */
 /* pagination design */
 .pagination_wrp .single_paginat {
   width: 30px;

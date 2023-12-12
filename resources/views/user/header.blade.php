@@ -105,7 +105,7 @@
                         @if(!auth()->user())
                         <div class="ac_join">
                             <div class="account_btn d-flex justify-content-between">
-                                <a href="{{ route('registration.view') }}" class="default_btn">Join</a>
+                                <a href="#" class="default_btn">Join</a>
                                 <a href="#" class="default_btn second">Sing in</a>
                             </div>
                         </div>

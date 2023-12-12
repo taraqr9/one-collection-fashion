@@ -14,13 +14,13 @@ class AdminFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => 'Developer',
-            'phone' => '01800000000',
-            'email' => 'developers@gmail.co',
+            'name' => 'Admin',
+            'phone' => '0180000000',
+            'email' => 'admin@example.com',
             'password' => '$2y$10$jXVY75E1KZJuxHFU.08k6udGe36z0jcwdGuoqGq0BQ/QFBoWCOAKC', // 12345678
             'designation' => 'Software Engineer',
             'status' => '1',
-            'roles' => '[1,2,3,4,5,6,7,8,9,10]',
+            'roles' => '',
             'admin_type' => 'SYSTEM_ADMIN',
         ];
     }
