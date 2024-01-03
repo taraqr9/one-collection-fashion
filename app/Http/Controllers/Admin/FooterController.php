@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreAndUpdateFooterRequest;
 use App\Models\Setting;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 
 class FooterController extends Controller
@@ -25,7 +26,7 @@ class FooterController extends Controller
         return view('admin.setting.footer.create', compact('type', 'data'));
     }
 
-    public function storeOrUpdate(StoreAndUpdateFooterRequest $request)
+    public function storeOrUpdate(StoreAndUpdateFooterRequest $request): RedirectResponse
     {
         $data = Setting::query()->where('key', $request->type)->first();
 

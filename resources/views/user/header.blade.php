@@ -73,20 +73,29 @@
                         <span class="icon_text">Account</span>
                     </a>
                     <div class="myacc_cont">
-                        <div class="ac_links">
-                            <a href="#">
-                                <i class="las la-gift"></i>
-                                My Order
-                            </a>
-                            <a href="#">
-                                <i class="icon-cart"></i>
-                                My Cart
-                            </a>
-                            <a href="#">
-                                <i class="las la-power-off"></i>
-                                Log out
-                            </a>
-                        </div>
+                        @auth
+                            <div class="ac_links">
+                                <a href="#">
+                                    <i class="las la-gift"></i>
+                                    My Order
+                                </a>
+                                <a href="#">
+                                    <i class="icon-cart"></i>
+                                    My Cart
+                                </a>
+                                <a href="#">
+                                    <i class="las la-power-off"></i>
+                                    Log out
+                                </a>
+                            </div>
+                        @else
+                            <div class="ac_join">
+                                <div class="account_btn d-flex justify-content-between">
+                                    <a href="#" class="default_btn">Login</a>
+                                    <a href="#" class="default_btn second">Sign Up</a>
+                                </div>
+                            </div>
+                        @endauth
                     </div>
                 </div>
             </div>

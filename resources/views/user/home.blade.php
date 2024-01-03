@@ -76,8 +76,6 @@
                     class="banner_collection home_3_hero mt-5 pt-2 pt-xl-0 mt-xl-0 d-flex flex-xl-column single_hero_slider sm:d-none flex-row gap-3">
                     <div class="single_picture_active single_bannercol">
                         <a href="#" class="single_bannercol">
-                            <!-- <h4>Sunglasses Collection</h4>
-                            <h5>20% off</h5> -->
                             <div class="bancol_img">
                                 <img loading="lazy" src="{{ url()->asset('user/assets/images/headphone-1.png') }}"
                                      alt="shoes"/>
