@@ -3,61 +3,100 @@
 namespace App\Services;
 
 use App\Models\Setting;
-use Illuminate\Http\RedirectResponse;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class BannerService
 {
     public function get($key)
     {
         $banners = Setting::query()->where('key', $key)->first();
+
         return $banners ? json_decode($banners->value) : [];
     }
 
-    public function store($key, $file): RedirectResponse
+    public function store($key, $file): bool
     {
         $banner = Setting::query()->where('key', $key)->first();
 
-        if (!$banner) {
-            $store_on_local[] = $file->file($key)->store('/setting/' . $key, 'public');
-            $store = Setting::create([
-                'key' => $key,
-                'value' => json_encode($store_on_local),
-            ]);
-
-            if (!$store) {
-                return redirect()->back()->with('error', 'Banner upload failed!');
-            }
-
-            return redirect()->back()->with('success', 'Banner uploaded successfully!');
+        if (! $banner) {
+            return $this->storeNewBanner($key, $file);
         }
 
         $banners = json_decode($banner->value);
-        $banners[] = $file->file($key)->store('setting/' . $key, 'public');
+        $banners[] = $file[$key]->store('setting/'.$key, 'public');
 
-        if (!$banner->update(['value' => json_encode($banners)])) {
-            return redirect()->back()->with('error', 'Banner upload failed!');
+        if ($banner->update(['value' => json_encode($banners)])) {
+            return true;
         }
 
-        return redirect()->back()->with('success', 'Banner uploaded successfully!');
+        return false;
     }
 
-    public function update()
+    public function update($key, $file, $index): bool
     {
+        $banners = $this->getBannersDecoded($key);
+        $banners_decoded = $banners['value'];
+        $old_image = $banners_decoded[$index];
 
+        if ($old_image) {
+            $store_image = $file[$key]->store('/setting/'.$key, 'public');
+
+            if ($store_image) {
+                $banners_decoded[$index] = $store_image;
+                $banner_update = $banners->update(['value' => json_encode($banners_decoded)]);
+
+                if ($banner_update) {
+                    Storage::delete($old_image);
+
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
-    public function delete()
+    public function delete($key, $index): bool
     {
+        $all_banners = $this->getBannersDecoded($key);
+        $banners = $all_banners['value'];
 
+        if (empty($banners[$index])) {
+            return false;
+        }
+
+        $old_image = $banners[$index];
+
+        array_splice($banners, $index, 1);
+        $all_banners['value'] = count($all_banners['value']) > 0 ? json_encode($banners) : [];
+
+        if ($all_banners->update()) {
+            Storage::delete($old_image);
+
+            return true;
+        }
+
+        return false;
     }
 
-    public function getBannerDecoded()
+    public function storeNewBanner($key, $file): bool
     {
+        $store_path[] = $file[$key]->store('/setting/'.$key, 'public');
 
+        $store = Setting::create([
+            'key' => $key,
+            'value' => json_encode($store_path),
+        ]);
+
+        return $store ? true : false;
     }
 
-    public function deleteOldImage()
+    public function getBannersDecoded($key): Model
     {
+        $banners = Setting::query()->where('key', $key)->first();
+        $banners['value'] = json_decode($banners->value);
 
+        return $banners;
     }
 }

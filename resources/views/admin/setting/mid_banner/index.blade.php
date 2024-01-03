@@ -42,7 +42,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @forelse($mid_banners as $key => $banner)
+                            @forelse($banners as $key => $banner)
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
                                     <td>
