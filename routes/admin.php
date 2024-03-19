@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\MidBannerController;
 use App\Http\Controllers\Admin\MiniBottomBannerController;
 use App\Http\Controllers\Admin\MiniTopBannerController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\ShopByCategoryController;
 use App\Http\Controllers\Admin\SubCategoryController;
 use App\Http\Controllers\Admin\TopBannerController;
 use Illuminate\Support\Facades\Route;
@@ -96,6 +97,10 @@ Route::middleware('auth')->group(function () {
             Route::post('/', [MiniBottomBannerController::class, 'store'])->name('settings.mini_bottom_banner.create');
             Route::post('/{index}/edit', [MiniBottomBannerController::class, 'update'])->name('settings.mini_bottom_banner');
             Route::get('/{index}/delete', [MiniBottomBannerController::class, 'delete'])->name('settings.mini_bottom_banner.delete');
+        });
+
+        Route::group(['prefix' => 'shop_by_category'], function () {
+            Route::get('/', [ShopByCategoryController::class, 'index'])->name('settings.shop_by_category.index');
         });
 
         Route::group(['prefix' => 'footer'], function () {

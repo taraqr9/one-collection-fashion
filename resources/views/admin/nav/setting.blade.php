@@ -28,6 +28,12 @@
         </a>
         <li style="border-bottom: 1px solid var(--nav-link-active-bg);"></li>
 
+        <a href="{{ url('admin/settings/shop_by_category') }}"
+           class="nav-link @if($page == config('app.nav.shop_by_category')) active @endif">
+            <i class="ph-image"></i> <span>Shop By Category</span>
+        </a>
+        <li style="border-bottom: 1px solid var(--nav-link-active-bg);"></li>
+
         <a href="{{ url('admin/settings/footer') }}"
            class="nav-link @if($page == config('app.nav.footer')) active @endif">
             <i class="ph-square-half-bottom"></i> <span>Footer</span>

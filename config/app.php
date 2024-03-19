@@ -39,7 +39,8 @@ return [
         'mini_top_banner' => 7,
         'mini_bottom_banner' => 8,
         'mid_banner' => 9,
-        'footer' => 10,
+        'shop_by_category' => 10,
+        'footer' => 11,
     ],
 
     /*
