@@ -48,7 +48,8 @@
                                 <select name="category_id" class="form-control style-input">
                                     <option value="">All</option>
                                     @foreach($categories as $category)
-                                        <option value="{{ $category->id }}" @selected((request('category_id') == $category->id))>
+                                        <option
+                                            value="{{ $category->id }}" @selected((request('category_id') == $category->id))>
                                             {{ $category->name }}
                                         </option>
                                     @endforeach
@@ -94,7 +95,7 @@
     <div class="content">
         <div class="row justify-content-center">
             @forelse($products as $product)
-                <div class="card col-lg-2 m-1">
+                <div class="card col-lg-3 m-1">
                     <div class="card-body">
                         <div class="card-img-actions mb-3">
                             <div class="d-flex justify-content-center align-items-center position-relative">
@@ -127,12 +128,12 @@
                         </ul>
                     </div>
 
-                    <div class="card-footer d-flex">
+                    <div class="card-footer d-flex rounded-4">
                         <a href="{{ url('admin/products/product/'.$product->id.'/edit') }}"
-                           class="d-inline-flex align-items-center me-2">Edit <i class="ph-arrow-circle-right ms-2"></i></a>
+                           class="d-inline-flex align-items-center me-1 text-bg-primary rounded p-1">Edit <i class="ph-arrow-circle-right ms-2"></i></a>
                         <a href="{{ url('admin/products/product/'.$product->id.'/delete') }}"
                            onclick="return confirm('Are you sure?')"
-                           class="d-inline-flex align-items-center ms-auto">Delete <i class="ph-minus-circle ms-2"></i></a>
+                           class="d-inline-flex align-items-center ms-auto text-bg-danger rounded p-1">Delete <i class="ph-minus-circle ms-2"></i></a>
                     </div>
                 </div>
             @empty

@@ -19,6 +19,4 @@ class ShopByCategoryController extends Controller
 
         return view('admin.setting.shop_by_category.index');
     }
-
-
 }
