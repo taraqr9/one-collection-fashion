@@ -40,3 +40,9 @@ if (! function_exists('isAllowedDateDiffServiceWise')) {
         return false;
     }
 }
+
+if (!function_exists('storage_url')) {
+    function storage_url($path) {
+        return asset('storage/' . ltrim($path, '/'));
+    }
+}

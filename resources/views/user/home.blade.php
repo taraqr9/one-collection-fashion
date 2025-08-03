@@ -11,108 +11,49 @@
                 <div class="home_2_hero">
                     <div class="container">
                         <div class="hero_slider_active">
-                            <div class="single_hero_slider bg-3">
-                                <div class="container">
-                                    <div class="row align-items-center">
-                                        <div class="col-lg-12 col-sm-12">
-                                            <!-- something write here -->
-                                            <div class="hero_img">
-                                                <img loading="lazy"
-                                                     src="{{ url()->asset('user/assets/images/men-1.png') }}"
-                                                     alt="shirt"/>
+                            <div class="hero_slider_active">
+                                @foreach ($top_banners as $banner)
+                                    <div class="single_hero_slider bg-3">
+                                        <div class="container">
+                                            <div class="row align-items-center">
+                                                <div class="col-lg-12 col-sm-12">
+                                                    <div class="hero_img">
+                                                        <img loading="lazy"
+                                                             src="{{ storage_url($banner) }}"
+                                                             alt="banner">
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-                            <div class="single_hero_slider bg-2">
-                                <div class="container">
-                                    <div class="row align-items-center">
-                                        <div class="col-sm-12">
-                                            <!-- something write here -->
-                                            <div class="hero_img">
-                                                <img loading="lazy"
-                                                     src="{{ url()->asset('user/assets/images/men-1.png') }}"
-                                                     alt="shirt"/>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="single_hero_slider bg-1">
-                                <div class="container">
-                                    <div class="row align-items-center">
-                                        <div class="col-sm-12">
-                                            <!-- something write here -->
-                                            <div class="hero_img">
-                                                <img loading="lazy"
-                                                     src="{{ url()->asset('user/assets/images/men-1.png') }}"
-                                                     alt="shirt"/>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="single_hero_slider bg-2">
-                                <div class="container">
-                                    <div class="row align-items-center">
-                                        <div class="col-sm-12">
-                                            <!-- something write here -->
-                                            <div class="hero_img">
-                                                <img loading="lazy"
-                                                     src="{{ url()->asset('user/assets/images/men-1.png') }}"
-                                                     alt="shirt"/>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                @endforeach
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+
             <div class="col-xl-3 d-none d-sm-block">
                 <div
                     class="banner_collection home_3_hero mt-5 pt-2 pt-xl-0 mt-xl-0 d-flex flex-xl-column single_hero_slider sm:d-none flex-row gap-3">
                     <div class="single_picture_active single_bannercol">
+                        @foreach ($mini_top_banners as $banner)
                         <a href="#" class="single_bannercol">
                             <div class="bancol_img">
-                                <img loading="lazy" src="{{ url()->asset('user/assets/images/headphone-1.png') }}"
-                                     alt="shoes"/>
+                                <img loading="lazy" src="{{ storage_url($banner) }}" alt="banners"/>
                             </div>
                         </a>
-                        <a href="#" class="single_bannercol">
-                            <div class="bancol_img">
-                                <img loading="lazy" src="{{ url()->asset('user/assets/images/glass.png') }}"
-                                     alt="shoes"/>
-                            </div>
-                        </a>
-                        <a href="#" class="single_bannercol">
-                            <div class="bancol_img">
-                                <img loading="lazy" src="{{ url()->asset('user/assets/images/headphone-3.png') }}"
-                                     alt="shoes"/>
-                            </div>
-                        </a>
+                        @endforeach
                     </div>
+
                     <div class="single_picture_active single_bannercol">
-                        <a href="#" class="single_bannercol">
-                            <div class="bancol_img">
-                                <img loading="lazy" src="{{ url()->asset('user/assets/images/shoes-1.png') }}"
-                                     alt="shoes"/>
-                            </div>
-                        </a>
-                        <a href="#" class="single_bannercol">
-                            <div class="bancol_img">
-                                <img loading="lazy" src="{{ url()->asset('user/assets/images/shoes-3.png') }}"
-                                     alt="shoes"/>
-                            </div>
-                        </a>
-                        <a href="#" class="single_bannercol">
-                            <div class="bancol_img">
-                                <img loading="lazy" src="{{ url()->asset('user/assets/images/shoes-4.png') }}"
-                                     alt="shoes"/>
-                            </div>
-                        </a>
+                        @foreach ($mini_bottom_banners as $banner)
+                            <a href="#" class="single_bannercol">
+                                <div class="bancol_img">
+                                    <img loading="lazy" src="{{ storage_url($banner) }}" alt="banners"/>
+                                </div>
+                            </a>
+                        @endforeach
                     </div>
 
                 </div>
@@ -271,36 +212,22 @@
     <div class="offer_banner_area section_padding_b">
         <div class="container">
             <div class="add_slider">
-                <div class="hero_area">
-                    <a href="#">
-                        <picture>
-                            <source media="(min-width: 768px)"
-                                    srcset="{{ url()->asset('user/assets/images/offer.jpg') }}"/>
-                            <img loading="lazy" src="{{ url()->asset('user/assets/images/offer-mobile-2.jpg') }}"
-                                 alt="ad"/>
-                        </picture>
-                    </a>
-                </div>
-                <div class="hero_area">
-                    <a href="#">
-                        <picture>
-                            <source media="(min-width: 768px)"
-                                    srcset="{{ url()->asset('user/assets/images/offer.jpg') }}"/>
-                            <img loading="lazy" src="{{ url()->asset('user/assets/images/offer-mobile-2.jpg') }}"
-                                 alt="ad"/>
-                        </picture>
-                    </a>
-                </div>
-                <div class="hero_area">
-                    <a href="#">
-                        <picture>
-                            <source media="(min-width: 768px)"
-                                    srcset="{{ url()->asset('user/assets/images/offer.jpg') }}"/>
-                            <img loading="lazy" src="{{ url()->asset('user/assets/images/offer-mobile-2.jpg') }}"
-                                 alt="ad"/>
-                        </picture>
-                    </a>
-                </div>
+                @foreach ($mid_banners as $banner)
+                    <div class="hero_area">
+                        <a href="#">
+                            <picture>
+                                <!-- desktop image -->
+                                <source media="(min-width: 768px)"
+                                        srcset="{{ storage_url($banner) }}"/>
+
+                                <!-- mobile fallback image -->
+                                <img loading="lazy"
+                                     src="{{ storage_url($banner) }}"
+                                     alt="ad"/>
+                            </picture>
+                        </a>
+                    </div>
+                @endforeach
             </div>
         </div>
     </div>
