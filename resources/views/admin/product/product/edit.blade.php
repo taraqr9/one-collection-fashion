@@ -67,6 +67,17 @@
                         <br>
                         <div class="row">
                             <div class="col-md-6">
+                                <label class="fw-bold">Brand:</label>
+                                <input type="text" class="form-control" name="brand" value="{{ old('brand') ?? $product->brand }}" placeholder="Enter brand">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="fw-bold">SKU (Stock Keeping Unit):</label>
+                                <input type="text" class="form-control" name="sku" value="{{ old('sku') ?? $product->sku }}" placeholder="Enter sku">
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-6">
                                 <label class="fw-bold">Price <span class="text-danger">*</span>:</label>
                                 <input type="number" class="form-control" name="price"
                                        value="{{ old('price') ?? $product->price }}"
@@ -83,7 +94,7 @@
                         <br>
                         <div class="row">
                             <div class="col-md-6">
-                                <label class="fw-bold">Stock <span class="text-danger">*</span>:</label>
+                                <label class="fw-bold">Available Stock <span class="text-danger">*</span>:</label>
                                 <input type="number" class="form-control" name="stock"
                                        value="{{ old('stock') ?? $product->stock }}"
                                        placeholder="Enter stock" required>
@@ -120,6 +131,12 @@
                             @endisset
                         </div>
 
+                        <div>
+                            <label class="fw-bold">Color:</label>
+                            <input type="file" name="color[]" class="file-input-caption" multiple>
+                        </div>
+                        <hr>
+
                         <div class="row">
                             @isset($product->image)
                             <label class="fw-bold">Images:</label>
@@ -139,6 +156,12 @@
                             @endisset
                         </div>
 
+                        <div class="col-md-4">
+                            <label class="fw-bold">Image <span class="text-danger">*</span>:</label>
+                            <input type="file" name="image[]" class="file-input-caption" multiple>
+                        </div>
+                        <hr>
+
                         <div class="row">
                             <label class="fw-bold">Thumbnail:</label>
                             <div class="col-md-2 mt-3">
@@ -149,16 +172,6 @@
                             </div>
                         </div>
 
-                        <div>
-                            <label class="fw-bold">Color:</label>
-                            <input type="file" name="color[]" class="file-input-caption" multiple>
-                        </div>
-                        <hr>
-                        <div class="col-md-4">
-                            <label class="fw-bold">Image <span class="text-danger">*</span>:</label>
-                            <input type="file" name="image[]" class="file-input-caption" multiple>
-                        </div>
-                        <hr>
                         <div class="col-md-4">
                             <label class="fw-bold">Thumbnail <span class="text-danger">*</span>:</label>
                             <input type="file" name="thumbnail" class="file-input-caption">

@@ -17,6 +17,8 @@ return new class extends Migration
             $table->foreignId('category_id')->nullable();
             $table->foreignId('parent_id')->nullable();
             $table->string('name');
+            $table->string('brand')->nullable();
+            $table->string('sku')->unique()->nullable();
             $table->text('description')->nullable();
             $table->integer('price');
             $table->integer('offer_price')->default(0);

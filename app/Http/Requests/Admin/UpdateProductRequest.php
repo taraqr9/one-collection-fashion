@@ -28,6 +28,8 @@ class UpdateProductRequest extends FormRequest
             'parent_id' => ['nullable', 'exists:categories,id'],
             'name' => ['required', 'string', 'max:200'],
             'description' => ['required', 'string', 'max:1000'],
+            'brand' => ['nullable', 'string'],
+            'sku' => ['nullable', 'string', Rule::unique('products')->ignore($this->product)],
             'price' => ['required', 'numeric'],
             'offer_price' => ['nullable', 'numeric'],
             'size' => ['nullable', 'string', 'max:50'],

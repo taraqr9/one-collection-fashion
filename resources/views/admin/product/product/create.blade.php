@@ -66,18 +66,29 @@
                         <br>
                         <div class="row">
                             <div class="col-md-6">
-                                <label class="fw-bold">Price <span class="text-danger">*</span>:</label>
-                                <input type="number" class="form-control" name="price" value="{{ old('price') }}" placeholder="Enter price" required>
+                                <label class="fw-bold">Brand:</label>
+                                <input type="text" class="form-control" name="brand" value="{{ old('brand') }}" placeholder="Enter brand">
                             </div>
                             <div class="col-md-6">
-                                <label class="fw-bold">Old Price:</label>
-                                <input type="number" class="form-control" name="old_price" value="{{ old('old_price') }}" placeholder="Enter old price" required>
+                                <label class="fw-bold">SKU (Stock Keeping Unit):</label>
+                                <input type="text" class="form-control" name="sku" value="{{ old('sku') }}" placeholder="Enter sku">
                             </div>
                         </div>
                         <br>
                         <div class="row">
                             <div class="col-md-6">
-                                <label class="fw-bold">Stock <span class="text-danger">*</span>:</label>
+                                <label class="fw-bold">Price <span class="text-danger">*</span>:</label>
+                                <input type="number" class="form-control" name="price" value="{{ old('price') }}" placeholder="Enter price" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="fw-bold">Offer Price:</label>
+                                <input type="number" class="form-control" name="offer_price" value="{{ old('offer_price') }}" placeholder="Enter offer price" required>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label class="fw-bold">Available Stock <span class="text-danger">*</span>:</label>
                                 <input type="number" class="form-control" name="stock" value="{{ old('stock') }}"
                                        placeholder="Enter stock" required>
                             </div>
