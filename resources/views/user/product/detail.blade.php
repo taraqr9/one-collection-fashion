@@ -21,52 +21,52 @@
                     <div class="product_view_slider">
                         <div class="single_viewslider">
                             <a data-fancybox data-src="assets/images/slider-1.png" data-caption="Hello world">
-                                <img loading="lazy" src="assets/images/slider-1.png" alt="product" />
+                                <img loading="lazy" src="{{ url()->asset('user/assets/images/slider-1.png') }}" alt="product" />
                             </a>
                         </div>
                         <div class="single_viewslider">
-                            <img loading="lazy" src="assets/images/slider-2.png" alt="product" />
+                            <img loading="lazy" src="{{ url()->asset('user/assets/images/slider-2.png') }}" alt="product" />
                         </div>
                         <div class="single_viewslider">
-                            <img loading="lazy" src="assets/images/slider-3.png" alt="product" />
+                            <img loading="lazy" src="{{ url()->asset('user/assets/images/slider-3.png') }}" alt="product" />
                         </div>
                         <div class="single_viewslider">
-                            <img loading="lazy" src="assets/images/slider-4.png" alt="product" />
+                            <img loading="lazy" src="{{ url()->asset('user/assets/images/slider-4.png') }}" alt="product" />
                         </div>
                         <div class="single_viewslider">
-                            <img loading="lazy" src="assets/images/slider-5.png" alt="product" />
+                            <img loading="lazy" src="{{ url()->asset('user/assets/images/slider-5.png') }}" alt="product" />
                         </div>
                         <div class="single_viewslider">
-                            <img loading="lazy" src="assets/images/slider-1.png" alt="product" />
+                            <img loading="lazy" src="{{ url()->asset('user/assets/images/slider-1.png') }}" alt="product" />
                         </div>
                         <div class="single_viewslider">
                             <a href="javascript:;" data-fancybox-trigger="gallery" data-fancybox-index="0">
-                                <img src="assets/images/slider-1.png" />
+                                <img loading="lazy" src="{{ url()->asset('user/assets/images/slider-1.png') }}" />
                             </a>
                         </div>
                     </div>
                     <!-- sub thumb -->
                     <div class="product_viewslid_nav">
                         <div class="single_viewslid_nav" data-fancybox="gallery" data-src="assets/images/slider-1.png">
-                            <img loading="lazy" src="assets/images/slider-1.png" alt="product" />
+                            <img loading="lazy" src="{{ url()->asset('user/assets/images/slider-1.png') }}" alt="product" />
                         </div>
                         <div class="single_viewslid_nav" data-fancybox="gallery" data-src="assets/images/slider-2.png">
-                            <img loading="lazy" src="assets/images/slider-2.png" alt="product" />
+                            <img loading="lazy" src="{{ url()->asset('user/assets/images/slider-2.png') }}" alt="product" />
                         </div>
                         <div class="single_viewslid_nav" data-fancybox="gallery" data-src="assets/images/slider-3.png">
-                            <img loading="lazy" src="assets/images/slider-3.png" alt="product" />
+                            <img loading="lazy" src="{{ url()->asset('user/assets/images/slider-3.png') }}" alt="product" />
                         </div>
                         <div class="single_viewslid_nav" data-fancybox="gallery" data-src="assets/images/slider-4.png">
-                            <img loading="lazy" src="assets/images/slider-4.png" alt="product" />
+                            <img loading="lazy" src="{{ url()->asset('user/assets/images/slider-4.png') }}" alt="product" />
                         </div>
                         <div class="single_viewslid_nav" data-fancybox="gallery" data-src="assets/images/slider-5.png">
-                            <img loading="lazy" src="assets/images/slider-5.png" alt="product" />
+                            <img loading="lazy" src="{{ url()->asset('user/assets/images/slider-5.png') }}" alt="product" />
                         </div>
                         <div class="single_viewslid_nav" data-fancybox="gallery" data-src="assets/images/slider-1.png">
-                            <img loading="lazy" src="assets/images/slider-1.png" alt="product" />
+                            <img loading="lazy" src="{{ url()->asset('user/assets/images/slider-1.png') }}" alt="product" />
                         </div>
                         <div class="single_viewslid_nav" data-fancybox="gallery" data-src="assets/images/slider-2.png">
-                            <img loading="lazy" src="assets/images/slider-1.png" alt="product" />
+                            <img loading="lazy" src="{{ url()->asset('user/assets/images/slider-1.png') }}" alt="product" />
                         </div>
                     </div>
                 </div>
@@ -123,26 +123,24 @@
                                         <div class="single_size_opt">
                                             <input type="radio" hidden name="color" class="" id="color-purple" />
                                             <label for="color-purple" class="" data-bs-toggle="tooltip"
-                                                   title="Rose Red"><img src="/assets/images/slider-1.png" height="30px"
+                                                   title="Rose Red"><img loading="lazy" src="{{ url()->asset('user/assets/images/slider-1.png') }}" height="30px"
                                                                          width="30px" alt="Rose Red"></label>
                                         </div>
                                         <div class="single_size_opt ms-2">
                                             <input type="radio" hidden name="color" class="" id="color-red" />
-                                            <label for="color-red" class="" data-bs-toggle="tooltip" title="White"><img
-                                                    src="/assets/images/slider-2.png" height="30px" width="30px"
+                                            <label for="color-red" class="" data-bs-toggle="tooltip" title="White"><img src="{{ url()->asset('user/assets/images/slider-2.png') }}" height="30px" width="30px"
                                                     alt="White"></label>
                                         </div>
                                         <div class="single_size_opt ms-2">
                                             <input type="radio" hidden name="color" class="" id="color-green" />
                                             <label for="color-green" class="" data-bs-toggle="tooltip"
-                                                   title="Black"><img src="/assets/images/slider-3.png" height="30px"
+                                                   title="Black"><img loading="lazy" src="{{ url()->asset('user/assets/images/slider-3.png') }}" height="30px"
                                                                       width="30px" alt="Black"></label>
                                         </div>
 
                                         <div class="single_size_opt ms-2">
                                             <input type="radio" hidden name="color" class="" id="color-gray" />
-                                            <label for="color-gray" class="" data-bs-toggle="tooltip" title="Black"><img
-                                                    src="/assets/images/slider-5.png" height="30px" width="30px"
+                                            <label for="color-gray" class="" data-bs-toggle="tooltip" title="Black"><img src="{{ url()->asset('user/assets/images/slider-5.png') }}" height="30px" width="30px"
                                                     alt="Black"></label>
                                         </div>
 
@@ -348,7 +346,7 @@
                     <div class="review_cont_wrap">
                         <div class="single_review_wrp">
                             <div class="review_avatar">
-                                <img loading="lazy" src="assets/images/avatar.png" alt="user" />
+                                <img loading="lazy" src="{{ url()->asset('user/assets/images/men-1.png') }}avatar.png" alt="user" />
                             </div>
                             <div class="review_content">
                                 <h5>by Sadat A.</h5>
@@ -365,16 +363,16 @@
                                         quis bibendum auctor, nisi elit consequat ipsum, nec sagittis sem nibh id elit.
                                         Duis sed odio sit amet nibh vulputate</p>
                                     <div class="review_imgs">
-                                        <img loading="lazy" src="assets/images/product.png" alt="review" />
-                                        <img loading="lazy" src="assets/images/product.png" alt="review" />
-                                        <img loading="lazy" src="assets/images/product.png" alt="review" />
+                                        <img loading="lazy" src="{{ url()->asset('user/assets/images/men-1.png') }}product.png" alt="review" />
+                                        <img loading="lazy" src="{{ url()->asset('user/assets/images/men-1.png') }}product.png" alt="review" />
+                                        <img loading="lazy" src="{{ url()->asset('user/assets/images/men-1.png') }}product.png" alt="review" />
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="single_review_wrp border-bottom-0 mb-0 pb-0">
                             <div class="review_avatar">
-                                <img loading="lazy" src="assets/images/avatar.png" alt="user" />
+                                <img loading="lazy" src="{{ url()->asset('user/assets/images/men-1.png') }}avatar.png" alt="user" />
                             </div>
                             <div class="review_content">
                                 <h5>by Sadat A.</h5>
@@ -391,9 +389,9 @@
                                         quis bibendum auctor, nisi elit consequat ipsum, nec sagittis sem nibh id elit.
                                         Duis sed odio sit amet nibh vulputate</p>
                                     <div class="review_imgs">
-                                        <img loading="lazy" src="assets/images/product.png" alt="review" />
-                                        <img loading="lazy" src="assets/images/product.png" alt="review" />
-                                        <img loading="lazy" src="assets/images/product.png" alt="review" />
+                                        <img loading="lazy" src="{{ url()->asset('user/assets/images/men-1.png') }}product.png" alt="review" />
+                                        <img loading="lazy" src="{{ url()->asset('user/assets/images/men-1.png') }}product.png" alt="review" />
+                                        <img loading="lazy" src="{{ url()->asset('user/assets/images/men-1.png') }}product.png" alt="review" />
                                     </div>
                                 </div>
                             </div>
@@ -415,9 +413,8 @@
                     <div class="single_new_arrive">
                         <div class="sna_img">
                             <a href="product-view.html">
-                                <img loading="lazy" class="prd_img" src="assets/images/laptop-3.png" alt="product" />
+                                <img loading="lazy" class="prd_img" src="{{ url()->asset('user/assets/images/laptop-3.png') }}" alt="product" />
                             </a>
-                            <span class="tag">Hot</span>
 
                         </div>
                         <div class="sna_content">
@@ -441,7 +438,7 @@
                     <div class="single_new_arrive">
                         <div class="sna_img">
                             <a href="product-view.html">
-                                <img loading="lazy" class="prd_img" src="assets/images/shoes-1.png" alt="product" />
+                                <img loading="lazy" class="prd_img" src="{{ url()->asset('user/assets/images/shoes-1.png') }}" alt="product" />
                             </a>
                         </div>
                         <div class="sna_content">
@@ -465,7 +462,7 @@
                     <div class="single_new_arrive">
                         <div class="sna_img">
                             <a href="product-view.html">
-                                <img loading="lazy" class="prd_img" src="assets/images/headphone-3.png" alt="product" />
+                                <img loading="lazy" class="prd_img" src="{{ url()->asset('user/assets/images/headphone-3.png') }}" alt="product" />
                             </a>
                         </div>
                         <div class="sna_content">
@@ -488,7 +485,7 @@
                     <div class="single_new_arrive">
                         <div class="sna_img">
                             <a href="product-view.html">
-                                <img loading="lazy" class="prd_img" src="assets/images/phone-1.png" alt="product" />
+                                <img loading="lazy" class="prd_img" src="{{ url()->asset('user/assets/images/phone-1.png') }}" alt="product" />
                             </a>
 
                         </div>
