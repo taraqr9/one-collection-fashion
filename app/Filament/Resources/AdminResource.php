@@ -71,7 +71,8 @@ class AdminResource extends Resource
                 TextColumn::make('email')
                     ->searchable(),
                 TextColumn::make('roles.name'),
-                StatusColumn::make(),
+                StatusColumn::make()
+                    ->visible(fn () => auth()->user()?->hasRole('super-admin')),
             ])
             ->filters([
                 //
