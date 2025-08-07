@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\StatusEnum;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -21,8 +22,7 @@ return new class extends Migration
             $table->string('password', 255);
             $table->string('designation', 50);
             $table->string('avatar')->nullable();
-            $table->boolean('status')->default(true);
-            $table->text('roles')->nullable();
+            $table->string('status')->default(StatusEnum::Active->value);
             $table->string('admin_type', 20)->default('REGULAR');
             $table->unsignedInteger('line_manager_id')->nullable();
             $table->timestamps();

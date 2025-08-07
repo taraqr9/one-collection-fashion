@@ -2,29 +2,28 @@
 
 namespace App\Models;
 
+use App\Enums\StatusEnum;
+use Filament\Models\Contracts\FilamentUser;
+use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Foundation\Auth\User as AuthTable;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Spatie\Permission\Traits\HasRoles;
 
-class Admin extends AuthTable
+class Admin extends Authenticatable implements FilamentUser
 {
-    use HasFactory;
+    use HasFactory, HasRoles;
 
-    protected $fillable = [
-        'email', 'password', 'roles',
+    protected $casts = [
+        'password' => 'hashed',
+        'status' => StatusEnum::class,
     ];
 
-    protected $connection = 'mysql';
+    protected $guarded = [];
 
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
     protected $hidden = ['password'];
 
-    public function line_manager(): BelongsTo
+    public function canAccessPanel(Panel $panel): bool
     {
-        return $this->belongsTo(Admin::class, 'line_manager_id');
+        return $this->status == StatusEnum::Active;
     }
 }
