@@ -17,14 +17,11 @@ return new class extends Migration
         Schema::create('admins', function (Blueprint $table) {
             $table->id();
             $table->string('name', 100);
-            $table->string('phone', 20)->unique();
+            $table->string('phone', 20)->unique()->nullable();
             $table->string('email', 45)->unique();
             $table->string('password', 255);
-            $table->string('designation', 50);
             $table->string('avatar')->nullable();
             $table->string('status')->default(StatusEnum::Active->value);
-            $table->string('admin_type', 20)->default('REGULAR');
-            $table->unsignedInteger('line_manager_id')->nullable();
             $table->timestamps();
         });
     }

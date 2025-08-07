@@ -12,7 +12,7 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        $superAdminRole = Role::create(['name' => 'super-admin']);
+        $super_admin_role = Role::create(['name' => 'super-admin']);
         Role::create(['name' => 'admin']);
 
         $permissions = [
@@ -22,22 +22,22 @@ class DatabaseSeeder extends Seeder
 
         foreach ($permissions as $permission) {
             $perm = Permission::create(['name' => $permission]);
-            $superAdminRole->givePermissionTo($perm);
+            $super_admin_role->givePermissionTo($perm);
         }
 
-        $superAdmin = Admin::factory()->create([
+        $super_admin = Admin::factory()->create([
             'name' => 'Admin',
             'phone' => '0180000000',
             'email' => 'admin@example.com',
             'password' => '$2y$10$jXVY75E1KZJuxHFU.08k6udGe36z0jcwdGuoqGq0BQ/QFBoWCOAKC', // 12345678
-            'designation' => 'Software Engineer',
             'status' => StatusEnum::Active,
-            'admin_type' => 'SYSTEM_ADMIN',
         ]);
 
 
-        $superAdmin->assignRole('super-admin');
+        $super_admin->assignRole('super-admin');
 
-        Admin::factory()->count(20)->create();
+        Admin::factory()->count(20)->create()->each(function ($admin){
+            $admin->assignRole('admin');
+        });
     }
 }

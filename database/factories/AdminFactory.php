@@ -18,9 +18,7 @@ class AdminFactory extends Factory
             'email' => fake()->unique()->safeEmail(),
             'phone' => $this->faker->unique()->numerify('018########'), // Bangladeshi format
             'password' => '$2y$10$jXVY75E1KZJuxHFU.08k6udGe36z0jcwdGuoqGq0BQ/QFBoWCOAKC', // 12345678
-            'designation' => 'Software Engineer',
             'status' => 'active',
-            'admin_type' => 'SYSTEM_ADMIN',
         ];
     }
 
