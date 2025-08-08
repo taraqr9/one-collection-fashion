@@ -1,6 +1,6 @@
 <?php
 
-use App\Enums\ProductStatusEnum;
+use App\Enums\StatusEnum;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -20,8 +20,7 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->integer('price');
             $table->integer('offer_price')->default(0);
-            $table->string('thumbnail')->nullable();
-            $table->string('status')->default(ProductStatusEnum::ACTIVE);
+            $table->string('status')->default(StatusEnum::Active->value);
             $table->timestamps();
         });
     }

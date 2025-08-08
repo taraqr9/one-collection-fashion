@@ -17,7 +17,7 @@ class DashboardRequest extends FormRequest
     public function rules()
     {
         return [
-            'date_range' => ['bail', 'nullable', new DateRangeFormatRule(), new DateDiffAllowedRule()],
+            'date_range' => ['bail', 'nullable', new DateRangeFormatRule, new DateDiffAllowedRule],
         ];
     }
 }

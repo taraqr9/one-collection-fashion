@@ -33,11 +33,14 @@ class DatabaseSeeder extends Seeder
             'status' => StatusEnum::Active,
         ]);
 
-
         $super_admin->assignRole('super-admin');
 
-        Admin::factory()->count(20)->create()->each(function ($admin){
+        Admin::factory()->count(20)->create()->each(function ($admin) {
             $admin->assignRole('admin');
         });
+
+        $this->call([
+            CategorySeeder::class,
+        ]);
     }
 }

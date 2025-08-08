@@ -4,7 +4,6 @@ namespace App\Filament\Resources\CategoryResource\Pages;
 
 use App\Filament\Resources\CategoryResource;
 use App\Models\Category;
-use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 use Filament\Tables\Filters\SelectFilter;
 
@@ -17,7 +16,7 @@ class FilterCategories extends ListRecords
         return [
             SelectFilter::make('parent_id')
                 ->label('Category')
-                ->options(fn() => Category::whereNull('parent_id')->pluck('name', 'id'))
+                ->options(fn () => Category::whereNull('parent_id')->pluck('name', 'id'))
                 ->searchable()
                 ->preload(),
 

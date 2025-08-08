@@ -4,20 +4,14 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-/**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Product>
- */
 class ProductFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
     public function definition(): array
     {
         return [
-            //
+            'name' => $this->faker->unique()->words(2, true),
+            'parent_id' => null, // default is top-level
+            'status' => 'active', // or StatusEnum::Active->value if using enum
         ];
     }
 }

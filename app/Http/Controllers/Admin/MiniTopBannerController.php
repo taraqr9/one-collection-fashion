@@ -14,8 +14,7 @@ class MiniTopBannerController extends Controller
 {
     public function __construct(
         protected BannerService $banner
-    ) {
-    }
+    ) {}
 
     public function index(): View
     {

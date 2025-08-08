@@ -59,7 +59,7 @@ class AdminController extends Controller
 
         $phone = '+880'.substr($request->phone, -10);
 
-        $admin = new Admin();
+        $admin = new Admin;
         $admin->name = $request->name;
         $admin->designation = $request->designation;
         $admin->phone = $phone;
@@ -92,7 +92,7 @@ class AdminController extends Controller
                 'user_name' => auth()->user()->name,
             ];
 
-            (new LogEventController())->saveLogEvent(null, null, $description, $action_by);
+            (new LogEventController)->saveLogEvent(null, null, $description, $action_by);
 
         } catch (\Exception $e) {
         }
@@ -134,7 +134,7 @@ class AdminController extends Controller
             $roles = array_map('intval', $request->roles);
         }
 
-        //log event
+        // log event
         $previous_data = [];
         $updated_data = [];
         $description = [];
@@ -229,7 +229,7 @@ class AdminController extends Controller
 
         $admin->save();
 
-        (new LogEventController())->saveLogEvent($previous_data, $updated_data, $description, $action_by);
+        (new LogEventController)->saveLogEvent($previous_data, $updated_data, $description, $action_by);
 
         return Redirect()->back()->with('success', 'Admin updated successfully');
     }

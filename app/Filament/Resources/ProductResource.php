@@ -2,16 +2,19 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\StatusEnum;
 use App\Filament\Resources\ProductResource\Pages;
+use App\Models\Category;
 use App\Models\Product;
+use Filament\Forms\Components\Radio;
 use Filament\Forms\Components\Section;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
+use Filament\Forms\Get;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class ProductResource extends Resource
 {
@@ -24,8 +27,38 @@ class ProductResource extends Resource
         return $form
             ->schema([
                 Section::make([
-                    TextInput::make('name'),
+                    TextInput::make('name')
+                        ->required(),
+
+                    Select::make('parent_id')
+                        ->label('Category')
+                        ->relationship(
+                            name: 'category',
+                            titleAttribute: 'name',
+                            modifyQueryUsing: fn ($query) => $query->whereNull('parent_id')
+                        )
+                        ->live()
+                        ->required(),
+
+                    Select::make('category_id')
+                        ->label('Sub Category')
+                        ->options(fn (Get $get) => Category::where('parent_id', $get('parent_id'))
+                            ->pluck('name', 'id')
+                            ->toArray()
+                        )
+                        ->hidden(fn (Get $get) => empty($get('parent_id'))),
+
+                    TextInput::make('price'),
+
+                    TextInput::make('offer_price'),
+
+                    Radio::make('status')
+                        ->options(StatusEnum::class)
+                        ->default(StatusEnum::Active)
+                        ->columns(3)
+                        ->required(),
                 ])
+                    ->columns(3),
             ]);
     }
 

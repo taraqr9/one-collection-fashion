@@ -1,6 +1,5 @@
 <?php
 
-use App\Enums\CategoryStatusEnum;
 use App\Enums\StatusEnum;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;

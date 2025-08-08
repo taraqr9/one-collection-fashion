@@ -15,10 +15,10 @@ return new class extends Migration
     {
         Schema::create('log_events', function (Blueprint $table) {
             $table->id();
-            $table->text('previous_data')->nullable(); //json
-            $table->text('updated_data')->nullable(); //json
-            $table->text('description')->nullable(); //json
-            $table->text('action_by'); //json [user_type, user_id, user_name] , user_type=admin
+            $table->text('previous_data')->nullable(); // json
+            $table->text('updated_data')->nullable(); // json
+            $table->text('description')->nullable(); // json
+            $table->text('action_by'); // json [user_type, user_id, user_name] , user_type=admin
             $table->timestamps();
         });
     }

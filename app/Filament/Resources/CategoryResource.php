@@ -4,27 +4,22 @@ namespace App\Filament\Resources;
 
 use App\Enums\StatusEnum;
 use App\Filament\Resources\CategoryResource\Pages;
-use App\Filament\Resources\CategoryResource\Pages\FilterCategories;
 use App\Filament\Table\Columns\StatusColumn;
 use App\Models\Category;
-use Filament\Actions\Action;
-use Filament\Tables\Actions\CreateAction;
-use Filament\Tables\Actions\DeleteAction;
-use Filament\Forms;
 use Filament\Forms\Components\Radio;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Support\Enums\MaxWidth;
 use Filament\Tables\Actions\BulkActionGroup;
+use Filament\Tables\Actions\CreateAction;
+use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Actions\DeleteBulkAction;
 use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
 
 class CategoryResource extends Resource
 {
@@ -43,7 +38,7 @@ class CategoryResource extends Resource
 
                 Select::make('parent_id')
                     ->label('Parent Category')
-                    ->options(fn() => Category::whereNull('parent_id')->pluck('name', 'id'))
+                    ->options(fn () => Category::whereNull('parent_id')->pluck('name', 'id'))
                     ->searchable()
                     ->nullable()
                     ->helperText('Leave empty if this is a main category'),
@@ -68,12 +63,11 @@ class CategoryResource extends Resource
             ->filters([
                 SelectFilter::make('parent_id')
                     ->label('Category')
-                    ->options(fn() => Category::whereNull('parent_id')->pluck('name', 'id')),
-
+                    ->options(fn () => Category::whereNull('parent_id')->pluck('name', 'id')),
 
                 SelectFilter::make('id')
                     ->label('Sub Category')
-                    ->options(fn() => Category::whereNotNull('parent_id')->pluck('name', 'id')),
+                    ->options(fn () => Category::whereNotNull('parent_id')->pluck('name', 'id')),
 
                 SelectFilter::make('status'),
             ], layout: FiltersLayout::AboveContent)
@@ -83,7 +77,7 @@ class CategoryResource extends Resource
                 DeleteAction::make(),
             ])
             ->headerActions([
-                CreateAction::make()->modalWidth('lg')
+                CreateAction::make()->modalWidth('lg'),
             ])
             ->bulkActions([
                 BulkActionGroup::make([

@@ -21,11 +21,11 @@ Route::controller(LoginController::class)->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
-    //Dashboard
+    // Dashboard
     Route::get('/', [DashboardController::class, 'index'])->name('admin.dashboard');
     Route::get('/dashboard', [DashboardController::class, 'index']);
 
-    //Admin roles permission
+    // Admin roles permission
     Route::group(['prefix' => 'admins'], function () {
         //        Route::get('/', [AdminController::class, 'index']);
         //        Route::get('/create', [AdminController::class, 'create']);

@@ -8,9 +8,7 @@ use Illuminate\Translation\PotentiallyTranslatedString;
 
 class DateDiffAllowedRule implements ValidationRule
 {
-    public function __construct()
-    {
-    }
+    public function __construct() {}
 
     /**
      * Run the validation rule.

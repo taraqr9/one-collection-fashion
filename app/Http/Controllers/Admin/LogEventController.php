@@ -10,7 +10,7 @@ class LogEventController extends Controller
     public function saveLogEvent($previous_data, $updated_data, $description, $action_by)
     {
 
-        $logEvent = new LogEvent();
+        $logEvent = new LogEvent;
         $logEvent->previous_data = json_encode($previous_data, JSON_UNESCAPED_UNICODE);
         $logEvent->updated_data = json_encode($updated_data, JSON_UNESCAPED_UNICODE);
         $logEvent->description = json_encode($description, JSON_UNESCAPED_UNICODE);
