@@ -1,7 +1,5 @@
 <?php
 
-use App\Enums\CategoryStatusEnum;
-use App\Enums\StatusEnum;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -13,11 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('categories', function (Blueprint $table) {
+        Schema::create('images', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->foreignId('parent_id')->nullable()->constrained('categories')->onDelete('cascade');
-            $table->string('status')->default(StatusEnum::Active->value);
+            $table->string('type')->default('main'); // main, color, gallery
+            $table->string('url'); // image path
+            $table->string('variant_value')->nullable(); // e.g., Red (for color-specific images)
+            $table->integer('order')->default(0); // sorting
             $table->timestamps();
         });
     }
@@ -27,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('categories');
+        Schema::dropIfExists('images');
     }
 };

@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Enums\StatusEnum;
+use Filament\Widgets\StatsOverviewWidget\Stat;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -12,6 +14,10 @@ class Category extends Model
     use HasFactory;
 
     protected $guarded = [];
+
+    protected $casts = [
+        'status' => StatusEnum::class,
+    ];
 
     public function parent(): BelongsTo
     {
