@@ -108,18 +108,17 @@ class ProductResource extends Resource
                             ->image()
                             ->directory('products/thumbnails')
                             ->maxFiles(1)
-                            ->required()
+                            ->required(fn (Get $get, $record) => !$record)
                             ->reactive()
                             ->dehydrated(false),
 
-                        Repeater::make('gallery_uploads')
-                            ->label('Gallery Images')
-                            ->schema([
-                                FileUpload::make('file')
-                                    ->image()
-                                    ->directory('products/gallery')
-                                    ->required(),
-                            ])
+                        FileUpload::make('product_images')
+                            ->label('Product Images')
+                            ->image()
+                            ->multiple()
+                            ->required(fn (Get $get, $record) => !$record)
+                            ->directory('products/gallery')
+                            ->reorderable()
                             ->dehydrated(false),
                     ]),
             ]);

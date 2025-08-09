@@ -16,4 +16,23 @@ class EditProduct extends EditRecord
             Actions\DeleteAction::make(),
         ];
     }
+
+//    protected function afterSave(): void
+//    {
+//
+//        // Delete missing product images
+//        $currentGallery = collect($this->data['product_images'] ?? []);
+//        $this->record->images()
+//            ->where('type', 'gallery')
+//            ->whereNotIn('url', $currentGallery)
+//            ->delete();
+//
+//        // Delete missing thumbnail
+//        $currentThumbnail = collect($this->data['thumbnail_upload'] ?? [])->first();
+//        $this->record->images()
+//            ->where('type', 'thumbnail')
+//            ->where('url', '!=', $currentThumbnail)
+//            ->delete();
+//    }
+
 }

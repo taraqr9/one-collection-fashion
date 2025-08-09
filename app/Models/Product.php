@@ -7,7 +7,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 
 class Product extends Model
 {
@@ -39,18 +40,18 @@ class Product extends Model
         return $this->hasMany(Stock::class);
     }
 
-    public function images(): HasMany
+    public function images(): MorphMany
     {
-        return $this->hasMany(Image::class);
+        return $this->morphMany(Image::class, 'imageable');
     }
 
-    public function thumbnail(): HasOne
+    public function thumbnail(): MorphOne
     {
-        return $this->hasOne(Image::class)->where('type', 'thumbnail');
+        return $this->morphOne(Image::class, 'imageable')->where('type', 'thumbnail');
     }
 
-    public function productImages(): HasMany
+    public function productImages(): MorphOne
     {
-        return $this->hasMany(Image::class)->where('type', 'gallery');
+        return $this->morphOne(Image::class, 'imageable')->where('type', 'gallery');
     }
 }
