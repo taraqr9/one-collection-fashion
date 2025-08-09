@@ -108,7 +108,7 @@ class ProductResource extends Resource
                             ->image()
                             ->directory('products/thumbnails')
                             ->maxFiles(1)
-                            ->required(fn (Get $get, $record) => !$record)
+                            ->required(fn (Get $get, $record) => ! $record)
                             ->reactive()
                             ->dehydrated(false),
 
@@ -116,7 +116,7 @@ class ProductResource extends Resource
                             ->label('Product Images')
                             ->image()
                             ->multiple()
-                            ->required(fn (Get $get, $record) => !$record)
+                            ->required(fn (Get $get, $record) => ! $record)
                             ->directory('products/gallery')
                             ->reorderable()
                             ->dehydrated(false),

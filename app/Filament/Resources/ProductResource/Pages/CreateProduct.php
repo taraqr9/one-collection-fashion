@@ -3,7 +3,6 @@
 namespace App\Filament\Resources\ProductResource\Pages;
 
 use App\Filament\Resources\ProductResource;
-use App\Models\image;
 use Filament\Resources\Pages\CreateRecord;
 
 class CreateProduct extends CreateRecord
@@ -18,24 +17,23 @@ class CreateProduct extends CreateRecord
             $thumbnailPath = reset($thumbnail);
 
             $this->record->images()->create([
-                'type'          => 'thumbnail',
-                'url'           => $thumbnailPath,
+                'type' => 'thumbnail',
+                'url' => $thumbnailPath,
                 'variant_value' => null,
-                'order'         => 0,
+                'order' => 0,
             ]);
         }
 
         $productImages = $this->data['product_images'] ?? [];
-        if (!empty($productImages) && is_array($productImages)) {
+        if (! empty($productImages) && is_array($productImages)) {
             foreach ($productImages as $index => $imagePath) {
                 $this->record->images()->create([
-                    'type'          => 'product_images',
-                    'url'           => $imagePath,
+                    'type' => 'product_images',
+                    'url' => $imagePath,
                     'variant_value' => null,
-                    'order'         => $index,
+                    'order' => $index,
                 ]);
             }
         }
     }
-
 }
