@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('images', function (Blueprint $table) {
             $table->id();
-            $table->string('type')->default('main'); // main, color, gallery
+            $table->string('type'); // thumbnail, banner, color, gallery
             $table->string('url'); // image path
             $table->string('variant_value')->nullable(); // e.g., Red (for color-specific images)
             $table->integer('order')->default(0); // sorting

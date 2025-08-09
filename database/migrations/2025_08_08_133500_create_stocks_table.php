@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('stocks', function (Blueprint $table) {
             $table->id();
             $table->foreignId('product_id')->constrained()->cascadeOnDelete();
+            $table->string('sku')->unique();
             $table->string('type'); // e.g., Color, Size, Weight
             $table->string('value'); // e.g., Red, XL, 500
             $table->string('unit')->nullable(); // ml, kg, pcs
