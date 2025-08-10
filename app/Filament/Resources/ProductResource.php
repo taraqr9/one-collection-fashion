@@ -101,6 +101,49 @@ class ProductResource extends Resource
                             ->columns(5),
                     ]),
 
+                FileUpload::make('thumbnail_upload')
+                    ->label('Thumbnail')
+                    ->image()
+                    ->disk('public')
+                    ->directory('products/thumbnails')
+                    ->hidden()
+                    ->enableOpen()
+                    ->dehydrated(false)
+                    ->required(function (?Product $record, $state) {
+                        return ! $record || empty($state);
+                    })
+                    ->afterStateHydrated(function (FileUpload $component, ?Product $record) {
+                        if ($record && $record->thumbnail) {
+                            $component->state($record->thumbnail->url);
+                        }
+                    }),
+
+                FileUpload::make('product_images')
+                    ->label('Product Images')
+                    ->image()
+                    ->disk('public')
+                    ->directory('products/product_images')
+                    ->hidden()
+                    ->multiple()
+                    ->columnSpanFull()
+                    ->reorderable()
+                    ->dehydrated(false)
+                    ->required(fn (?Product $record, $state) => ! $record || empty($state))
+                    ->afterStateHydrated(function (FileUpload $component, ?Product $record) {
+                        if (! $record) {
+                            return;
+                        }
+
+                        $paths = $record->productImages()
+                            ->orderBy('order')
+                            ->pluck('url')
+                            ->all();
+
+                        if (! empty($paths)) {
+                            $component->state($paths);
+                        }
+                    }),
+
                 Fieldset::make('Product Images')
                     ->schema([
                         FileUpload::make('thumbnail_upload')
@@ -108,7 +151,9 @@ class ProductResource extends Resource
                             ->image()
                             ->directory('products/thumbnails')
                             ->maxFiles(1)
-                            ->required(fn (Get $get, $record) => ! $record)
+                            ->required(function (?Product $record, $state) {
+                                return ! $record || empty($state);
+                            })
                             ->reactive()
                             ->dehydrated(false),
 
@@ -116,9 +161,9 @@ class ProductResource extends Resource
                             ->label('Product Images')
                             ->image()
                             ->multiple()
-                            ->required(fn (Get $get, $record) => ! $record)
-                            ->directory('products/gallery')
-                            ->reorderable()
+                            ->required(fn (?Product $record, $state) => ! $record || empty($state))
+                            ->directory('products/product_images')
+                            ->reactive()
                             ->dehydrated(false),
                     ]),
             ]);

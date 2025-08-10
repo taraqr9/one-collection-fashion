@@ -52,6 +52,6 @@ class Product extends Model
 
     public function productImages(): MorphOne
     {
-        return $this->morphOne(Image::class, 'imageable')->where('type', 'gallery');
+        return $this->morphOne(Image::class, 'imageable')->where('type', 'product_image');
     }
 }

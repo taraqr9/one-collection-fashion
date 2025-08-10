@@ -28,7 +28,7 @@ class CreateProduct extends CreateRecord
         if (! empty($productImages) && is_array($productImages)) {
             foreach ($productImages as $index => $imagePath) {
                 $this->record->images()->create([
-                    'type' => 'product_images',
+                    'type' => 'product_image',
                     'url' => $imagePath,
                     'variant_value' => null,
                     'order' => $index,
