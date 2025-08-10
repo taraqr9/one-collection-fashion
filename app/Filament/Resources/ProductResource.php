@@ -18,15 +18,24 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
 use Filament\Resources\Resource;
-use Filament\Tables;
+use Filament\Tables\Actions\BulkActionGroup;
+use Filament\Tables\Actions\DeleteAction;
+use Filament\Tables\Actions\DeleteBulkAction;
+use Filament\Tables\Actions\EditAction;
+use Filament\Tables\Actions\ViewAction;
+use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Enums\FiltersLayout;
+use Filament\Tables\Filters\Filter;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 
 class ProductResource extends Resource
 {
     protected static ?string $model = Product::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-cube';
 
     public static function form(Form $form): Form
     {
@@ -173,26 +182,62 @@ class ProductResource extends Resource
     {
         return $table
             ->columns([
+                ImageColumn::make('thumbnail.url')
+                    ->circular(),
                 TextColumn::make('name'),
                 TextColumn::make('price'),
                 TextColumn::make('offer_price'),
-                TextColumn::make('parentCategory.name'),
-                TextColumn::make('category.name'),
+                TextColumn::make('parentCategory.name')
+                    ->label('Category'),
+                TextColumn::make('category.name')
+                    ->label('Sub Category'),
                 TextColumn::make('total_stock')
                     ->label('Total Stock')
                     ->sortable(),
                 StatusColumn::make(),
             ])
             ->filters([
-                //
-            ])
+                SelectFilter::make('id')
+                    ->label('Category')
+                    ->options(fn () => Category::whereNull('parent_id')->pluck('name', 'id'))
+                    ->searchable(),
+
+                SelectFilter::make('parent_id')
+                    ->label('Sub Category')
+                    ->options(fn () => Category::whereNotNull('parent_id')->pluck('name', 'id'))
+                    ->searchable(),
+
+                SelectFilter::make('status')
+                    ->options(StatusEnum::class),
+
+                Filter::make('search')
+                    ->form([
+                        TextInput::make('q')
+                            ->label('Search')
+                            ->placeholder('Search products...'),
+                    ])
+                    ->indicateUsing(fn (array $data) => ! empty($data['q']) ? ["Search: {$data['q']}"] : [])
+                    ->query(function (Builder $query, array $data) {
+                        $q = $data['q'] ?? null;
+                        if (! $q) {
+                            return;
+                        }
+
+                        $query->where(function (Builder $sub) use ($q) {
+                            $sub->where('name', 'like', "%{$q}%")
+                                ->orWhereHas('stocks', fn (Builder $sub) => $sub->where('sku', 'like', "%{$q}%"));
+                        });
+                    }),
+
+            ], layout: FiltersLayout::AboveContent)
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                ViewAction::make(),
+                EditAction::make(),
+                DeleteAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
                 ]),
             ]);
     }
@@ -210,6 +255,7 @@ class ProductResource extends Resource
             'index' => Pages\ListProducts::route('/'),
             'create' => Pages\CreateProduct::route('/create'),
             'edit' => Pages\EditProduct::route('/{record}/edit'),
+            'view' => Pages\ViewProduct::route('/{record}'),
         ];
     }
 }
