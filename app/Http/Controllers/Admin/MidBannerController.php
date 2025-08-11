@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Enums\SettingBannerEnum;
+use App\Enums\SettingKeyEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreMidBannerRequest;
 use App\Http\Requests\Admin\UpdateMidBannerRequest;
@@ -20,7 +20,7 @@ class MidBannerController extends Controller
     {
         view()->share('page', config('app.nav.mid_banner'));
 
-        $banners = $this->banner->get(SettingBannerEnum::MID_BANNER->value);
+        $banners = $this->banner->get(SettingKeyEnum::MID_BANNER->value);
 
         return view('admin.setting.mid_banner.index', compact('banners'));
     }
@@ -29,7 +29,7 @@ class MidBannerController extends Controller
     {
         view()->share('page', config('app.nav.mid_banner'));
 
-        $store = $this->banner->store(SettingBannerEnum::MID_BANNER->value, $request->validated());
+        $store = $this->banner->store(SettingKeyEnum::MID_BANNER->value, $request->validated());
 
         if ($store) {
             return redirect()->back()->with('success', 'Banner uploaded successfully!');
@@ -42,7 +42,7 @@ class MidBannerController extends Controller
     {
         view()->share('page', config('app.nav.banner'));
 
-        $update = $this->banner->update(SettingBannerEnum::MID_BANNER->value, $request->validated(), $index);
+        $update = $this->banner->update(SettingKeyEnum::MID_BANNER->value, $request->validated(), $index);
 
         if ($update) {
             return redirect()->back()->with('success', 'Banner updated successfully!');
@@ -53,7 +53,7 @@ class MidBannerController extends Controller
 
     public function delete($index): RedirectResponse
     {
-        $delete = $this->banner->delete(SettingBannerEnum::MID_BANNER->value, $index);
+        $delete = $this->banner->delete(SettingKeyEnum::MID_BANNER->value, $index);
 
         if ($delete) {
             return redirect()->back()->with('success', 'Banner deleted successfully!');

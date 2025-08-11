@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Enums\SettingBannerEnum;
+use App\Enums\SettingKeyEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreMiniBottomBannerRequest;
 use App\Http\Requests\Admin\UpdateMiniBottomBannerRequest;
@@ -20,7 +20,7 @@ class MiniBottomBannerController extends Controller
     {
         view()->share('page', config('app.nav.mini_bottom_banner'));
 
-        $mini_bottom_banners = $this->banner->get(SettingBannerEnum::MINI_BOTTOM_BANNER->value);
+        $mini_bottom_banners = $this->banner->get(SettingKeyEnum::MINI_BOTTOM_BANNER->value);
 
         return view('admin.setting.mini_bottom_banner.index', compact('mini_bottom_banners'));
     }
@@ -29,7 +29,7 @@ class MiniBottomBannerController extends Controller
     {
         view()->share('page', config('app.nav.mini_bottom_banner'));
 
-        $store = $this->banner->store(SettingBannerEnum::MINI_BOTTOM_BANNER->value, $request->validated());
+        $store = $this->banner->store(SettingKeyEnum::MINI_BOTTOM_BANNER->value, $request->validated());
 
         if ($store) {
             return redirect()->back()->with('success', 'Banner uploaded successfully!');
@@ -42,7 +42,7 @@ class MiniBottomBannerController extends Controller
     {
         view()->share('page', config('app.nav.banner'));
 
-        $update = $this->banner->update(SettingBannerEnum::MINI_BOTTOM_BANNER->value, $request->validated(), $index);
+        $update = $this->banner->update(SettingKeyEnum::MINI_BOTTOM_BANNER->value, $request->validated(), $index);
 
         if ($update) {
             return redirect()->back()->with('success', 'Banner updated successfully!');
@@ -53,7 +53,7 @@ class MiniBottomBannerController extends Controller
 
     public function delete($index): RedirectResponse
     {
-        $delete = $this->banner->delete(SettingBannerEnum::MINI_BOTTOM_BANNER->value, $index);
+        $delete = $this->banner->delete(SettingKeyEnum::MINI_BOTTOM_BANNER->value, $index);
 
         if ($delete) {
             return redirect()->back()->with('success', 'Banner deleted successfully!');

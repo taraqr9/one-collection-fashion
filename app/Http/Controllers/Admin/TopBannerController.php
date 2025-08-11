@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Enums\SettingBannerEnum;
+use App\Enums\SettingKeyEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreTopBannerRequest;
 use App\Http\Requests\Admin\UpdateTopBannerRequest;
@@ -20,7 +20,7 @@ class TopBannerController extends Controller
     {
         view()->share('page', config('app.nav.top_banner'));
 
-        $top_banners = $this->banner->get(SettingBannerEnum::TOP_BANNER->value);
+        $top_banners = $this->banner->get(SettingKeyEnum::TOP_BANNER->value);
 
         return view('admin.setting.top_banner.index', compact('top_banners'));
     }
@@ -29,7 +29,7 @@ class TopBannerController extends Controller
     {
         view()->share('page', config('app.nav.top_banner'));
 
-        $store = $this->banner->store(SettingBannerEnum::TOP_BANNER->value, $request->validated());
+        $store = $this->banner->store(SettingKeyEnum::TOP_BANNER->value, $request->validated());
 
         if ($store) {
             return redirect()->back()->with('success', 'Banner uploaded successfully!');
@@ -42,7 +42,7 @@ class TopBannerController extends Controller
     {
         view()->share('page', config('app.nav.banner'));
 
-        $update = $this->banner->update(SettingBannerEnum::TOP_BANNER->value, $request->validated(), $index);
+        $update = $this->banner->update(SettingKeyEnum::TOP_BANNER->value, $request->validated(), $index);
 
         if ($update) {
             return redirect()->back()->with('success', 'Banner updated successfully!');
@@ -53,7 +53,7 @@ class TopBannerController extends Controller
 
     public function delete($index): RedirectResponse
     {
-        $delete = $this->banner->delete(SettingBannerEnum::TOP_BANNER->value, $index);
+        $delete = $this->banner->delete(SettingKeyEnum::TOP_BANNER->value, $index);
 
         if ($delete) {
             return redirect()->back()->with('success', 'Banner deleted successfully!');
