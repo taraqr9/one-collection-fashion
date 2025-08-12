@@ -30,26 +30,6 @@ class SettingResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-cog-8-tooth';
 
-    //    protected function boot(): void
-    //    {
-    //        // e.g., inside your ListProducts page or a table page’s boot/mount
-    //        $custom = 'Testing'; // or any condition/value you like
-    //        dd(Lang::get(__('filament-tables::table.filters.heading')));
-    //
-    //
-    //        if (! empty($custom)) {
-    //            Lang::addLines([
-    //                'table.filters.heading' => $custom,
-    //            ], app()->getLocale(), 'filament-tables');
-    //        }
-    //    }
-
-    //    public static function getModelLabel(): string
-    //    {
-    //        dd(__('filament-tables::table.filters.heading'));
-    //        return __('filament-tables::table.filters.heading'); // Uses your custom translation key
-    //    }
-
     public static function form(Form $form): Form
     {
         return $form
