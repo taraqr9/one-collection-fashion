@@ -73,7 +73,9 @@ class CategoryResource extends Resource
             ], layout: FiltersLayout::AboveContent)
 
             ->actions([
-                EditAction::make()->modalWidth('lg'),
+                EditAction::make()
+                    ->modalWidth('lg')
+                    ->keyBindings(['command+s', 'ctrl+s']),
                 DeleteAction::make(),
             ])
             ->headerActions([

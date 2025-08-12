@@ -85,7 +85,8 @@ class AdminResource extends Resource
                     ->color('info')
                     ->redirectTo('/admin'),
                 ViewAction::make(),
-                EditAction::make(),
+                EditAction::make()
+                    ->keyBindings(['command+s', 'ctrl+s']),
             ])
             ->bulkActions([
                 BulkActionGroup::make([

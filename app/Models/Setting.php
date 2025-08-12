@@ -26,11 +26,43 @@ class Setting extends Model
     {
         parent::boot();
 
-        static::updating(function ($model) {
-            if ($model->isDirty('value') && ($model->getOriginal('value') !== null)) {
-//                foreach ($model->getOriginal('value') as $ph) Storage::disk('public')->delete($ph);
-//                Storage::disk('public')->delete($model->getOriginal('value'));
+        static::updated(function ($model) {
+            $old = $model->getOriginal('value');
+            $new = $model->value;
+
+            $oldPaths = collect($model->extractPaths($old));
+            $newPaths = collect($model->extractPaths($new));
+
+            $removed = $oldPaths->diff($newPaths)->filter();
+
+            foreach ($removed as $path) {
+                if ($path && Storage::disk('public')->exists($path)) {
+                    Storage::disk('public')->delete($path);
+                }
             }
         });
+    }
+
+    private function extractPaths($val): array
+    {
+        if (is_string($val)) {
+            return [$val];
+        }
+
+        if (is_array($val)) {
+            if (array_is_list($val)) {
+                return $val;
+            }
+
+            if (isset($val['images'])) {
+                return is_array($val['images']) ? $val['images'] : [];
+            }
+
+            if (isset($val['path'])) {
+                return [$val['path']];
+            }
+        }
+
+        return [];
     }
 }

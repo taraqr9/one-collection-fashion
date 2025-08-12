@@ -232,7 +232,8 @@ class ProductResource extends Resource
             ], layout: FiltersLayout::AboveContent)
             ->actions([
                 ViewAction::make(),
-                EditAction::make(),
+                EditAction::make()
+                    ->keyBindings(['command+s', 'ctrl+s']),
                 DeleteAction::make(),
             ])
             ->bulkActions([

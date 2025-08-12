@@ -19,16 +19,16 @@ class EditSetting extends EditRecord
         ];
     }
 
-//    protected function getActions(): array
-//    {
-//        return [
-//            Actions\DeleteAction::make()
-//                ->after(function (Setting $record) {
-//                    if ($record->value) {
-//                        foreach ($record->value as $ph) Storage::disk('public')->delete($ph);
-//                    }
-//                }),
-//        ];
-//    }
+    //    protected function getActions(): array
+    //    {
+    //        return [
+    //            Actions\DeleteAction::make()
+    //                ->after(function (Setting $record) {
+    //                    if ($record->value) {
+    //                        foreach ($record->value as $ph) Storage::disk('public')->delete($ph);
+    //                    }
+    //                }),
+    //        ];
+    //    }
 
 }

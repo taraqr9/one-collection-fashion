@@ -6,7 +6,6 @@ use App\Enums\SettingKeyEnum;
 use App\Enums\SettingTypeEnum;
 use App\Enums\StatusEnum;
 use App\Filament\Resources\SettingResource\Pages;
-use App\Filament\Resources\SettingResource\RelationManagers;
 use App\Filament\Table\Columns\StatusColumn;
 use App\Models\Setting;
 use Filament\Forms\Components\FileUpload;
@@ -18,25 +17,55 @@ use Filament\Forms\Form;
 use Filament\Forms\Get;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Actions\DeleteAction;
+use Filament\Tables\Actions\EditAction;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Enums\FiltersLayout;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
-use Illuminate\Support\Facades\Storage;
 
 class SettingResource extends Resource
 {
     protected static ?string $model = Setting::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-cog-8-tooth';
+
+    //    protected function boot(): void
+    //    {
+    //        // e.g., inside your ListProducts page or a table page’s boot/mount
+    //        $custom = 'Testing'; // or any condition/value you like
+    //        dd(Lang::get(__('filament-tables::table.filters.heading')));
+    //
+    //
+    //        if (! empty($custom)) {
+    //            Lang::addLines([
+    //                'table.filters.heading' => $custom,
+    //            ], app()->getLocale(), 'filament-tables');
+    //        }
+    //    }
+
+    //    public static function getModelLabel(): string
+    //    {
+    //        dd(__('filament-tables::table.filters.heading'));
+    //        return __('filament-tables::table.filters.heading'); // Uses your custom translation key
+    //    }
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
+                Select::make('key')
+                    ->unique(ignoreRecord: true)
+                    ->required()
+                    ->options(SettingKeyEnum::options())
+                    ->live()
+                    ->afterStateUpdated(function ($state, $set, $get) {
+                        $label = ucwords(str_replace('_', ' ', $state));
+                        $set('name', $label);
+                    }),
+
                 TextInput::make('name')
                     ->required(),
-
-                Select::make('key')
-                    ->required()
-                    ->options(SettingKeyEnum::options()),
 
                 Select::make('type')
                     ->required()
@@ -46,19 +75,20 @@ class SettingResource extends Resource
                 TextInput::make('url')
                     ->nullable(),
 
-                RichEditor::make('value')
+                RichEditor::make('value.content')
                     ->label('Content')
-                    ->hidden(fn(Get $get) => SettingTypeEnum::Text->value !== $get('type'))
-                    ->required(fn(Get $get) => SettingTypeEnum::Text->value !== $get('type'))
+                    ->visible(fn (Get $get) => SettingTypeEnum::Text->value === $get('type'))
+                    ->required(fn (Get $get) => SettingTypeEnum::Text->value === $get('type'))
                     ->columnSpanFull(),
 
-                FileUpload::make('value')
+                FileUpload::make('value.images')
+                    ->label('Images')
                     ->image()
                     ->multiple()
                     ->disk('public')
                     ->directory(fn (Get $get) => 'settings/'.$get('key'))
-                    ->hidden(fn(Get $get) => SettingTypeEnum::Image->value !== $get('type'))
-                    ->required(fn(Get $get) => SettingTypeEnum::Image->value !== $get('type'))
+                    ->visible(fn (Get $get) => SettingTypeEnum::Image->value === $get('type'))
+                    ->required(fn (Get $get) => SettingTypeEnum::Image->value === $get('type'))
                     ->columnSpanFull(),
 
                 Radio::make('status')
@@ -71,18 +101,25 @@ class SettingResource extends Resource
 
     public static function table(Table $table): Table
     {
+        //        Lang::addLines([
+        //            'table.filters.heading' => 'Test',
+        //        ], app()->getLocale(), 'filament-tables');
+
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name'),
-                Tables\Columns\TextColumn::make('type'),
-                StatusColumn::make()
+                TextColumn::make('name'),
+                TextColumn::make('type'),
+                StatusColumn::make(),
             ])
             ->filters([
-                //
-            ])
+                SelectFilter::make('key')
+                    ->label('Name')
+                    ->options(SettingKeyEnum::options()),
+            ], layout: FiltersLayout::AboveContent)
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                EditAction::make()
+                    ->keyBindings(['command+s', 'ctrl+s']),
+                DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

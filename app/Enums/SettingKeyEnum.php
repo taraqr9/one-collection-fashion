@@ -10,14 +10,22 @@ enum SettingKeyEnum: string
     case MiniTopBanner = 'mini_top_banner';
     case MiniBottomBanner = 'mini_bottom_banner';
     case MidBanner = 'mid_banner';
+    case AboutUs = 'about_us';
+    case ReturnPolicy = 'return_policy';
+    case PrivacyPolicy = 'privacy_policy';
+    case TermsAndConditions = 'terms_and_conditions';
 
     public function label(): string
     {
         return match ($this) {
-            self::TopBanner       => 'Top Banner',
-            self::MiniTopBanner   => 'Mini Top Banner',
-            self::MiniBottomBanner=> 'Mini Bottom Banner',
-            self::MidBanner       => 'Mid Banner',
+            self::TopBanner => 'Top Banner',
+            self::MiniTopBanner => 'Mini Top Banner',
+            self::MiniBottomBanner => 'Mini Bottom Banner',
+            self::MidBanner => 'Mid Banner',
+            self::AboutUs => 'About Us',
+            self::ReturnPolicy => 'Return Policy',
+            self::PrivacyPolicy => 'Privacy Policy',
+            self::TermsAndConditions => 'Terms and Conditions',
         };
     }
 
