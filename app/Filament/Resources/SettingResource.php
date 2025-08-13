@@ -19,6 +19,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Actions\EditAction;
+use Filament\Tables\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Filters\SelectFilter;
@@ -97,6 +98,7 @@ class SettingResource extends Resource
                     ->options(SettingKeyEnum::options()),
             ], layout: FiltersLayout::AboveContent)
             ->actions([
+                ViewAction::make(),
                 EditAction::make()
                     ->keyBindings(['command+s', 'ctrl+s']),
                 DeleteAction::make(),
@@ -119,6 +121,7 @@ class SettingResource extends Resource
     {
         return [
             'index' => Pages\ListSettings::route('/'),
+            'view' => Pages\ViewSetting::route('/{record}'),
             'create' => Pages\CreateSetting::route('/create'),
             'edit' => Pages\EditSetting::route('/{record}/edit'),
         ];
