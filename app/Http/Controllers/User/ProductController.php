@@ -2,27 +2,27 @@
 
 namespace App\Http\Controllers\User;
 
+use App\Enums\StatusEnum;
 use App\Http\Controllers\Controller;
+use App\Models\Category;
+use App\Models\Product;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
-    public function list()
+    public function index()
     {
-        return view('user.product.list');
-    }
+        $categories = Category::where('status', StatusEnum::Active)->get();
 
-    public function detail()
-    {
-        return view('user.product.detail');
-    }
+        $products = Product::where('status', StatusEnum::Active)
+            ->with(['thumbnail', 'productImages'])
+            ->get()
+            ->map(function ($product) {
+                $product->thumbnail_url = $product->thumbnail ? Storage::url($product->thumbnail->url) : null;
 
-    public function checkout()
-    {
-        return view('user.product.checkout');
-    }
+                return $product;
+            });
 
-    public function cart()
-    {
-        return view('user.product.cart');
+        return view('user.product.index', compact('categories', 'products'));
     }
 }

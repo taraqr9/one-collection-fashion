@@ -7,10 +7,11 @@
             <div class="header-navbar">
                 <div class="header-nav-department">
                     <aside class="header-department">
-                        <button class="bars text-white header-department-text department-title">
+                        <a class="bars text-white header-department-text department-title"
+                            href="{{ route('products.index') }}">
                             <span class="icon"> <i class="fal fa-bars" style="color: white;"></i></span>
                             <span class="icon_text">All categories</span>
-                        </button>
+                        </a>
 
                         <nav class="department-nav-menu sub-menu">
 

@@ -46,8 +46,7 @@
 <script src="{{ url()->asset('user/assets/js/fontawesome.js') }}"></script>
 <script src="{{ url()->asset('user/assets/js/app.js') }}"></script>
 
-</body>
-
 @yield('footer_js')
+</body>
 
 </html>
