@@ -51,14 +51,14 @@ class AdminResource extends Resource
                     ->columnSpanFull(),
                 Section::make([
                     TextInput::make('password')
-                        ->required(fn(?Admin $record) => !$record?->exists)
-                        ->dehydrated(fn($state) => !empty($state))
+                        ->required(fn (?Admin $record) => ! $record?->exists)
+                        ->dehydrated(fn ($state) => ! empty($state))
                         ->password()->confirmed(),
                     TextInput::make('password_confirmation')
                         ->label('Confirm Password')
                         ->dehydrated(false)
                         ->same('password')
-                        ->required(fn(?Admin $record) => !$record?->exists)->password(),
+                        ->required(fn (?Admin $record) => ! $record?->exists)->password(),
                 ])
                     ->columns(2)
                     ->columnSpanFull(),
@@ -82,7 +82,7 @@ class AdminResource extends Resource
                     ->searchable(),
                 TextColumn::make('roles.name'),
                 StatusColumn::make()
-                    ->visible(fn() => auth()->user()?->hasRole('super-admin')),
+                    ->visible(fn () => auth()->user()?->hasRole('super-admin')),
             ])
             ->filters([
                 //

@@ -8,12 +8,14 @@ use App\Enums\StatusEnum;
 use App\Filament\Resources\SettingResource\Pages\CreateSetting;
 use App\Filament\Resources\SettingResource\Pages\EditSetting;
 use App\Filament\Resources\SettingResource\Pages\ListSettings;
+use App\Filament\Resources\SettingResource\Pages\ViewSetting;
 use App\Filament\Table\Columns\StatusColumn;
 use App\Models\Setting;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Actions\ViewAction;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Radio;
 use Filament\Forms\Components\RichEditor;
@@ -23,9 +25,6 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Schema;
 use Filament\Tables;
-use Filament\Tables\Actions\DeleteAction;
-use Filament\Tables\Actions\EditAction;
-use Filament\Tables\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Filters\SelectFilter;
@@ -58,16 +57,15 @@ class SettingResource extends Resource
                     ->required()
                     ->options(SettingTypeEnum::class)
                     ->live()
-                ->afterStateUpdated(function ($state, $set, $get) {
-                }),
+                    ->afterStateUpdated(function ($state, $set, $get) {}),
 
                 TextInput::make('url')
                     ->nullable(),
 
                 RichEditor::make('value.content')
                     ->label('Content')
-                    ->visible(fn (Get $get) => SettingTypeEnum::Text === $get('type'))
-                    ->required(fn (Get $get) => SettingTypeEnum::Text === $get('type'))
+                    ->visible(fn (Get $get) => $get('type') === SettingTypeEnum::Text)
+                    ->required(fn (Get $get) => $get('type') === SettingTypeEnum::Text)
                     ->columnSpanFull(),
 
                 FileUpload::make('value.images')
@@ -76,8 +74,8 @@ class SettingResource extends Resource
                     ->multiple()
                     ->disk('public')
                     ->directory(fn (Get $get) => 'settings/'.$get('key'))
-                    ->visible(fn (Get $get) => SettingTypeEnum::Image === $get('type'))
-                    ->required(fn (Get $get) => SettingTypeEnum::Image === $get('type'))
+                    ->visible(fn (Get $get) => $get('type') === SettingTypeEnum::Image)
+                    ->required(fn (Get $get) => $get('type') === SettingTypeEnum::Image)
                     ->columnSpanFull(),
 
                 Radio::make('status')
@@ -114,9 +112,6 @@ class SettingResource extends Resource
             ->toolbarActions([
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
     }
@@ -131,10 +126,10 @@ class SettingResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListSettings::route('/'),
-            'view' => Pages\ViewSetting::route('/{record}'),
-            'create' => Pages\CreateSetting::route('/create'),
-            'edit' => Pages\EditSetting::route('/{record}/edit'),
+            'index' => ListSettings::route('/'),
+            'view' => ViewSetting::route('/{record}'),
+            'create' => CreateSetting::route('/create'),
+            'edit' => EditSetting::route('/{record}/edit'),
         ];
     }
 }
