@@ -4,25 +4,28 @@ namespace App\Filament\Resources;
 
 use App\Enums\StatusEnum;
 use App\Enums\StockTypeEnum;
-use App\Filament\Resources\ProductResource\Pages;
+use App\Filament\Resources\ProductResource\Pages\CreateProduct;
+use App\Filament\Resources\ProductResource\Pages\EditProduct;
+use App\Filament\Resources\ProductResource\Pages\ListProducts;
+use App\Filament\Resources\ProductResource\Pages\ViewProduct;
 use App\Filament\Table\Columns\StatusColumn;
 use App\Models\Category;
 use App\Models\Product;
-use Filament\Forms\Components\Fieldset;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
+use Filament\Actions\ViewAction;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Radio;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Form;
-use Filament\Forms\Get;
 use Filament\Resources\Resource;
-use Filament\Tables\Actions\BulkActionGroup;
-use Filament\Tables\Actions\DeleteAction;
-use Filament\Tables\Actions\DeleteBulkAction;
-use Filament\Tables\Actions\EditAction;
-use Filament\Tables\Actions\ViewAction;
+use Filament\Schemas\Components\Fieldset;
+use Filament\Schemas\Components\Utilities\Get;
+use Filament\Schemas\Schema;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Enums\FiltersLayout;
@@ -35,12 +38,12 @@ class ProductResource extends Resource
 {
     protected static ?string $model = Product::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-cube';
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-cube';
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
+        return $schema
+            ->components([
                 Fieldset::make('Product Details')
                     ->schema([
                         TextInput::make('name')
@@ -79,7 +82,8 @@ class ProductResource extends Resource
                             ->default(StatusEnum::Active)
                             ->columns(3)
                             ->required(),
-                    ])->columns(2),
+                    ])->columns(2)
+                    ->columnSpanFull(),
 
                 Fieldset::make('Stock Information')
                     ->schema([
@@ -108,7 +112,8 @@ class ProductResource extends Resource
                             ])
                             ->columnSpanFull()
                             ->columns(5),
-                    ]),
+                    ])
+                    ->columnSpanFull(),
 
                 FileUpload::make('thumbnail_upload')
                     ->label('Thumbnail')
@@ -174,7 +179,7 @@ class ProductResource extends Resource
                             ->directory('products/product_images')
                             ->reactive()
                             ->dehydrated(false),
-                    ]),
+                    ])->columnSpanFull(),
             ]);
     }
 
@@ -211,7 +216,7 @@ class ProductResource extends Resource
                     ->options(StatusEnum::class),
 
                 Filter::make('search')
-                    ->form([
+                    ->schema([
                         TextInput::make('q')
                             ->label('Search')
                             ->placeholder('Search products...'),
@@ -230,13 +235,13 @@ class ProductResource extends Resource
                     }),
 
             ], layout: FiltersLayout::AboveContent)
-            ->actions([
+            ->recordActions([
                 ViewAction::make(),
                 EditAction::make()
                     ->keyBindings(['command+s', 'ctrl+s']),
                 DeleteAction::make(),
             ])
-            ->bulkActions([
+            ->toolbarActions([
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),
@@ -253,10 +258,10 @@ class ProductResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListProducts::route('/'),
-            'create' => Pages\CreateProduct::route('/create'),
-            'edit' => Pages\EditProduct::route('/{record}/edit'),
-            'view' => Pages\ViewProduct::route('/{record}'),
+            'index' => ListProducts::route('/'),
+            'create' => CreateProduct::route('/create'),
+            'edit' => EditProduct::route('/{record}/edit'),
+            'view' => ViewProduct::route('/{record}'),
         ];
     }
 }

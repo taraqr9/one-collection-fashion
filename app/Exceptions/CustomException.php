@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use Exception;
+use Log;
 
 class CustomException extends Exception
 {
@@ -15,7 +16,7 @@ class CustomException extends Exception
 
     public function report()
     {
-        \Log::info('Throwed Exception : '.$this->message);
+        Log::info('Throwed Exception : '.$this->message);
     }
 
     public function render($request)

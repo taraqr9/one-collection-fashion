@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\AdminCreateRequest;
 use App\Http\Requests\Admin\AdminProfileUpdateRequest;
 use App\Models\Admin;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -94,7 +95,7 @@ class AdminController extends Controller
 
             (new LogEventController)->saveLogEvent(null, null, $description, $action_by);
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
         }
 
         return redirect()->back()->with('success', 'New admin added successfully');
