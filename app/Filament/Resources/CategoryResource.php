@@ -3,19 +3,19 @@
 namespace App\Filament\Resources;
 
 use App\Enums\StatusEnum;
-use App\Filament\Resources\CategoryResource\Pages;
+use App\Filament\Resources\CategoryResource\Pages\ListCategories;
 use App\Filament\Table\Columns\StatusColumn;
 use App\Models\Category;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\CreateAction;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
 use Filament\Forms\Components\Radio;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Tables\Actions\BulkActionGroup;
-use Filament\Tables\Actions\CreateAction;
-use Filament\Tables\Actions\DeleteAction;
-use Filament\Tables\Actions\DeleteBulkAction;
-use Filament\Tables\Actions\EditAction;
+use Filament\Schemas\Schema;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Filters\SelectFilter;
@@ -25,12 +25,12 @@ class CategoryResource extends Resource
 {
     protected static ?string $model = Category::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-list-bullet';
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-list-bullet';
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
+        return $schema
+            ->components([
                 TextInput::make('name')
                     ->label('Category Name')
                     ->required()
@@ -72,7 +72,7 @@ class CategoryResource extends Resource
                 SelectFilter::make('status'),
             ], layout: FiltersLayout::AboveContent)
 
-            ->actions([
+            ->recordActions([
                 EditAction::make()
                     ->modalWidth('lg')
                     ->keyBindings(['command+s', 'ctrl+s']),
@@ -81,7 +81,7 @@ class CategoryResource extends Resource
             ->headerActions([
                 CreateAction::make()->modalWidth('lg'),
             ])
-            ->bulkActions([
+            ->toolbarActions([
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),
@@ -98,7 +98,7 @@ class CategoryResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListCategories::route('/'),
+            'index' => ListCategories::route('/'),
         ];
     }
 }

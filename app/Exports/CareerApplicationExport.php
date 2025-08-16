@@ -3,6 +3,7 @@
 namespace App\Exports;
 
 use App\Models\CareerApplication;
+use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\WithHeadings;
@@ -11,7 +12,7 @@ use Maatwebsite\Excel\Concerns\WithMapping;
 class CareerApplicationExport implements FromQuery, WithHeadings, WithMapping
 {
     /**
-     * @return \Illuminate\Support\Collection
+     * @return Collection
      */
     use Exportable;
 
