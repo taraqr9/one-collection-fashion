@@ -1,3 +1,7 @@
+@php
+    use App\Enums\SettingKeyEnum;
+    use Illuminate\Support\Facades\Storage;
+@endphp
 @extends('user.master')
 
 @section('title')
@@ -11,62 +15,22 @@
                 <div class="home_2_hero">
                     <div class="container">
                         <div class="hero_slider_active">
-                            <div class="single_hero_slider bg-3">
-                                <div class="container">
-                                    <div class="row align-items-center">
-                                        <div class="col-lg-12 col-sm-12">
-                                            <!-- something write here -->
-                                            <div class="hero_img">
-                                                <img loading="lazy"
-                                                     src="{{ url()->asset('user/assets/images/men-1.png') }}"
-                                                     alt="shirt"/>
+                            @foreach(getSettingImages($settings, SettingKeyEnum::TopBanner->value)['images'] as $image)
+                                <div class="single_hero_slider bg-3">
+                                    <div class="container">
+                                        <div class="row align-items-center">
+                                            <div class="col-lg-12 col-sm-12">
+                                                <!-- something write here -->
+                                                <div class="hero_img">
+                                                    <img loading="lazy"
+                                                         src="{{ Storage::url($image) }}"
+                                                         alt="top banner"/>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="single_hero_slider bg-2">
-                                <div class="container">
-                                    <div class="row align-items-center">
-                                        <div class="col-sm-12">
-                                            <!-- something write here -->
-                                            <div class="hero_img">
-                                                <img loading="lazy"
-                                                     src="{{ url()->asset('user/assets/images/men-1.png') }}"
-                                                     alt="shirt"/>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="single_hero_slider bg-1">
-                                <div class="container">
-                                    <div class="row align-items-center">
-                                        <div class="col-sm-12">
-                                            <!-- something write here -->
-                                            <div class="hero_img">
-                                                <img loading="lazy"
-                                                     src="{{ url()->asset('user/assets/images/men-1.png') }}"
-                                                     alt="shirt"/>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="single_hero_slider bg-2">
-                                <div class="container">
-                                    <div class="row align-items-center">
-                                        <div class="col-sm-12">
-                                            <!-- something write here -->
-                                            <div class="hero_img">
-                                                <img loading="lazy"
-                                                     src="{{ url()->asset('user/assets/images/men-1.png') }}"
-                                                     alt="shirt"/>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            @endforeach
                         </div>
                     </div>
                 </div>
@@ -75,44 +39,26 @@
                 <div
                     class="banner_collection home_3_hero mt-5 pt-2 pt-xl-0 mt-xl-0 d-flex flex-xl-column single_hero_slider sm:d-none flex-row gap-3">
                     <div class="single_picture_active single_bannercol">
-                        <a href="#" class="single_bannercol">
-                            <div class="bancol_img">
-                                <img loading="lazy" src="{{ url()->asset('user/assets/images/headphone-1.png') }}"
-                                     alt="shoes"/>
-                            </div>
-                        </a>
-                        <a href="#" class="single_bannercol">
-                            <div class="bancol_img">
-                                <img loading="lazy" src="{{ url()->asset('user/assets/images/glass.png') }}"
-                                     alt="shoes"/>
-                            </div>
-                        </a>
-                        <a href="#" class="single_bannercol">
-                            <div class="bancol_img">
-                                <img loading="lazy" src="{{ url()->asset('user/assets/images/headphone-3.png') }}"
-                                     alt="shoes"/>
-                            </div>
-                        </a>
+                        @foreach(getSettingImages($settings, SettingKeyEnum::MiniTopBanner->value)['images'] as $image)
+                            <a href="#" class="single_bannercol">
+                                <div class="bancol_img">
+                                    <img loading="lazy"
+                                         src="{{ Storage::url($image) }}"
+                                         alt="mini top banner"/>
+                                </div>
+                            </a>
+                        @endforeach
                     </div>
                     <div class="single_picture_active single_bannercol">
-                        <a href="#" class="single_bannercol">
-                            <div class="bancol_img">
-                                <img loading="lazy" src="{{ url()->asset('user/assets/images/shoes-1.png') }}"
-                                     alt="shoes"/>
-                            </div>
-                        </a>
-                        <a href="#" class="single_bannercol">
-                            <div class="bancol_img">
-                                <img loading="lazy" src="{{ url()->asset('user/assets/images/shoes-3.png') }}"
-                                     alt="shoes"/>
-                            </div>
-                        </a>
-                        <a href="#" class="single_bannercol">
-                            <div class="bancol_img">
-                                <img loading="lazy" src="{{ url()->asset('user/assets/images/shoes-4.png') }}"
-                                     alt="shoes"/>
-                            </div>
-                        </a>
+                        @foreach(getSettingImages($settings, SettingKeyEnum::MiniBottomBanner->value)['images'] as $image)
+                            <a href="#" class="single_bannercol">
+                                <div class="bancol_img">
+                                    <img loading="lazy"
+                                         src="{{ Storage::url($image) }}"
+                                         alt="mini top banner"/>
+                                </div>
+                            </a>
+                        @endforeach
                     </div>
 
                 </div>
@@ -178,72 +124,89 @@
         <div class="container">
             <h2 class="section_title_3">Shop by category</h2>
             <div class="row gx-2 gy-2">
-                <div class="col-lg-4 col-6">
-                    <a href="#" class="single_shopbycat bg_1"
-                       style="background-image: url({{ url()->asset('user/assets/images/category-1.jpg') }})">
-                        <div class="shopcat_cont">
-                            <h4>Bedroom</h4>
-                            <div class="icon">
-                                <i class="las la-long-arrow-alt-right"></i>
+                @if(!empty(getSettingImages($settings, SettingKeyEnum::ShopByCategoryOne->value)['images']))
+                    <div class="col-lg-4 col-6">
+                        <a href="#" class="single_shopbycat bg_1"
+                           style="background-image: url({{ Storage::url(getSettingImages($settings, SettingKeyEnum::ShopByCategoryOne->value)['images'][0]) ?? '' }})">
+                            <div class="shopcat_cont">
+                                <h4>{{ getSettingImages($settings, SettingKeyEnum::ShopByCategoryOne->value)['name'] ?? '' }}</h4>
+                                <div class="icon">
+                                    <i class="las la-long-arrow-alt-right"></i>
+                                </div>
                             </div>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-lg-4 col-6">
-                    <a href="#" class="single_shopbycat bg_1"
-                       style="background-image: url({{ url()->asset('user/assets/images/category-2.jpg') }})">
-                        <div class="shopcat_cont">
-                            <h4>Mattresses</h4>
-                            <div class="icon">
-                                <i class="las la-long-arrow-alt-right"></i>
+                        </a>
+                    </div>
+                @endif
+
+                @if(!empty(getSettingImages($settings, SettingKeyEnum::ShopByCategoryTwo->value)['images']))
+                    <div class="col-lg-4 col-6">
+                        <a href="#" class="single_shopbycat bg_1"
+                           style="background-image: url({{ Storage::url(getSettingImages($settings, SettingKeyEnum::ShopByCategoryTwo->value)['images'][0]) ?? '' }})">
+                            <div class="shopcat_cont">
+                                <h4>{{ getSettingImages($settings, SettingKeyEnum::ShopByCategoryTwo->value)['name'] ?? '' }}</h4>
+                                <div class="icon">
+                                    <i class="las la-long-arrow-alt-right"></i>
+                                </div>
                             </div>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-lg-4 col-6">
-                    <a href="#" class="single_shopbycat bg_1"
-                       style="background-image: url({{ url()->asset('user/assets/images/category-3.jpg') }})">
-                        <div class="shopcat_cont">
-                            <h4>Office</h4>
-                            <div class="icon">
-                                <i class="las la-long-arrow-alt-right"></i>
+                        </a>
+                    </div>
+                @endif
+
+                @if(!empty(getSettingImages($settings, SettingKeyEnum::ShopByCategoryTwo->value)['images']))
+                    <div class="col-lg-4 col-6">
+                        <a href="#" class="single_shopbycat bg_1"
+                           style="background-image: url({{ Storage::url(getSettingImages($settings, SettingKeyEnum::ShopByCategoryThree->value)['images'][0]) ?? '' }})">
+                            <div class="shopcat_cont">
+                                <h4>{{ getSettingImages($settings, SettingKeyEnum::ShopByCategoryThree->value)['name'] ?? ''}}</h4>
+                                <div class="icon">
+                                    <i class="las la-long-arrow-alt-right"></i>
+                                </div>
                             </div>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-lg-4 col-6">
-                    <a href="#" class="single_shopbycat bg_1"
-                       style="background-image: url({{ url()->asset('user/assets/images/category-4.jpg') }})">
-                        <div class="shopcat_cont">
-                            <h4>Outdoor</h4>
-                            <div class="icon">
-                                <i class="las la-long-arrow-alt-right"></i>
+                        </a>
+                    </div>
+                @endif
+
+                @if(!empty(getSettingImages($settings, SettingKeyEnum::ShopByCategoryFour->value)['images']))
+                    <div class="col-lg-4 col-6">
+                        <a href="#" class="single_shopbycat bg_1"
+                           style="background-image: url({{ Storage::url(getSettingImages($settings, SettingKeyEnum::ShopByCategoryFour->value)['images'][0]) }})">
+                            <div class="shopcat_cont">
+                                <h4>{{ getSettingImages($settings, SettingKeyEnum::ShopByCategoryFour->value)['name'] }}</h4>
+                                <div class="icon">
+                                    <i class="las la-long-arrow-alt-right"></i>
+                                </div>
                             </div>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-lg-4 col-6">
-                    <a href="#" class="single_shopbycat bg_1"
-                       style="background-image: url({{ url()->asset('user/assets/images/category-5.jpg') }})">
-                        <div class="shopcat_cont">
-                            <h4>Lounges & Sofas</h4>
-                            <div class="icon">
-                                <i class="las la-long-arrow-alt-right"></i>
+                        </a>
+                    </div>
+                @endif
+
+                @if(!empty(getSettingImages($settings, SettingKeyEnum::ShopByCategoryFive->value)['images']))
+                    <div class="col-lg-4 col-6">
+                        <a href="#" class="single_shopbycat bg_1"
+                           style="background-image: url({{ Storage::url(getSettingImages($settings, SettingKeyEnum::ShopByCategoryFive->value)['images'][0]) }})">
+                            <div class="shopcat_cont">
+                                <h4>{{ getSettingImages($settings, SettingKeyEnum::ShopByCategoryFive->value)['name'] }}</h4>
+                                <div class="icon">
+                                    <i class="las la-long-arrow-alt-right"></i>
+                                </div>
                             </div>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-lg-4 col-6">
-                    <a href="#" class="single_shopbycat bg_1"
-                       style="background-image: url({{ url()->asset('user/assets/images/category-6.jpg') }})">
-                        <div class="shopcat_cont">
-                            <h4>Living & Dining</h4>
-                            <div class="icon">
-                                <i class="las la-long-arrow-alt-right"></i>
+                        </a>
+                    </div>
+                @endif
+
+                @if(!empty(getSettingImages($settings, SettingKeyEnum::ShopByCategorySix->value)['images']))
+                    <div class="col-lg-4 col-6">
+                        <a href="#" class="single_shopbycat bg_1"
+                           style="background-image: url({{ Storage::url(getSettingImages($settings, SettingKeyEnum::ShopByCategorySix->value)['images'][0]) }})">
+                            <div class="shopcat_cont">
+                                <h4>{{ getSettingImages($settings, SettingKeyEnum::ShopByCategorySix->value)['name'] }}</h4>
+                                <div class="icon">
+                                    <i class="las la-long-arrow-alt-right"></i>
+                                </div>
                             </div>
-                        </div>
-                    </a>
-                </div>
+                        </a>
+                    </div>
+                @endif
             </div>
         </div>
     </div>
@@ -271,36 +234,17 @@
     <div class="offer_banner_area section_padding_b">
         <div class="container">
             <div class="add_slider">
-                <div class="hero_area">
-                    <a href="#">
-                        <picture>
-                            <source media="(min-width: 768px)"
-                                    srcset="{{ url()->asset('user/assets/images/offer.jpg') }}"/>
-                            <img loading="lazy" src="{{ url()->asset('user/assets/images/offer-mobile-2.jpg') }}"
-                                 alt="ad"/>
-                        </picture>
-                    </a>
-                </div>
-                <div class="hero_area">
-                    <a href="#">
-                        <picture>
-                            <source media="(min-width: 768px)"
-                                    srcset="{{ url()->asset('user/assets/images/offer.jpg') }}"/>
-                            <img loading="lazy" src="{{ url()->asset('user/assets/images/offer-mobile-2.jpg') }}"
-                                 alt="ad"/>
-                        </picture>
-                    </a>
-                </div>
-                <div class="hero_area">
-                    <a href="#">
-                        <picture>
-                            <source media="(min-width: 768px)"
-                                    srcset="{{ url()->asset('user/assets/images/offer.jpg') }}"/>
-                            <img loading="lazy" src="{{ url()->asset('user/assets/images/offer-mobile-2.jpg') }}"
-                                 alt="ad"/>
-                        </picture>
-                    </a>
-                </div>
+                @foreach(getSettingImages($settings, SettingKeyEnum::MidBanner->value)['images'] as $image)
+                    <div class="hero_area">
+                        <a href="#">
+                            <picture>
+                                <source media="(min-width: 768px)" srcset="{{ Storage::url($image) }}"/>
+                                <img loading="lazy" src="{{ Storage::url($image) }}"
+                                     alt="ad"/>
+                            </picture>
+                        </a>
+                    </div>
+                @endforeach
             </div>
         </div>
     </div>

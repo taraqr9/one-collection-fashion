@@ -95,6 +95,7 @@ class SettingResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('name'),
+                TextColumn::make('key'),
                 TextColumn::make('type'),
                 StatusColumn::make(),
             ])

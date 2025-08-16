@@ -40,3 +40,22 @@ if (! function_exists('isAllowedDateDiffServiceWise')) {
         return false;
     }
 }
+
+if (! function_exists('getSettingImages')) {
+    function getSettingImages($settings, string $key): array
+    {
+        $setting = $settings->firstWhere('key', $key);
+
+        if (! $setting) {
+            return [
+                'name' => null,
+                'images' => [],
+            ];
+        }
+
+        return [
+            'name' => $setting->name,
+            'images' => $setting->value['images'] ?? [],
+        ];
+    }
+}
