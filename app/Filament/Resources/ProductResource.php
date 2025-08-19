@@ -49,7 +49,7 @@ class ProductResource extends Resource
                         TextInput::make('name')
                             ->required(),
 
-                        Select::make('parent_id')
+                        Select::make('category_id')
                             ->label('Category')
                             ->relationship(
                                 name: 'category',
@@ -59,13 +59,14 @@ class ProductResource extends Resource
                             ->live()
                             ->required(),
 
-                        Select::make('category_id')
+                        Select::make('sub_category_id')
                             ->label('Sub Category')
-                            ->options(fn (Get $get) => Category::where('parent_id', $get('parent_id'))
+                            ->options(fn (Get $get) => Category::where('parent_id', $get('category_id'))
                                 ->pluck('name', 'id')
                                 ->toArray()
                             )
-                            ->hidden(fn (Get $get) => empty($get('parent_id'))),
+                            ->nullable()
+                            ->hidden(fn (Get $get) => empty($get('category_id'))),
 
                         TextInput::make('price')
                             ->required(),
@@ -193,21 +194,23 @@ class ProductResource extends Resource
                 TextColumn::make('price'),
                 TextColumn::make('offer_price'),
                 TextColumn::make('category.name')
-                    ->label('Category'),
-                TextColumn::make('parentCategory.name')
-                    ->label('Sub Category'),
+                    ->label('Category')
+                    ->sortable(),
+                TextColumn::make('subCategory.name')
+                    ->label('Sub Category')
+                    ->sortable(),
                 TextColumn::make('total_stock')
                     ->label('Total Stock')
                     ->sortable(),
                 StatusColumn::make(),
             ])
             ->filters([
-                SelectFilter::make('id')
+                SelectFilter::make('category_id')
                     ->label('Category')
                     ->options(fn () => Category::whereNull('parent_id')->pluck('name', 'id'))
                     ->searchable(),
 
-                SelectFilter::make('parent_id')
+                SelectFilter::make('sub_category_id')
                     ->label('Sub Category')
                     ->options(fn () => Category::whereNotNull('parent_id')->pluck('name', 'id'))
                     ->searchable(),
@@ -235,6 +238,7 @@ class ProductResource extends Resource
                     }),
 
             ], layout: FiltersLayout::AboveContent)
+            ->deferFilters(false)
             ->recordActions([
                 ViewAction::make(),
                 EditAction::make()
