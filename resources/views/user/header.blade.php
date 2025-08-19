@@ -6,18 +6,22 @@
                     <img loading="lazy" src="{{ url()->asset('user/assets/images/svg/logo.svg') }}" alt="logo"/>
                 </a>
             </div>
-            <div class="search_wrap d-none d-lg-block">
-                <div class="search d-flex">
-                    <div class="search_input">
-                        <input type="text" placeholder="Search"/>
-                    </div>
-                    <div class="search_subimt">
-                        <button>
-                            <span class="d-none d-sm-inline-block">Search</span>
-                        </button>
+
+            <form action="{{ route('products.index') }}" method="get">
+                <div class="search_wrap d-none d-lg-block">
+                    <div class="search d-flex">
+                        <div class="search_input">
+                            <input type="text" placeholder="Search" name="keyword"/>
+                        </div>
+                        <div class="search_subimt">
+                            <button>
+                                <span class="d-none d-sm-inline-block">Search</span>
+                            </button>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </form>
+
             <div class="header_icon d-flex align-items-center ms-auto ms-sm-0">
                 <div class="shopcart">
                     <a href="#" class="icon_wrp text-center d-none d-lg-block">

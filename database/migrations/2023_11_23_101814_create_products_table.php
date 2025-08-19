@@ -14,13 +14,13 @@ return new class extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('category_id')->nullable();
-            $table->foreignId('sub_category_id')->nullable()->constrained('categories')->onDelete('cascade');
-            $table->string('name');
+            $table->foreignId('category_id')->nullable()->index();
+            $table->foreignId('sub_category_id')->nullable()->index()->constrained('categories')->onDelete('cascade');
+            $table->string('name')->index();
             $table->text('description')->nullable();
             $table->integer('price');
             $table->integer('offer_price')->default(0);
-            $table->string('status')->default(StatusEnum::Active->value);
+            $table->string('status')->index()->default(StatusEnum::Active->value);
             $table->timestamps();
         });
     }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\User;
 
 use App\Enums\StatusEnum;
+use App\Filter\ProductFilter;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Product;
@@ -15,11 +16,18 @@ class ProductController extends Controller
     {
         $categories = Category::where('status', StatusEnum::Active)->get();
 
-        $products = Product::where('status', StatusEnum::Active)
+        $query = Product::query();
+
+        $query = ProductFilter::applyFilters($query, $request);
+
+        $products = $query
             ->with(['thumbnail', 'productImages'])
-            ->get()
-            ->map(function ($product) {
-                $product->thumbnail_url = $product->thumbnail ? Storage::url($product->thumbnail->url) : null;
+            ->paginate(5)
+            ->appends($request->query())
+            ->through(function ($product) {
+                $product->thumbnail_url = $product->thumbnail
+                    ? Storage::url($product->thumbnail->url)
+                    : null;
 
                 return $product;
             });

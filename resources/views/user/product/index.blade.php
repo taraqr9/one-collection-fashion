@@ -27,16 +27,16 @@
                 </div>
 
                 <div class="sorting_filter d-none d-sm-block m-2">
-                    <select id="category_select" class="nice_select" name="parent_id">
+                    <select id="category_select" class="nice_select" name="category_id">
                         <option value="">Select Category</option>
                         @foreach ($categories->where('parent_id', null)->sortBy('name') as $category)
-                            <option value="{{ $category->id }}">{{ $category->name }}</option>
+                            <option value="{{ $category->id }}" @selected(request('category_id') == $category->id)>{{ $category->name }}</option>
                         @endforeach
                     </select>
                 </div>
 
                 <div class="sorting_filter m-2" id="subcategory_filter_wrap" style="display:none;">
-                    <select id="subcategory_select" class="nice_select" name="child_id" disabled>
+                    <select id="subcategory_select" class="nice_select" name="sub_category_id" disabled>
                         <option value="">Select Sub Category</option>
                     </select>
                 </div>
@@ -44,7 +44,7 @@
                 <div class="sorting_filter d-none d-sm-block m-2">
                     <select class="nice_select" name="sort">
                         @foreach (DefaultSortingEnum::options() as $key => $sort)
-                            <option value="{{ $key }}">{{ $sort }}</option>
+                            <option value="{{ $key }}" @selected(request('sort') == $key)>{{ $sort }}</option>
                         @endforeach
                     </select>
                 </div>
@@ -86,13 +86,29 @@
                         </div>
                     @endforeach
                 </div>
+
                 <div class="pagination_wrp d-flex align-items-center justify-content-center mt-4">
-                    <div class="single_paginat active">1</div>
-                    <div class="single_paginat">2</div>
-                    <div class="single_paginat">3</div>
-                    <div class="single_paginat">4</div>
-                    <div class="single_paginat"><i class="las la-long-arrow-alt-right"></i></div>
+                    @if ($products->onFirstPage())
+                        <div class="single_paginat disabled"><i class="las la-long-arrow-alt-left"></i></div>
+                    @else
+                        <a href="{{ $products->previousPageUrl() }}" class="single_paginat"><i class="las la-long-arrow-alt-left"></i></a>
+                    @endif
+
+                    @foreach ($products->getUrlRange(1, $products->lastPage()) as $page => $url)
+                        @if ($page == $products->currentPage())
+                            <div class="single_paginat active">{{ $page }}</div>
+                        @else
+                            <a href="{{ $url }}" class="single_paginat">{{ $page }}</a>
+                        @endif
+                    @endforeach
+
+                    @if ($products->hasMorePages())
+                        <a href="{{ $products->nextPageUrl() }}" class="single_paginat"><i class="las la-long-arrow-alt-right"></i></a>
+                    @else
+                        <div class="single_paginat disabled"><i class="las la-long-arrow-alt-right"></i></div>
+                    @endif
                 </div>
+
             </div>
 
         </div>
@@ -105,13 +121,15 @@
         $(document).ready(function () {
             (() => {
                 const subWrap = document.getElementById('subcategory_filter_wrap');
-                const subSel = document.getElementById('subcategory_select');
+                const subSel  = document.getElementById('subcategory_select');
+
+                // inject the old request value from Laravel
+                const preselectedSubId = "{{ request('sub_category_id') }}";
 
                 hideSub();
 
                 let ctrl = null;
 
-                // delegated change handler (no addEventListener)
                 document.onchange = async function (e) {
                     const target = e.target || e.srcElement;
                     if (!target || target.id !== 'category_select') return;
@@ -128,45 +146,42 @@
                         return;
                     }
 
-                    showSub({loading: true});
+                    showSub({ loading: true });
 
                     try {
                         const res = await fetch(`/subcategories/${encodeURIComponent(categoryId)}`, {
                             method: 'GET',
-                            headers: {'Accept': 'application/json'},
+                            headers: { 'Accept': 'application/json' },
                             signal: ctrl.signal
                         });
                         if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
                         const list = await res.json();
-                        console.table(list.map(({id, name}) => ({id, name})));
 
                         if (!Array.isArray(list) || list.length === 0) {
                             hideSub();
                             return;
                         }
 
-                        const opts = [opt('', 'Select Sub Category'), ...list.map(s => opt(String(s.id), s.name))];
+                        // build options
+                        const opts = [opt('', 'Select Sub Category')];
+                        list.forEach(s => {
+                            const o = opt(String(s.id), s.name);
+                            if (preselectedSubId && preselectedSubId == s.id) {
+                                o.selected = true; // mark selected if matches request
+                            }
+                            opts.push(o);
+                        });
+
                         setOptions(opts);
 
-                        // ✅ enable native select
                         subSel.disabled = false;
                         subSel.removeAttribute('disabled');
                         subWrap.style.display = 'block';
 
-                        // ✅ sync Nice Select UI (works if plugin loaded)
                         if (window.jQuery && jQuery.fn.niceSelect) {
                             jQuery(subSel).niceSelect('update');
-                        } else {
-                            // Fallback: at least remove disabled appearance from wrapper
-                            const ns = subSel.nextElementSibling;
-                            if (ns && ns.classList.contains('nice-select')) {
-                                ns.classList.remove('disabled');
-                                const current = ns.querySelector('.current');
-                                if (current) current.textContent = subSel.options[0]?.textContent || 'Select Sub Category';
-                            }
                         }
-
                     } catch (err) {
                         if (err.name === 'AbortError') return;
                         console.error('Error fetching subcategories:', err);
@@ -181,34 +196,28 @@
                     o.textContent = label;
                     return o;
                 }
-
                 function setOptions(options) {
                     subSel.replaceChildren(...options);
                 }
-
                 function clearSub() {
                     setOptions([opt('', 'Select Sub Category')]);
                     subSel.disabled = true;
-                    // keep Nice Select wrapper in sync when clearing
-                    const ns = subSel.nextElementSibling;
-                    if (ns && ns.classList.contains('nice-select')) {
-                        ns.classList.add('disabled');
-                    }
                 }
-
                 function hideSub() {
                     clearSub();
                     subWrap.style.display = 'none';
                 }
-
-                function showSub({loading = false} = {}) {
+                function showSub({ loading = false } = {}) {
                     subWrap.style.display = 'block';
                     subSel.disabled = true;
                     setOptions([opt('', loading ? 'Loading…' : 'Select Sub Category')]);
-                    const ns = subSel.nextElementSibling;
-                    if (ns && ns.classList.contains('nice-select')) {
-                        ns.classList.add('disabled');
-                    }
+                }
+
+                // auto-trigger on page load if category is preselected
+                const catSel = document.getElementById('category_select');
+                if (catSel.value) {
+                    const event = new Event('change', { bubbles: true });
+                    catSel.dispatchEvent(event);
                 }
             })();
         });
