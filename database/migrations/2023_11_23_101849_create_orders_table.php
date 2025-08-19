@@ -26,8 +26,6 @@ return new class extends Migration
             $table->string('payment_method')->default(OrderPaymentMethodEnum::CashOnDelivery->value);
             $table->string('status')->default(OrderStatusEnum::Pending->value); // pending, paid, shipped, completed, cancelled
             $table->timestamps();
-
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 
