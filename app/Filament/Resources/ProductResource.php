@@ -192,9 +192,9 @@ class ProductResource extends Resource
                 TextColumn::make('name'),
                 TextColumn::make('price'),
                 TextColumn::make('offer_price'),
-                TextColumn::make('parentCategory.name')
-                    ->label('Category'),
                 TextColumn::make('category.name')
+                    ->label('Category'),
+                TextColumn::make('parentCategory.name')
                     ->label('Sub Category'),
                 TextColumn::make('total_stock')
                     ->label('Total Stock')

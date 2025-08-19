@@ -6,11 +6,12 @@ use App\Enums\StatusEnum;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Product;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $categories = Category::where('status', StatusEnum::Active)->get();
 

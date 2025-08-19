@@ -1,4 +1,7 @@
-@php use Illuminate\Support\Facades\Storage; @endphp
+@php
+    use App\Enums\DefaultSortingEnum;
+    use Illuminate\Support\Facades\Storage;
+@endphp
 @extends('user.master')
 
 @section('title')
@@ -16,182 +19,82 @@
 
     <div class="shop_wrap section_padding_b">
         <div class="container">
-            <div class="row">
-                {{--                <div class="col-xl-3 col-lg-4 position-relative">--}}
-                {{--                    <div class="filter_box py-3 px-3 shadow_sm">--}}
-                {{--                        <div class="close_filter d-block d-lg-none"><i class="las la-times"></i></div>--}}
-                {{--                        <div class="shop_filter d-block d-sm-none">--}}
-                {{--                            <h4 class="filter_title">Sort by</h4>--}}
-                {{--                            <div class="sorting_filter mb-2">--}}
-                {{--                                <select class="nice_select">--}}
-                {{--                                    <option value="">Default sorting</option>--}}
-                {{--                                    <option value="">Price low-high</option>--}}
-                {{--                                    <option value="">Price high-low</option>--}}
-                {{--                                </select>--}}
-                {{--                            </div>--}}
-                {{--                        </div>--}}
 
-                {{--                        <div class="shop_filter">--}}
-                {{--                            <h4 class="filter_title">Categories</h4>--}}
-                {{--                            <div class="filter_list">--}}
-                {{--                                @foreach($categories->where('parent_id', null)->sortBy('name') as $category)--}}
-                {{--                                    <div class="custom_check d-flex align-items-center">--}}
-                {{--                                        <input type="checkbox" class="check_inp" hidden id="cat-women" checked/>--}}
-                {{--                                        <label for="cat-women">{{ $category->name }}</label>--}}
-                {{--                                        <p class="mb-0 ms-auto">({{ $category->products->count() }})</p>--}}
-                {{--                                    </div>--}}
-                {{--                                @endforeach--}}
-                {{--                            </div>--}}
-                {{--                        </div>--}}
-                {{--                        <div class="shop_filter">--}}
-                {{--                            <h4 class="filter_title">Sub Categories</h4>--}}
-                {{--                            <div class="filter_list">--}}
-                {{--                                @foreach($categories->whereNotNull('parent_id')->sortBy('name') as $category)--}}
-                {{--                                    <div class="custom_check d-flex align-items-center">--}}
-                {{--                                        <input type="checkbox" class="check_inp" hidden id="bnd-adidas" checked/>--}}
-                {{--                                        <label for="cat-women">{{ $category->name }}</label>--}}
-                {{--                                        <p class="mb-0 ms-auto">({{ $category->parent->name }})</p>--}}
-                {{--                                    </div>--}}
-                {{--                                @endforeach--}}
-                {{--                            </div>--}}
-                {{--                        </div>--}}
-                {{--                        <div class="shop_filter">--}}
-                {{--                            <h4 class="filter_title">Price</h4>--}}
-                {{--                            <div class="price-range-slider">--}}
-                {{--                                <div id="slider-range" class="range-bar"></div>--}}
-                {{--                                <p class="range-value">--}}
-                {{--                                    <input type="text" id="amount" readonly/>--}}
-                {{--                                </p>--}}
-                {{--                            </div>--}}
-                {{--                        </div>--}}
-                {{--                        <div class="shop_filter">--}}
-                {{--                            <h4 class="filter_title">Size</h4>--}}
-                {{--                            <div class="size_selector d-flex">--}}
-                {{--                                <div class="single_size_opt">--}}
-                {{--                                    <input type="radio" hidden name="size" class="size_inp" id="size-xs"/>--}}
-                {{--                                    <label for="size-xs">XS</label>--}}
-                {{--                                </div>--}}
-                {{--                                <div class="single_size_opt ms-2">--}}
-                {{--                                    <input type="radio" hidden name="size" class="size_inp" id="size-s"/>--}}
-                {{--                                    <label for="size-s">S</label>--}}
-                {{--                                </div>--}}
-                {{--                                <div class="single_size_opt ms-2">--}}
-                {{--                                    <input type="radio" hidden name="size" class="size_inp" id="size-m" checked/>--}}
-                {{--                                    <label for="size-m">M</label>--}}
-                {{--                                </div>--}}
-                {{--                                <div class="single_size_opt ms-2">--}}
-                {{--                                    <input type="radio" hidden name="size" class="size_inp" id="size-l"/>--}}
-                {{--                                    <label for="size-l">L</label>--}}
-                {{--                                </div>--}}
-                {{--                                <div class="single_size_opt ms-2">--}}
-                {{--                                    <input type="radio" hidden name="size" class="size_inp" id="size-xl"/>--}}
-                {{--                                    <label for="size-xl">XL</label>--}}
-                {{--                                </div>--}}
-                {{--                            </div>--}}
-                {{--                        </div>--}}
-                {{--                        <div class="shop_filter border-bottom-0 pb-0 mb-0">--}}
-                {{--                            <h4 class="filter_title">Color</h4>--}}
-                {{--                            <div class="size_selector color_selector d-flex align-items-center">--}}
-                {{--                                <div class="single_size_opt">--}}
-                {{--                                    <input type="radio" hidden name="color" class="size_inp" id="color-purple"/>--}}
-                {{--                                    <label for="color-purple" class="bg-color" data-bs-toggle="tooltip"--}}
-                {{--                                           title="Rose Red"></label>--}}
-                {{--                                </div>--}}
-                {{--                                <div class="single_size_opt ms-2">--}}
-                {{--                                    <input type="radio" hidden name="color" class="size_inp" id="color-red"/>--}}
-                {{--                                    <label for="color-red" class="bg-white" data-bs-toggle="tooltip"--}}
-                {{--                                           title="White"></label>--}}
-                {{--                                </div>--}}
-                {{--                                <div class="single_size_opt ms-2">--}}
-                {{--                                    <input type="radio" hidden name="color" class="size_inp" id="color-green" checked/>--}}
-                {{--                                    <label for="color-green" class="bg-dark" data-bs-toggle="tooltip"--}}
-                {{--                                           title="Black"></label>--}}
-                {{--                                </div>--}}
-                {{--                            </div>--}}
-                {{--                        </div>--}}
-                {{--                    </div>--}}
-                {{--                </div>--}}
-                <div class="col-xl-9 col-lg-8">
-                    <div class="d-flex align-items-center">
-                        <div class="d-block d-lg-none">
-                            <button class="default_btn py-2 me-3 rounded" id="mobile_filter_btn">Filter</button>
-                        </div>
+            <form action="{{ route('products.index') }}" method="get">
+                <div class="d-flex align-items-center">
+                <div class="d-block d-lg-none">
+                    <button class="default_btn py-2 me-3 rounded" id="mobile_filter_btn">Filter</button>
+                </div>
 
-                        <div class="sorting_filter d-none d-sm-block m-2">
-                            <select id="category_select" class="nice_select">
-                                <option value="">Select Category</option>
-                                @foreach ($categories->where('parent_id', null)->sortBy('name') as $category)
-                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
+                <div class="sorting_filter d-none d-sm-block m-2">
+                    <select id="category_select" class="nice_select" name="parent_id">
+                        <option value="">Select Category</option>
+                        @foreach ($categories->where('parent_id', null)->sortBy('name') as $category)
+                            <option value="{{ $category->id }}">{{ $category->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
 
-                        <div class="sorting_filter d-none d-sm-block m-2">
-                            <select id="subcategory_select" class="nice_select">
-                                <option value="">Select Sub Category</option>
-                                <!-- Options will be added dynamically -->
-                            </select>
-                        </div>
+                <div class="sorting_filter m-2" id="subcategory_filter_wrap" style="display:none;">
+                    <select id="subcategory_select" class="nice_select" name="child_id" disabled>
+                        <option value="">Select Sub Category</option>
+                    </select>
+                </div>
 
+                <div class="sorting_filter d-none d-sm-block m-2">
+                    <select class="nice_select" name="sort">
+                        @foreach (DefaultSortingEnum::options() as $key => $sort)
+                            <option value="{{ $key }}">{{ $sort }}</option>
+                        @endforeach
+                    </select>
+                </div>
 
-                        <div class="sorting_filter d-none d-sm-block m-2">
-                            <select class="nice_select">
-                                <option value="">Default sorting</option>
-                                <option value="">Price low-high</option>
-                                <option value="">Price high-low</option>
-                            </select>
-                        </div>
-                        <div class="view_filter d-flex align-items-center ms-auto">
-                            <a href="#">
-                                <div class="view_icon active"><i class="icon-grid"></i></div>
-                            </a>
-                            <!-- <a href="shop-list.html">
-                                    <div class="view_icon"><i class="las la-list-ul"></i></div>
-                                </a> -->
-                        </div>
-                    </div>
-                    <div class="shop_products">
-                        <div class="row gy-4">
-                            @foreach($products as $product)
-                                <div class="col-md-4 col-sm-6">
-                                    <div class="single_new_arrive">
-                                        <div class="sna_img">
-                                            <img loading="lazy" class="prd_img"
-                                                 src="{{ $product->thumbnail_url }}"
-                                                 alt="product"/>
-
-                                        </div>
-                                        <div class="sna_content">
-                                            <a href="product-view.html">
-                                                <h4>{{ $product->name }}</h4>
-                                            </a>
-                                            <div class="ratprice">
-                                                <div class="price">
-                                                    <span class="org_price"> TK {{ $product->price }}</span>
-                                                    @if($product->offer_price > 0)
-                                                        <span class="prev_price"> TK {{ $product->offer_price }}</span>
-                                                    @endif
-                                                </div>
-
-                                            </div>
-                                            <div class="product_adcart">
-                                                <button class="default_btn">Buy Now</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            @endforeach
-                        </div>
-                        <div class="pagination_wrp d-flex align-items-center justify-content-center mt-4">
-                            <div class="single_paginat active">1</div>
-                            <div class="single_paginat">2</div>
-                            <div class="single_paginat">3</div>
-                            <div class="single_paginat">4</div>
-                            <div class="single_paginat"><i class="las la-long-arrow-alt-right"></i></div>
-                        </div>
-                    </div>
+                <div class="view_filter d-flex align-items-center ms-auto">
+                        <button class="default_btn small rounded me-sm-3 me-2">Filter</button>
                 </div>
             </div>
+            </form>
+            <div class="shop_products">
+                <div class="row gy-4">
+                    @foreach($products as $product)
+                        <div class="col-md-3 col-sm-6">
+                            <div class="single_new_arrive">
+                                <div class="sna_img">
+                                    <img loading="lazy" class="prd_img"
+                                         src="{{ $product->thumbnail_url }}"
+                                         alt="product"/>
+
+                                </div>
+                                <div class="sna_content">
+                                    <a href="product-view.html">
+                                        <h4>{{ $product->name }}</h4>
+                                    </a>
+                                    <div class="ratprice">
+                                        <div class="price">
+                                            <span class="org_price"> TK {{ $product->price }}</span>
+                                            @if($product->offer_price > 0)
+                                                <span class="prev_price"> TK {{ $product->offer_price }}</span>
+                                            @endif
+                                        </div>
+
+                                    </div>
+                                    <div class="product_adcart">
+                                        <button class="default_btn">Buy Now</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+                <div class="pagination_wrp d-flex align-items-center justify-content-center mt-4">
+                    <div class="single_paginat active">1</div>
+                    <div class="single_paginat">2</div>
+                    <div class="single_paginat">3</div>
+                    <div class="single_paginat">4</div>
+                    <div class="single_paginat"><i class="las la-long-arrow-alt-right"></i></div>
+                </div>
+            </div>
+
         </div>
     </div>
 
@@ -199,34 +102,122 @@
 
 @section('footer_js')
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const categorySelect = document.getElementById('category_select');
-            const subcategorySelect = document.getElementById('subcategory_select');
+        $(document).ready(function () {
+            (() => {
+                const subWrap = document.getElementById('subcategory_filter_wrap');
+                const subSel = document.getElementById('subcategory_select');
 
-            categorySelect.addEventListener('change', function () {
-                const categoryId = this.value;
+                hideSub();
 
-                // Reset subcategory select
-                subcategorySelect.innerHTML = '<option value="">Select Sub Category</option>';
+                let ctrl = null;
 
-                if (!categoryId) return;
+                // delegated change handler (no addEventListener)
+                document.onchange = async function (e) {
+                    const target = e.target || e.srcElement;
+                    if (!target || target.id !== 'category_select') return;
 
-                fetch(`/subcategories/${categoryId}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        data.forEach(sub => {
-                            const option = document.createElement('option');
-                            option.value = sub.id;
-                            option.textContent = sub.name;
-                            subcategorySelect.appendChild(option);
+                    const categoryId = target.value;
+
+                    if (ctrl) ctrl.abort();
+                    ctrl = new AbortController();
+
+                    clearSub();
+
+                    if (!categoryId) {
+                        hideSub();
+                        return;
+                    }
+
+                    showSub({loading: true});
+
+                    try {
+                        const res = await fetch(`/subcategories/${encodeURIComponent(categoryId)}`, {
+                            method: 'GET',
+                            headers: {'Accept': 'application/json'},
+                            signal: ctrl.signal
                         });
+                        if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
-                        // Refresh Nice Select after updating options
-                        $(subcategorySelect).niceSelect('update');
-                    })
-                    .catch(error => console.error('Error fetching subcategories:', error));
-            });
+                        const list = await res.json();
+                        console.table(list.map(({id, name}) => ({id, name})));
+
+                        if (!Array.isArray(list) || list.length === 0) {
+                            hideSub();
+                            return;
+                        }
+
+                        const opts = [opt('', 'Select Sub Category'), ...list.map(s => opt(String(s.id), s.name))];
+                        setOptions(opts);
+
+                        // ✅ enable native select
+                        subSel.disabled = false;
+                        subSel.removeAttribute('disabled');
+                        subWrap.style.display = 'block';
+
+                        // ✅ sync Nice Select UI (works if plugin loaded)
+                        if (window.jQuery && jQuery.fn.niceSelect) {
+                            jQuery(subSel).niceSelect('update');
+                        } else {
+                            // Fallback: at least remove disabled appearance from wrapper
+                            const ns = subSel.nextElementSibling;
+                            if (ns && ns.classList.contains('nice-select')) {
+                                ns.classList.remove('disabled');
+                                const current = ns.querySelector('.current');
+                                if (current) current.textContent = subSel.options[0]?.textContent || 'Select Sub Category';
+                            }
+                        }
+
+                    } catch (err) {
+                        if (err.name === 'AbortError') return;
+                        console.error('Error fetching subcategories:', err);
+                        hideSub();
+                    }
+                };
+
+                // helpers
+                function opt(value, label) {
+                    const o = document.createElement('option');
+                    o.value = value;
+                    o.textContent = label;
+                    return o;
+                }
+
+                function setOptions(options) {
+                    subSel.replaceChildren(...options);
+                }
+
+                function clearSub() {
+                    setOptions([opt('', 'Select Sub Category')]);
+                    subSel.disabled = true;
+                    // keep Nice Select wrapper in sync when clearing
+                    const ns = subSel.nextElementSibling;
+                    if (ns && ns.classList.contains('nice-select')) {
+                        ns.classList.add('disabled');
+                    }
+                }
+
+                function hideSub() {
+                    clearSub();
+                    subWrap.style.display = 'none';
+                }
+
+                function showSub({loading = false} = {}) {
+                    subWrap.style.display = 'block';
+                    subSel.disabled = true;
+                    setOptions([opt('', loading ? 'Loading…' : 'Select Sub Category')]);
+                    const ns = subSel.nextElementSibling;
+                    if (ns && ns.classList.contains('nice-select')) {
+                        ns.classList.add('disabled');
+                    }
+                }
+            })();
         });
     </script>
+
 @endsection
+
+
+
+
+
 
