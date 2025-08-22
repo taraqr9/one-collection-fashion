@@ -68,6 +68,9 @@ class ProductResource extends Resource
                             ->nullable()
                             ->hidden(fn (Get $get) => empty($get('category_id'))),
 
+                        TextInput::make('brand')
+                            ->nullable(),
+
                         TextInput::make('price')
                             ->required(),
 
@@ -191,6 +194,7 @@ class ProductResource extends Resource
                 ImageColumn::make('thumbnail.url')
                     ->circular(),
                 TextColumn::make('name'),
+                TextColumn::make('brand'),
                 TextColumn::make('price'),
                 TextColumn::make('offer_price'),
                 TextColumn::make('category.name')
