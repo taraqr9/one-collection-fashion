@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignId('sub_category_id')->nullable()->index()->constrained('categories')->onDelete('cascade');
             $table->string('name')->index();
             $table->string('brand')->nullable();
+            $table->string('sku')->nullable()->unique()->index();
             $table->text('description')->nullable();
             $table->integer('price');
             $table->integer('offer_price')->default(0);
