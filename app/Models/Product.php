@@ -50,8 +50,17 @@ class Product extends Model
         return $this->morphOne(Image::class, 'imageable')->where('type', 'thumbnail');
     }
 
-    public function productImages(): MorphOne
+    public function productImages(): MorphMany
     {
-        return $this->morphOne(Image::class, 'imageable')->where('type', 'product_image');
+        return $this->morphMany(Image::class, 'imageable')->where('type', 'product_image');
+    }
+
+    public function discountPercentage(): int
+    {
+        if ($this->offer_price > 0 && $this->offer_price < $this->price) {
+            return round((($this->price - $this->offer_price) / $this->price) * 100);
+        }
+
+        return 0;
     }
 }

@@ -22,67 +22,68 @@
 
             <form action="{{ route('products.index') }}" method="get">
                 <div class="d-flex align-items-center">
-                <div class="d-block d-lg-none">
-                    <button class="default_btn py-2 me-3 rounded" id="mobile_filter_btn">Filter</button>
-                </div>
+                    <div class="d-block d-lg-none">
+                        <button class="default_btn py-2 me-3 rounded" id="mobile_filter_btn">Filter</button>
+                    </div>
 
-                <div class="sorting_filter d-none d-sm-block m-2">
-                    <select id="category_select" class="nice_select" name="category_id">
-                        <option value="">Select Category</option>
-                        @foreach ($categories->where('parent_id', null)->sortBy('name') as $category)
-                            <option value="{{ $category->id }}" @selected(request('category_id') == $category->id)>{{ $category->name }}</option>
-                        @endforeach
-                    </select>
-                </div>
+                    <div class="sorting_filter d-none d-sm-block m-2">
+                        <select id="category_select" class="nice_select" name="category_id">
+                            <option value="">Select Category</option>
+                            @foreach ($categories->where('parent_id', null)->sortBy('name') as $category)
+                                <option
+                                    value="{{ $category->id }}" @selected(request('category_id') == $category->id)>{{ $category->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
 
-                <div class="sorting_filter m-2" id="subcategory_filter_wrap" style="display:none;">
-                    <select id="subcategory_select" class="nice_select" name="sub_category_id" disabled>
-                        <option value="">Select Sub Category</option>
-                    </select>
-                </div>
+                    <div class="sorting_filter m-2" id="subcategory_filter_wrap" style="display:none;">
+                        <select id="subcategory_select" class="nice_select" name="sub_category_id" disabled>
+                            <option value="">Select Sub Category</option>
+                        </select>
+                    </div>
 
-                <div class="sorting_filter d-none d-sm-block m-2">
-                    <select class="nice_select" name="sort">
-                        @foreach (DefaultSortingEnum::options() as $key => $sort)
-                            <option value="{{ $key }}" @selected(request('sort') == $key)>{{ $sort }}</option>
-                        @endforeach
-                    </select>
-                </div>
+                    <div class="sorting_filter d-none d-sm-block m-2">
+                        <select class="nice_select" name="sort">
+                            @foreach (DefaultSortingEnum::options() as $key => $sort)
+                                <option value="{{ $key }}" @selected(request('sort') == $key)>{{ $sort }}</option>
+                            @endforeach
+                        </select>
+                    </div>
 
-                <div class="view_filter d-flex align-items-center ms-auto">
+                    <div class="view_filter d-flex align-items-center ms-auto">
                         <button class="default_btn small rounded me-sm-3 me-2">Filter</button>
+                    </div>
                 </div>
-            </div>
             </form>
             <div class="shop_products">
                 <div class="row gy-4">
                     @foreach($products as $product)
                         <div class="col-md-3 col-sm-6">
-                            <div class="single_new_arrive">
-                                <div class="sna_img">
-                                    <img loading="lazy" class="prd_img"
-                                         src="{{ $product->thumbnail_url }}"
-                                         alt="product"/>
+                            <a href="{{ route('products.show', $product) }}">
+                                <div class="single_new_arrive">
+                                    <div class="sna_img">
+                                        <img loading="lazy" class="prd_img"
+                                             src="{{ $product->thumbnail_url }}"
+                                             alt="product"/>
 
-                                </div>
-                                <div class="sna_content">
-                                    <a href="product-view.html">
+                                    </div>
+                                    <div class="sna_content">
                                         <h4>{{ $product->name }}</h4>
-                                    </a>
-                                    <div class="ratprice">
-                                        <div class="price">
-                                            <span class="org_price"> TK {{ $product->price }}</span>
-                                            @if($product->offer_price > 0)
-                                                <span class="prev_price"> TK {{ $product->offer_price }}</span>
-                                            @endif
-                                        </div>
+                                        <div class="ratprice">
+                                            <div class="price">
+                                                <span class="org_price"> TK {{ $product->price }}</span>
+                                                @if($product->offer_price > 0)
+                                                    <span class="prev_price"> TK {{ $product->offer_price }}</span>
+                                                @endif
+                                            </div>
 
-                                    </div>
-                                    <div class="product_adcart">
-                                        <button class="default_btn">Buy Now</button>
+                                        </div>
+                                        <div class="product_adcart">
+                                            <button class="default_btn">Buy Now</button>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            </a>
                         </div>
                     @endforeach
                 </div>
@@ -91,7 +92,8 @@
                     @if ($products->onFirstPage())
                         <div class="single_paginat disabled"><i class="las la-long-arrow-alt-left"></i></div>
                     @else
-                        <a href="{{ $products->previousPageUrl() }}" class="single_paginat"><i class="las la-long-arrow-alt-left"></i></a>
+                        <a href="{{ $products->previousPageUrl() }}" class="single_paginat"><i
+                                class="las la-long-arrow-alt-left"></i></a>
                     @endif
 
                     @foreach ($products->getUrlRange(1, $products->lastPage()) as $page => $url)
@@ -103,7 +105,8 @@
                     @endforeach
 
                     @if ($products->hasMorePages())
-                        <a href="{{ $products->nextPageUrl() }}" class="single_paginat"><i class="las la-long-arrow-alt-right"></i></a>
+                        <a href="{{ $products->nextPageUrl() }}" class="single_paginat"><i
+                                class="las la-long-arrow-alt-right"></i></a>
                     @else
                         <div class="single_paginat disabled"><i class="las la-long-arrow-alt-right"></i></div>
                     @endif
@@ -121,7 +124,7 @@
         $(document).ready(function () {
             (() => {
                 const subWrap = document.getElementById('subcategory_filter_wrap');
-                const subSel  = document.getElementById('subcategory_select');
+                const subSel = document.getElementById('subcategory_select');
 
                 // inject the old request value from Laravel
                 const preselectedSubId = "{{ request('sub_category_id') }}";
@@ -146,12 +149,12 @@
                         return;
                     }
 
-                    showSub({ loading: true });
+                    showSub({loading: true});
 
                     try {
                         const res = await fetch(`/subcategories/${encodeURIComponent(categoryId)}`, {
                             method: 'GET',
-                            headers: { 'Accept': 'application/json' },
+                            headers: {'Accept': 'application/json'},
                             signal: ctrl.signal
                         });
                         if (!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -196,18 +199,22 @@
                     o.textContent = label;
                     return o;
                 }
+
                 function setOptions(options) {
                     subSel.replaceChildren(...options);
                 }
+
                 function clearSub() {
                     setOptions([opt('', 'Select Sub Category')]);
                     subSel.disabled = true;
                 }
+
                 function hideSub() {
                     clearSub();
                     subWrap.style.display = 'none';
                 }
-                function showSub({ loading = false } = {}) {
+
+                function showSub({loading = false} = {}) {
                     subWrap.style.display = 'block';
                     subSel.disabled = true;
                     setOptions([opt('', loading ? 'Loading…' : 'Select Sub Category')]);
@@ -216,7 +223,7 @@
                 // auto-trigger on page load if category is preselected
                 const catSel = document.getElementById('category_select');
                 if (catSel.value) {
-                    const event = new Event('change', { bubbles: true });
+                    const event = new Event('change', {bubbles: true});
                     catSel.dispatchEvent(event);
                 }
             })();

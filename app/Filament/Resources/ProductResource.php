@@ -54,19 +54,19 @@ class ProductResource extends Resource
                             ->relationship(
                                 name: 'category',
                                 titleAttribute: 'name',
-                                modifyQueryUsing: fn($query) => $query->whereNull('parent_id')
+                                modifyQueryUsing: fn ($query) => $query->whereNull('parent_id')
                             )
                             ->live()
                             ->required(),
 
                         Select::make('sub_category_id')
                             ->label('Sub Category')
-                            ->options(fn(Get $get) => Category::where('parent_id', $get('category_id'))
+                            ->options(fn (Get $get) => Category::where('parent_id', $get('category_id'))
                                 ->pluck('name', 'id')
                                 ->toArray()
                             )
                             ->nullable()
-                            ->hidden(fn(Get $get) => empty($get('category_id'))),
+                            ->hidden(fn (Get $get) => empty($get('category_id'))),
 
                         TextInput::make('brand')
                             ->nullable(),
@@ -132,7 +132,7 @@ class ProductResource extends Resource
                     ->enableOpen()
                     ->dehydrated(false)
                     ->required(function (?Product $record, $state) {
-                        return !$record || empty($state);
+                        return ! $record || empty($state);
                     })
                     ->afterStateHydrated(function (FileUpload $component, ?Product $record) {
                         if ($record && $record->thumbnail) {
@@ -150,9 +150,9 @@ class ProductResource extends Resource
                     ->columnSpanFull()
                     ->reorderable()
                     ->dehydrated(false)
-                    ->required(fn(?Product $record, $state) => !$record || empty($state))
+                    ->required(fn (?Product $record, $state) => ! $record || empty($state))
                     ->afterStateHydrated(function (FileUpload $component, ?Product $record) {
-                        if (!$record) {
+                        if (! $record) {
                             return;
                         }
 
@@ -161,7 +161,7 @@ class ProductResource extends Resource
                             ->pluck('url')
                             ->all();
 
-                        if (!empty($paths)) {
+                        if (! empty($paths)) {
                             $component->state($paths);
                         }
                     }),
@@ -174,7 +174,7 @@ class ProductResource extends Resource
                             ->directory('products/thumbnails')
                             ->maxFiles(1)
                             ->required(function (?Product $record, $state) {
-                                return !$record || empty($state);
+                                return ! $record || empty($state);
                             })
                             ->reactive()
                             ->dehydrated(false),
@@ -183,7 +183,7 @@ class ProductResource extends Resource
                             ->label('Product Images')
                             ->image()
                             ->multiple()
-                            ->required(fn(?Product $record, $state) => !$record || empty($state))
+                            ->required(fn (?Product $record, $state) => ! $record || empty($state))
                             ->directory('products/product_images')
                             ->reactive()
                             ->dehydrated(false),
@@ -216,12 +216,12 @@ class ProductResource extends Resource
             ->filters([
                 SelectFilter::make('category_id')
                     ->label('Category')
-                    ->options(fn() => Category::whereNull('parent_id')->pluck('name', 'id'))
+                    ->options(fn () => Category::whereNull('parent_id')->pluck('name', 'id'))
                     ->searchable(),
 
                 SelectFilter::make('sub_category_id')
                     ->label('Sub Category')
-                    ->options(fn() => Category::whereNotNull('parent_id')->pluck('name', 'id'))
+                    ->options(fn () => Category::whereNotNull('parent_id')->pluck('name', 'id'))
                     ->searchable(),
 
                 SelectFilter::make('status')
@@ -233,16 +233,16 @@ class ProductResource extends Resource
                             ->label('Search')
                             ->placeholder('Search products...'),
                     ])
-                    ->indicateUsing(fn(array $data) => !empty($data['q']) ? ["Search: {$data['q']}"] : [])
+                    ->indicateUsing(fn (array $data) => ! empty($data['q']) ? ["Search: {$data['q']}"] : [])
                     ->query(function (Builder $query, array $data) {
                         $q = $data['q'] ?? null;
-                        if (!$q) {
+                        if (! $q) {
                             return;
                         }
 
                         $query->where(function (Builder $sub) use ($q) {
                             $sub->where('name', 'like', "%{$q}%")
-                                ->orWhereHas('stocks', fn(Builder $sub) => $sub->where('sku', 'like', "%{$q}%"));
+                                ->orWhereHas('stocks', fn (Builder $sub) => $sub->where('sku', 'like', "%{$q}%"));
                         });
                     }),
 
