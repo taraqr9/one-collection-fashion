@@ -18,7 +18,6 @@ Route::middleware(['web', 'auth:web'])->group(function () {
     Route::post('products/add-to-cart', [ProductController::class, 'addToCart'])->name('products.add-to-cart');
     Route::resource('carts', CartController::class);
 });
-// Route::post('products/add-to-cart', [ProductController::class, 'addToCart'])->name('products.add-to-cart');
 
 Route::group(['prefix' => 'products'], function () {
 

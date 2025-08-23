@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cart;
 use Illuminate\View\View;
 
 class CartController extends Controller
@@ -10,8 +11,13 @@ class CartController extends Controller
     {
         $products = auth()->user()->carts()->get();
 
-        ds($products->first());
-
         return view('user.cart.index', compact('products'));
+    }
+
+    public function destroy(Cart $cart)
+    {
+        $cart->delete();
+
+        return redirect()->back()->with('success', 'Removed from cart successfully');
     }
 }

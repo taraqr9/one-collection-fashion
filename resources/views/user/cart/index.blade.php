@@ -14,70 +14,29 @@
         </div>
     </div>
 
-    <div class="modal fade" id="exampleModalCenterTitle" tabindex="-1" role="dialog"
-         aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="deleteConfirmationModalLabel">Confirm Delete</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                    <h5 class="modal-title" id="deleteModalLabel">Confirm Delete</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    Are you sure you want to delete?
+                    Are you sure you want to delete this item?
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-danger" onclick="performDelete()">Delete</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <form id="deleteForm" method="POST" style="display:inline;">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- model 2 -->
-    <div class="modal fade" id="exampleModalCenterTitle2" tabindex="-1" role="dialog"
-         aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="deleteConfirmationModalLabel">Confirm Delete</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    Are you sure you want to delete?
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-danger" onclick="performDelete()">Delete</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- model 3 -->
-    <div class="modal fade" id="exampleModalCenterTitle3" tabindex="-1" role="dialog"
-         aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="deleteConfirmationModalLabel">Confirm Delete</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    Are you sure you want to delete?
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-danger" onclick="performDelete()">Delete</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- modal end -->
+
     <div class="cart_area section_padding_b">
         <div class="container">
             <div class="row">
@@ -117,7 +76,8 @@
                                     <p>TK <span class="total-price">{{ $unitPrice * $product->quantity }}</span></p>
                                 </div>
                                 <div class="cart_remove ms-auto" data-toggle="modal"
-                                     data-target="#exampleModalCenterTitle">
+                                     data-target="#exampleModalCenterTitle"
+                                     data-id="{{ $product->id }}">
                                     <i class="icon-trash"></i>
                                 </div>
                             </div>
@@ -191,6 +151,17 @@
 
             // initial load
             updateSummary();
+
+
+            let deleteUrlTemplate = "{{ route('carts.destroy', ':id') }}";
+
+            // When delete button clicked
+            $(".cart_remove").on("click", function () {
+                let id = $(this).data("id");
+                let url = deleteUrlTemplate.replace(':id', id);
+                $("#deleteForm").attr("action", url);
+                $("#deleteModal").modal("show");
+            });
         });
     </script>
 
