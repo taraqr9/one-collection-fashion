@@ -5,6 +5,7 @@ namespace App\Http\Controllers\User;
 use App\Enums\StatusEnum;
 use App\Filter\ProductFilter;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\AddToCartRequest;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
@@ -38,16 +39,14 @@ class ProductController extends Controller
     public function show($id)
     {
         $product = Product::with(['thumbnail', 'productImages'])->findOrFail($id);
-        //        // Add thumbnail URL
-        //        $product->thumbnail_url = $product->thumbnail
-        //            ? Storage::url($product->thumbnail->url)
-        //            : null;
-        //
-        //        // Add product images URLs
-        //        $product->images_urls = $product->images->map(function ($img) {
-        //            return Storage::url($img->url);
-        //        });
 
         return view('user.product.show', compact('product'));
+    }
+
+    public function addToCart(AddToCartRequest $request)
+    {
+        auth()->user()->carts()->create($request->validated());
+
+        return redirect()->back()->with('success', 'Added on cart successfully');
     }
 }

@@ -31,7 +31,6 @@
         }
 
 
-
     </style>
 @endsection
 
@@ -122,19 +121,22 @@
                                     <div class="d-flex align-items-center">
                                         @foreach($product->stocks as $stock)
                                             <div class="single_size_opt me-2">
-                                                <input type="radio" hidden name="size" class="size_inp"
-                                                       id="{{ $stock->value }}"/>
-                                                <label for="{{ $stock->value }}">{{ $stock->value }}</label>
+                                                <input type="radio" hidden name="stock_id" class="size_inp"
+                                                       id="stock-{{ $stock->id }}"
+                                                       value="{{ $stock->id }}">
+                                                <label for="stock-{{ $stock->id }}">{{ $stock->value }}</label>
                                             </div>
                                         @endforeach
                                     </div>
+                                    <div id="size-error" class="text-danger mt-1"></div>
                                 </div>
                             </div>
                             <div class="cart_qnty ms-md-auto">
                                 <p>Quantity</p>
                                 <div class="input-group" style="width: 120px;">
                                     <button class="btn btn-outline-secondary minus" type="button">-</button>
-                                    <input type="number" name="quantity" class="form-control text-center" value="1" min="1">
+                                    <input type="number" name="quantity" class="form-control text-center" value="1"
+                                           min="1">
                                     <button class="btn btn-outline-secondary plus" type="button">+</button>
                                 </div>
 
@@ -142,15 +144,18 @@
                         </div>
 
                         @if($product->stocks()->sum('stock')>0)
-                        <div class="product_buttons">
-                            <a href="#" class="default_btn small rounded me-sm-3 me-2 px-4">
-                                <i class="icon-cart me-2"></i> Buy Now
-                            </a>
+                            <div class="product_buttons">
+                                <a href="#" class="default_btn small rounded me-sm-3 me-2 px-4">
+                                    <i class="icon-cart me-2"></i> Buy Now
+                                </a>
 
-                            <a href="#" class="default_btn small rounded me-sm-3 me-2 px-4">
-                                <i class="icon-card me-2"></i> Add to Cart
-                            </a>
-                        </div>
+                                <a href="#" id="add-to-cart"
+                                   data-url="{{ route('products.add-to-cart') }}"
+                                   data-product-id="{{ $product->id }}"
+                                   class="default_btn small rounded me-sm-3 me-2 px-4">
+                                    <i class="icon-card me-2"></i> Add to Cart
+                                </a>
+                            </div>
                         @else
                             <div class="product_buttons">
                                 <p class="default_btn small rounded me-sm-3 me-2 px-4">
@@ -167,10 +172,8 @@
                 </div>
             </div>
             <div class="product_view_tabs mt-4">
-                <div class="pv_tab_buttons" class="spec_text">
+                <div class="pv_tab_buttons spec_text">
                     <div class="pbt_single_btn active" data-target=".info">Product Info</div>
-                    {{--                    <div class="pbt_single_btn" data-target=".qna">Question & Answer</div>--}}
-                    {{--                    <div class="pbt_single_btn" data-target=".review">Review (10)</div>--}}
                 </div>
                 <div class="pb_tab_content info active">
                     <div class="row">
@@ -181,197 +184,6 @@
                         </div>
                     </div>
                 </div>
-
-
-                {{--                <div class="pb_tab_content qna">--}}
-                {{--                    <h4>Question about this product (3)</h4>--}}
-                {{--                    <div class="pbqna_wrp">--}}
-                {{--                        <div class="single_pbqna">--}}
-                {{--                            <div class="pbqna_icon">--}}
-                {{--                                <i class="icon-user-line"></i>--}}
-                {{--                            </div>--}}
-                {{--                            <div class="pbqna_content">--}}
-                {{--                                <h5>Any discount?</h5>--}}
-                {{--                                <p>Dr.SaifuzZ. - 27 Oct 2021</p>--}}
-                {{--                            </div>--}}
-                {{--                        </div>--}}
-                {{--                        <div class="single_pbqna">--}}
-                {{--                            <div class="pbqna_icon">--}}
-                {{--                                <i class="las la-headset"></i>--}}
-                {{--                            </div>--}}
-                {{--                            <div class="pbqna_content">--}}
-                {{--                                <h5>There is no discount sir</h5>--}}
-                {{--                                <p>Store Admin - 27 Oct 2021</p>--}}
-                {{--                            </div>--}}
-                {{--                        </div>--}}
-                {{--                    </div>--}}
-                {{--                    <div class="pbqna_wrp">--}}
-                {{--                        <div class="single_pbqna">--}}
-                {{--                            <div class="pbqna_icon">--}}
-                {{--                                <i class="icon-user-line"></i>--}}
-                {{--                            </div>--}}
-                {{--                            <div class="pbqna_content">--}}
-                {{--                                <h5>Any discount?</h5>--}}
-                {{--                                <p>Dr.SaifuzZ. - 27 Oct 2021</p>--}}
-                {{--                            </div>--}}
-                {{--                        </div>--}}
-                {{--                        <div class="single_pbqna">--}}
-                {{--                            <div class="pbqna_icon">--}}
-                {{--                                <i class="las la-headset"></i>--}}
-                {{--                            </div>--}}
-                {{--                            <div class="pbqna_content">--}}
-                {{--                                <h5>There is no discount sir</h5>--}}
-                {{--                                <p>Store Admin - 27 Oct 2021</p>--}}
-                {{--                            </div>--}}
-                {{--                        </div>--}}
-                {{--                    </div>--}}
-
-                {{--                    <div class="pbqna_form">--}}
-                {{--                        <form action="#">--}}
-                {{--                            <textarea placeholder="Type your question"></textarea>--}}
-                {{--                            <button class="default_btn rounded">Ask Question</button>--}}
-                {{--                        </form>--}}
-                {{--                    </div>--}}
-                {{--                </div>--}}
-                {{--                <div class="pb_tab_content review">--}}
-                {{--                    <div class="review_rating">--}}
-                {{--                        <div class="total_rating">--}}
-                {{--                            <div class="trating_number">--}}
-                {{--                                <span class="avrage">4.9</span>--}}
-                {{--                                <span class="from">/5</span>--}}
-                {{--                            </div>--}}
-                {{--                            <div class="rating_star">--}}
-                {{--                                <span><i class="las la-star"></i></span>--}}
-                {{--                                <span><i class="las la-star"></i></span>--}}
-                {{--                                <span><i class="las la-star"></i></span>--}}
-                {{--                                <span><i class="las la-star"></i></span>--}}
-                {{--                                <span><i class="las la-star"></i></span>--}}
-                {{--                            </div>--}}
-                {{--                            <div class="trating_count">20 Ratings</div>--}}
-                {{--                        </div>--}}
-                {{--                        <div class="overall_rating">--}}
-                {{--                            <div class="single_ovrating d-flex align-items-center">--}}
-                {{--                                <div class="rating_star">--}}
-                {{--                                    <span><i class="las la-star"></i></span>--}}
-                {{--                                    <span><i class="las la-star"></i></span>--}}
-                {{--                                    <span><i class="las la-star"></i></span>--}}
-                {{--                                    <span><i class="las la-star"></i></span>--}}
-                {{--                                    <span><i class="las la-star"></i></span>--}}
-                {{--                                </div>--}}
-                {{--                                <div class="rating_pbox"><span style="width: 70%"></span></div>--}}
-                {{--                                <p class="rating_count">18</p>--}}
-                {{--                            </div>--}}
-                {{--                            <div class="single_ovrating d-flex align-items-center">--}}
-                {{--                                <div class="rating_star">--}}
-                {{--                                    <span><i class="las la-star"></i></span>--}}
-                {{--                                    <span><i class="las la-star"></i></span>--}}
-                {{--                                    <span><i class="las la-star"></i></span>--}}
-                {{--                                    <span><i class="las la-star"></i></span>--}}
-                {{--                                    <span><i class="lar la-star"></i></span>--}}
-                {{--                                </div>--}}
-                {{--                                <div class="rating_pbox"><span style="width: 20%"></span></div>--}}
-                {{--                                <p class="rating_count">2</p>--}}
-                {{--                            </div>--}}
-                {{--                            <div class="single_ovrating d-flex align-items-center">--}}
-                {{--                                <div class="rating_star">--}}
-                {{--                                    <span><i class="las la-star"></i></span>--}}
-                {{--                                    <span><i class="las la-star"></i></span>--}}
-                {{--                                    <span><i class="las la-star"></i></span>--}}
-                {{--                                    <span><i class="lar la-star"></i></span>--}}
-                {{--                                    <span><i class="lar la-star"></i></span>--}}
-                {{--                                </div>--}}
-                {{--                                <div class="rating_pbox"><span style="width: 0%"></span></div>--}}
-                {{--                                <p class="rating_count">0</p>--}}
-                {{--                            </div>--}}
-                {{--                            <div class="single_ovrating d-flex align-items-center">--}}
-                {{--                                <div class="rating_star">--}}
-                {{--                                    <span><i class="las la-star"></i></span>--}}
-                {{--                                    <span><i class="las la-star"></i></span>--}}
-                {{--                                    <span><i class="lar la-star"></i></span>--}}
-                {{--                                    <span><i class="lar la-star"></i></span>--}}
-                {{--                                    <span><i class="lar la-star"></i></span>--}}
-                {{--                                </div>--}}
-                {{--                                <div class="rating_pbox"><span style="width: 0%"></span></div>--}}
-                {{--                                <p class="rating_count">0</p>--}}
-                {{--                            </div>--}}
-                {{--                            <div class="single_ovrating d-flex align-items-center">--}}
-                {{--                                <div class="rating_star">--}}
-                {{--                                    <span><i class="las la-star"></i></span>--}}
-                {{--                                    <span><i class="lar la-star"></i></span>--}}
-                {{--                                    <span><i class="lar la-star"></i></span>--}}
-                {{--                                    <span><i class="lar la-star"></i></span>--}}
-                {{--                                    <span><i class="lar la-star"></i></span>--}}
-                {{--                                </div>--}}
-                {{--                                <div class="rating_pbox"><span style="width: 0%"></span></div>--}}
-                {{--                                <p class="rating_count">0</p>--}}
-                {{--                            </div>--}}
-                {{--                        </div>--}}
-                {{--                    </div>--}}
-                {{--                    <div class="review_header d-flex align-items-center justify-content-between">--}}
-                {{--                        <p class="m-0 text-semibold">Product Reviews</p>--}}
-                {{--                        <div class="review_filters">--}}
-                {{--                            <select class="nice_select">--}}
-                {{--                                <option value="">Sort by</option>--}}
-                {{--                                <option value="">Price low-high</option>--}}
-                {{--                                <option value="">Price high-low</option>--}}
-                {{--                            </select>--}}
-                {{--                        </div>--}}
-                {{--                    </div>--}}
-                {{--                    <div class="review_cont_wrap">--}}
-                {{--                        <div class="single_review_wrp">--}}
-                {{--                            <div class="review_avatar">--}}
-                {{--                                <img loading="lazy" src="assets/images/avatar.png" alt="user"/>--}}
-                {{--                            </div>--}}
-                {{--                            <div class="review_content">--}}
-                {{--                                <h5>by Sadat A.</h5>--}}
-                {{--                                <div class="rating_star">--}}
-                {{--                                    <span><i class="las la-star"></i></span>--}}
-                {{--                                    <span><i class="las la-star"></i></span>--}}
-                {{--                                    <span><i class="las la-star"></i></span>--}}
-                {{--                                    <span><i class="las la-star"></i></span>--}}
-                {{--                                    <span><i class="las la-star"></i></span>--}}
-                {{--                                </div>--}}
-                {{--                                <div class="review_date">30 Jul 2021</div>--}}
-                {{--                                <div class="review_body">--}}
-                {{--                                    <p>Lorem Ipsumin gravida nibh vel velit auctor aliquet. Aenean sollicitudin, lorem--}}
-                {{--                                       quis bibendum auctor, nisi elit consequat ipsum, nec sagittis sem nibh id elit.--}}
-                {{--                                       Duis sed odio sit amet nibh vulputate</p>--}}
-                {{--                                    <div class="review_imgs">--}}
-                {{--                                        <img loading="lazy" src="assets/images/product.png" alt="review"/>--}}
-                {{--                                        <img loading="lazy" src="assets/images/product.png" alt="review"/>--}}
-                {{--                                        <img loading="lazy" src="assets/images/product.png" alt="review"/>--}}
-                {{--                                    </div>--}}
-                {{--                                </div>--}}
-                {{--                            </div>--}}
-                {{--                        </div>--}}
-                {{--                        <div class="single_review_wrp border-bottom-0 mb-0 pb-0">--}}
-                {{--                            <div class="review_avatar">--}}
-                {{--                                <img loading="lazy" src="assets/images/avatar.png" alt="user"/>--}}
-                {{--                            </div>--}}
-                {{--                            <div class="review_content">--}}
-                {{--                                <h5>by Sadat A.</h5>--}}
-                {{--                                <div class="rating_star">--}}
-                {{--                                    <span><i class="las la-star"></i></span>--}}
-                {{--                                    <span><i class="las la-star"></i></span>--}}
-                {{--                                    <span><i class="las la-star"></i></span>--}}
-                {{--                                    <span><i class="las la-star"></i></span>--}}
-                {{--                                    <span><i class="lar la-star"></i></span>--}}
-                {{--                                </div>--}}
-                {{--                                <div class="review_date">30 Jul 2021</div>--}}
-                {{--                                <div class="review_body">--}}
-                {{--                                    <p>Lorem Ipsumin gravida nibh vel velit auctor aliquet. Aenean sollicitudin, lorem--}}
-                {{--                                       quis bibendum auctor, nisi elit consequat ipsum, nec sagittis sem nibh id elit.--}}
-                {{--                                       Duis sed odio sit amet nibh vulputate</p>--}}
-                {{--                                    <div class="review_imgs">--}}
-                {{--                                        <img loading="lazy" src="assets/images/product.png" alt="review"/>--}}
-                {{--                                        <img loading="lazy" src="assets/images/product.png" alt="review"/>--}}
-                {{--                                        <img loading="lazy" src="assets/images/product.png" alt="review"/>--}}
-                {{--                                    </div>--}}
-                {{--                                </div>--}}
-                {{--                            </div>--}}
-                {{--                        </div>--}}
-                {{--                    </div>--}}
-                {{--                </div>--}}
             </div>
         </div>
     </div>
@@ -425,7 +237,6 @@
     <script src="{{ url()->asset('assets/js/main.js') }}"></script>
 
     <script>
-
         document.addEventListener("DOMContentLoaded", () => {
             // Select all cart wrappers, in case you have more in future
             document.querySelectorAll('.input-group').forEach(wrapper => {
@@ -442,6 +253,68 @@
                 });
             });
 
+            // Ensure quantity input never goes below 1 when user leaves the field
+            const qtyInput = document.querySelector("input[name='quantity']");
+
+            qtyInput.addEventListener("blur", function () {
+                if (parseInt(qtyInput.value) < 1 || isNaN(qtyInput.value)) {
+                    qtyInput.value = 1;
+                }
+            });
+
+            document.getElementById("add-to-cart").addEventListener("click", function(e) {
+                e.preventDefault();
+
+                const url = this.getAttribute("data-url");
+                const productId = this.getAttribute("data-product-id");
+                const stockSelected = document.querySelector("input[name='stock_id']:checked");
+                const quantity = parseInt(document.querySelector("input[name='quantity']").value);
+                const errorBox = document.getElementById("size-error");
+
+                // Check if size is selected
+                if (!stockSelected) {
+                    errorBox.textContent = "Please select a size.";
+                    return;
+                }
+
+                errorBox.textContent = ""; // clear previous errors
+
+                // Create form dynamically and submit
+                const form = document.createElement("form");
+                form.method = "POST";
+                form.action = url;
+
+                // CSRF token
+                const csrfInput = document.createElement("input");
+                csrfInput.type = "hidden";
+                csrfInput.name = "_token";
+                csrfInput.value = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
+                form.appendChild(csrfInput);
+
+                // Product ID
+                const productInput = document.createElement("input");
+                productInput.type = "hidden";
+                productInput.name = "product_id";
+                productInput.value = productId;
+                form.appendChild(productInput);
+
+                // Stock ID
+                const stockInput = document.createElement("input");
+                stockInput.type = "hidden";
+                stockInput.name = "stock_id";
+                stockInput.value = stockSelected.value;
+                form.appendChild(stockInput);
+
+                // Quantity
+                const qtyInput = document.createElement("input");
+                qtyInput.type = "hidden";
+                qtyInput.name = "quantity";
+                qtyInput.value = quantity;
+                form.appendChild(qtyInput);
+
+                document.body.appendChild(form);
+                form.submit();
+            });
 
         });
     </script>
