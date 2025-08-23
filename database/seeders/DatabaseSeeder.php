@@ -12,8 +12,8 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        $super_admin_role = Role::create(['name' => 'super-admin']);
-        Role::create(['name' => 'admin']);
+        $super_admin_role = Role::create(['name' => 'super-admin', 'guard_name' => 'admin']);
+        Role::create(['name' => 'admin', 'guard_name' => 'admin']);
 
         $permissions = [
             'view_role', 'view_any_role', 'create_role', 'update_role', 'delete_role', 'delete_any_role',
@@ -21,7 +21,7 @@ class DatabaseSeeder extends Seeder
         ];
 
         foreach ($permissions as $permission) {
-            $perm = Permission::create(['name' => $permission]);
+            $perm = Permission::create(['name' => $permission, 'guard_name' => 'admin']);
             $super_admin_role->givePermissionTo($perm);
         }
 

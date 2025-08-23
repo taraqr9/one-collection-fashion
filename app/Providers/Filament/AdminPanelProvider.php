@@ -31,6 +31,7 @@ class AdminPanelProvider extends PanelProvider
             ->sidebarCollapsibleOnDesktop()
             ->sidebarWidth('250px')
             ->login()
+            ->authGuard('admin')
             ->colors([
                 'primary' => Color::Amber,
             ])
