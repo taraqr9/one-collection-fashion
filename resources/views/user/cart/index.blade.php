@@ -36,79 +36,107 @@
         </div>
     </div>
 
-
     <div class="cart_area section_padding_b">
         <div class="container">
-            <div class="row">
-                <div class="col-lg-9">
-                    <h4 class="shop_cart_title sopcart_ttl d-none d-lg-flex">
-                        <span>Product</span>
-                        <span>Quantity</span>
-                        <span>Total Price</span>
-                    </h4>
-                    @foreach($products as $product)
-                        @php
-                            $unitPrice = $product->product->offer_price ?? $product->product->price;
-                        @endphp
-                        <div class="shop_cart_wrap">
-                            <div class="single_shop_cart d-flex align-items-center flex-wrap">
-                                <label class="cart_img mb-4 mb-md-0" for="flexCheckDefaultyx">
-                                    <img loading="lazy" src="{{ Storage::url($product->product->thumbnail->url) }}"
-                                         alt="product"/>
-                                </label>
-                                <div class="cart_cont">
-                                    <h5>{{ $product->product->name }}</h5>
-                                    <p class="price">TK {{ $unitPrice }}</p>
-                                    <div class="d-flex align-items-center gap-2">
-                                        <div class="size mb-0">{{ $product->stock->type->name }}: {{ $product->stock->value }}</div>
+            <form action="{{ route('orders.store') }}" method="POST" id="checkoutForm">
+                @csrf
+                <div class="row">
+                    <!-- Product List -->
+                    <div class="col-lg-8">
+                        <h4 class="shop_cart_title sopcart_ttl d-none d-lg-flex">
+                            <span>Product</span>
+                            <span>Quantity</span>
+                            <span>Total Price</span>
+                        </h4>
+                        @foreach($products as $product)
+                            @php
+                                $unitPrice = $product->product->offer_price ?? $product->product->price;
+                            @endphp
+                            <div class="shop_cart_wrap">
+                                <div class="single_shop_cart d-flex align-items-center flex-wrap">
+                                    <label class="cart_img mb-4 mb-md-0" for="flexCheckDefaultyx">
+                                        <img loading="lazy" src="{{ Storage::url($product->product->thumbnail->url) }}"
+                                             alt="product"/>
+                                    </label>
+                                    <div class="cart_cont">
+                                        <h5>{{ $product->product->name }}</h5>
+                                        <p class="price">TK {{ $unitPrice }}</p>
+                                        <div class="d-flex align-items-center gap-2">
+                                            <div class="size mb-0">{{ $product->stock->type->name }}: {{ $product->stock->value }}</div>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="cart_qnty d-flex align-items-center ms-md-auto">
-                                    <div class="cart_qnty_btn minus" data-price="{{ $unitPrice }}">
-                                        <i class="las la-minus"></i>
+                                    <div class="cart_qnty d-flex align-items-center ms-md-auto">
+                                        <div class="cart_qnty_btn minus" data-price="{{ $unitPrice }}">
+                                            <i class="las la-minus"></i>
+                                        </div>
+                                        <div class="cart_count" data-quantity="{{ $product->quantity }}">{{ $product->quantity }}</div>
+                                        <div class="cart_qnty_btn plus" data-price="{{ $unitPrice }}">
+                                            <i class="las la-plus"></i>
+                                        </div>
                                     </div>
-                                    <div class="cart_count" data-quantity="{{ $product->quantity }}">{{ $product->quantity }}</div>
-                                    <div class="cart_qnty_btn plus" data-price="{{ $unitPrice }}">
-                                        <i class="las la-plus"></i>
+                                    <div class="cart_price ms-auto">
+                                        <p>TK <span class="total-price">{{ $unitPrice * $product->quantity }}</span></p>
                                     </div>
-                                </div>
-                                <div class="cart_price ms-auto">
-                                    <p>TK <span class="total-price">{{ $unitPrice * $product->quantity }}</span></p>
-                                </div>
-                                <div class="cart_remove ms-auto" data-toggle="modal"
-                                     data-target="#exampleModalCenterTitle"
-                                     data-id="{{ $product->id }}">
-                                    <i class="icon-trash"></i>
+
+                                    <!-- Hidden inputs for checkout -->
+                                    <!-- Hidden inputs for checkout -->
+                                    <input type="hidden" name="products[{{ $product->id }}][product_id]" value="{{ $product->id }}">
+                                    <input type="hidden" name="products[{{ $product->id }}][stock_id]" value="{{ $product->stock_id }}">
+                                    <input type="hidden" name="products[{{ $product->id }}][quantity]" class="input-quantity-{{ $product->id }}" value="{{ $product->quantity }}">
+
+
+                                    <div class="cart_remove ms-auto" data-toggle="modal"
+                                         data-target="#exampleModalCenterTitle"
+                                         data-id="{{ $product->id }}">
+                                        <i class="icon-trash"></i>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    @endforeach
-                </div>
+                        @endforeach
+                    </div>
 
-                <div class="col-lg-3 mt-4 mt-lg-0">
-                    <div class="cart_summary">
-                        <h4>Order Summary</h4>
-                        <div class="cartsum_text d-flex justify-content-between">
-                            <p class="text-semibold">Subtotal</p>
-                            <p class="text-semibold">TK <span id="subtotal">0.00</span></p>
-                        </div>
-                        <div class="cartsum_text d-flex justify-content-between">
-                            <p>Delivery</p>
-                            <p>TK <span id="delivery-fee">50.00</span></p> {{-- keep static for now --}}
-                        </div>
-                        <div class="cart_sum_total d-flex justify-content-between">
-                            <p>Total</p>
-                            <p>TK <span id="total">0.00</span></p>
-                        </div>
-                        <div class="cart_sum_pros">
-                            <button>Proceed to checkout</button>
+                    <!-- Billing Form -->
+                    <div class="col-lg-4">
+                        <h4 class="shop_cart_title mb-4">Billing Details</h4>
+                        <div class="billing_form">
+                            <div class="mb-2 single_billing_inp">
+                                <label for="full_name">Full Name <span>*</span></label>
+                                <input type="text" id="user_name" name="user_name" class="form-control" required/>
+                            </div>
+                            <div class="mb-2 single_billing_inp">
+                                <label for="phone_no">Phone Number <span>*</span></label>
+                                <input type="number" id="user_phone" name="user_phone" class="form-control" required/>
+                            </div>
+                            <div class="mb-2 single_billing_inp">
+                                <label for="full_address">Address <span>*</span></label>
+                                <textarea rows="3" id="user_address" name="user_address" class="form-control" required></textarea>
+                            </div>
+
+                            <!-- Order Summary -->
+                            <div class="cart_summary mt-4">
+                                <h4>Order Summary</h4>
+                                <div class="d-flex justify-content-between">
+                                    <p class="text-semibold">Subtotal</p>
+                                    <p class="text-semibold">TK <span id="subtotal">0.00</span></p>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <p>Delivery</p>
+                                    <p>TK <span id="delivery-fee">50.00</span></p>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <p>Total</p>
+                                    <p>TK <span id="total">0.00</span></p>
+                                </div>
+                                <button type="submit" class="btn btn-primary w-100 mt-2">Proceed to checkout</button>
+                            </div>
                         </div>
                     </div>
                 </div>
+            </form>
 
-            </div>
         </div>
     </div>
+
 @endsection
 
 @section('footer_js')
@@ -135,6 +163,7 @@
                 let quantity = parseInt($countEl.text());
                 let price = parseFloat($btn.data("price"));
                 let $totalEl = $btn.closest(".single_shop_cart").find(".total-price");
+                let productId = $btn.closest(".single_shop_cart").find("input[name*='products']").val();
 
                 if ($btn.hasClass("plus")) {
                     quantity++;
@@ -145,9 +174,13 @@
                 $countEl.text(quantity);
                 $totalEl.text((price * quantity).toFixed(2));
 
-                // update order summary
+                // update hidden input
+                let input = $btn.closest(".single_shop_cart").find(".input-quantity-" + productId);
+                input.val(quantity);
+
                 updateSummary();
             });
+
 
             // initial load
             updateSummary();

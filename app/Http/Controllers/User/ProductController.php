@@ -5,7 +5,7 @@ namespace App\Http\Controllers\User;
 use App\Enums\StatusEnum;
 use App\Filter\ProductFilter;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\AddToCartRequest;
+use App\Http\Requests\User\AddToCartRequest;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
