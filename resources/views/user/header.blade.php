@@ -4,9 +4,9 @@
         <div class="d-flex align-items-center justify-content-sm-between">
             <div class="logo">
                 <a href="{{ route('home') }}">
-                    <img
-                        src="{{ Storage::url(getSettingImages($settings, SettingKeyEnum::Logo->value)['images'][0]) ?? '' }}"
-                        alt="logo"/>
+                    <img src="{{ isset(getSettingImages($settings, SettingKeyEnum::Logo->value)['images'][0])
+                                ? Storage::url(getSettingImages($settings, SettingKeyEnum::Logo->value)['images'][0])
+                                : '' }}" alt="logo"/>
                 </a>
             </div>
 

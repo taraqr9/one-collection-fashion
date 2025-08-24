@@ -7,9 +7,9 @@
                 <div class="row">
                     <div class="col-12 col-md-6 col-lg-12">
                         <div class="footer_logo">
-                            <img
-                                src="{{ Storage::url(getSettingImages($settings, SettingKeyEnum::Logo->value)['images'][0]) ?? '' }}"
-                                alt="logo"/>
+                            <img src="{{ isset(getSettingImages($settings, SettingKeyEnum::Logo->value)['images'][0])
+                                        ? Storage::url(getSettingImages($settings, SettingKeyEnum::Logo->value)['images'][0])
+                                        : '' }}" alt="logo"/>
                         </div>
                         <div class="footet_text">
                             <p>
