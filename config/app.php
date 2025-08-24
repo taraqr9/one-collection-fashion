@@ -222,6 +222,9 @@ return [
         App\Providers\Filament\AdminPanelProvider::class,
         App\Providers\RouteServiceProvider::class,
 
+        // Custom provider
+        App\Providers\ViewServiceProvider::class,
+
     ],
 
     /*

@@ -22,7 +22,7 @@ class Setting extends Model
         'status' => StatusEnum::class,
     ];
 
-    protected static function boot()
+    protected static function boot(): void
     {
         parent::boot();
 
