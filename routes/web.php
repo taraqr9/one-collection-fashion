@@ -10,10 +10,11 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('login', [AuthController::class, 'loginView'])->name('login');
+Route::post('login', [AuthController::class, 'login'])->name('login');
 Route::resource('products', ProductController::class);
 Route::get('subcategories/{category}', [CategoryController::class, 'subcategories']);
 
-Route::middleware(['web', 'auth:web'])->group(function () {
+Route::middleware('web')->group(function () {
     Route::post('products/add-to-cart', [ProductController::class, 'addToCart'])->name('products.add-to-cart');
     Route::resource('carts', CartController::class)->only(['index', 'destroy']);
     Route::resource('orders', OrderController::class);

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\User;
 
+use App\Enums\StatusEnum;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -39,11 +40,11 @@ class AuthController extends Controller
 
     public function login(Request $request): RedirectResponse
     {
-        if (Auth::attempt(['email' => $request->email, 'password' => $request->password, 'status' => 1])) {
-            return redirect('admin/');
+        if (Auth::attempt(['email' => $request->email, 'password' => $request->password, 'status' => StatusEnum::Active])) {
+            return redirect()->route('home');
         }
 
-        return redirect('admin/login')->withErrors(['email' => $request->email]);
+        return redirect()->back()->withErrors(['email' => $request->email]);
     }
 
     public function logout(): RedirectResponse

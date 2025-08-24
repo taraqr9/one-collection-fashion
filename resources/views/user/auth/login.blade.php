@@ -22,7 +22,7 @@
         <div class="content-inner">
             <div class="content d-flex justify-content-center align-items-center" style="background-image: url({{ url('assets/images/login_bg.png') }});">
 
-                <form class="login-form" action="{{ url('/auth/login') }}" method="post">
+                <form class="login-form" action="{{ route('login') }}" method="post">
                     @csrf
                     <div class="card mb-0">
                         <div class="card-body">
