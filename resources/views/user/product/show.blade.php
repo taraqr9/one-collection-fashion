@@ -145,7 +145,10 @@
 
                         @if($product->stocks()->sum('stock')>0)
                             <div class="product_buttons">
-                                <a href="#" class="default_btn small rounded me-sm-3 me-2 px-4">
+                                <a href="#" id="buy-now"
+                                   data-url="{{ route('carts.buy-now') }}"
+                                   data-product-id="{{ $product->id }}"
+                                   class="default_btn small rounded me-sm-3 me-2 px-4">
                                     <i class="icon-cart me-2"></i> Buy Now
                                 </a>
 
@@ -315,6 +318,47 @@
                 document.body.appendChild(form);
                 form.submit();
             });
+
+            document.getElementById("buy-now").addEventListener("click", function(e) {
+                e.preventDefault();
+
+                const url = this.getAttribute("data-url");
+                const productId = this.getAttribute("data-product-id");
+                const stockSelected = document.querySelector("input[name='stock_id']:checked");
+                const quantity = parseInt(document.querySelector("input[name='quantity']").value);
+                const errorBox = document.getElementById("size-error");
+
+                if (!stockSelected) {
+                    errorBox.textContent = "Please select a size.";
+                    return;
+                }
+                errorBox.textContent = "";
+
+                const form = document.createElement("form");
+                form.method = "POST";
+                form.action = url;
+
+                const csrf = document.createElement("input");
+                csrf.type = "hidden"; csrf.name = "_token";
+                csrf.value = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
+                form.appendChild(csrf);
+
+                const pid = document.createElement("input");
+                pid.type = "hidden"; pid.name = "product_id"; pid.value = productId;
+                form.appendChild(pid);
+
+                const sid = document.createElement("input");
+                sid.type = "hidden"; sid.name = "stock_id"; sid.value = stockSelected.value;
+                form.appendChild(sid);
+
+                const qty = document.createElement("input");
+                qty.type = "hidden"; qty.name = "quantity"; qty.value = quantity;
+                form.appendChild(qty);
+
+                document.body.appendChild(form);
+                form.submit();
+            });
+
 
         });
     </script>

@@ -16,15 +16,16 @@ class OrderController extends Controller
     {
         $data = $request->validated();
         $user_id = auth()->id();
+        $mode = $request->input('checkout_mode', 'cart'); // 'cart' or 'buy_now'
 
-        DB::transaction(function () use ($data, $user_id) {
+        DB::transaction(function () use ($data, $user_id, $mode) {
             $order = Order::create([
                 'user_id' => $user_id,
                 'user_name' => $data['user_name'],
                 'user_phone' => $data['user_phone'],
                 'user_address' => $data['user_address'],
                 'order_number' => strtoupper(Str::random(8)),
-                'total_amount' => 0, // will update after items
+                'total_amount' => 0,
                 'final_amount' => 0,
             ]);
 
@@ -33,15 +34,16 @@ class OrderController extends Controller
 
             foreach ($data['products'] as $item) {
                 $product = Product::findOrFail($item['product_id']);
-                $unitPrice = $product->offer_price ?? $product->price;
-                $lineTotal = $unitPrice * $item['quantity'];
+                $unitPrice = ($product->offer_price ?? 0) > 0 ? $product->offer_price : $product->price;
+                $qty = (int) $item['quantity'];
+                $lineTotal = $unitPrice * $qty;
 
                 $order->items()->create([
                     'product_id' => $product->id,
                     'stock_id' => $item['stock_id'],
                     'product_name' => $product->name,
                     'sku' => optional($product->stocks()->find($item['stock_id']))->sku,
-                    'quantity' => $item['quantity'],
+                    'quantity' => $qty,
                     'price' => $unitPrice,
                     'total' => $lineTotal,
                 ]);
@@ -55,12 +57,17 @@ class OrderController extends Controller
                 'final_amount' => $total,
             ]);
 
-            Cart::where('user_id', $user_id)
-                ->whereIn('stock_id', $stock_ids)
-                ->delete();
+            // Only remove DB cart rows when the checkout came from the cart
+            if ($mode === 'cart') {
+                Cart::where('user_id', $user_id)
+                    ->whereIn('stock_id', $stock_ids)
+                    ->delete();
+            }
+
+            // Always clear buy-now artifacts (harmless if absent)
+            session()->forget(['buy_now_mode', 'buy_now_item']);
         });
 
         return redirect()->route('home')->with('success', 'Order placed successfully!');
     }
-
 }

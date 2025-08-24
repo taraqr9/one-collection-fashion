@@ -79,7 +79,7 @@
 
                                         </div>
                                         <div class="product_adcart">
-                                            <button class="default_btn">Buy Now</button>
+                                            <button class="default_btn">View Details</button>
                                         </div>
                                     </div>
                                 </div>

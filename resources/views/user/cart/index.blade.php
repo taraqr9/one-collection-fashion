@@ -1,4 +1,6 @@
-@php use Illuminate\Support\Facades\Storage; @endphp
+@php
+    use Illuminate\Support\Facades\Storage;
+@endphp
 @extends('user.master')
 
 @section('title')
@@ -40,6 +42,7 @@
         <div class="container">
             <form action="{{ route('orders.store') }}" method="POST" id="checkoutForm">
                 @csrf
+                <input type="hidden" name="checkout_mode" value="{{ $checkoutMode ?? 'cart' }}">
                 <div class="row">
                     <!-- Product List -->
                     <div class="col-lg-8">
@@ -50,48 +53,61 @@
                         </h4>
                         @foreach($products as $product)
                             @php
-                                $unitPrice = $product->product->offer_price ?? $product->product->price;
+                                $pId = $product->product_id ?? ($product->product->id ?? null);
+                                $sId = $product->stock_id   ?? ($product->stock->id   ?? null);
+
+                                // Stable key without $loop
+                                $viewKey = $sId ?? $pId ?? ('row_' . uniqid());
+
+                                $isBuyNow  = ($checkoutMode ?? 'cart') === 'buy_now';
+                                $unitPrice = ($product->product->offer_price ?? 0) > 0
+                                    ? $product->product->offer_price
+                                    : $product->product->price;
                             @endphp
+
                             <div class="shop_cart_wrap">
-                                <div class="single_shop_cart d-flex align-items-center flex-wrap">
-                                    <label class="cart_img mb-4 mb-md-0" for="flexCheckDefaultyx">
-                                        <img loading="lazy" src="{{ Storage::url($product->product->thumbnail->url) }}"
-                                             alt="product"/>
+                                <div class="single_shop_cart d-flex align-items-center flex-wrap" data-view-key="{{ $viewKey }}">
+                                    <label class="cart_img mb-4 mb-md-0">
+                                        <img loading="lazy" src="{{ Storage::url($product->product->thumbnail->url) }}" alt="product"/>
                                     </label>
+
                                     <div class="cart_cont">
                                         <h5>{{ $product->product->name }}</h5>
                                         <p class="price">TK {{ $unitPrice }}</p>
                                         <div class="d-flex align-items-center gap-2">
-                                            <div class="size mb-0">{{ $product->stock->type->name }}: {{ $product->stock->value }}</div>
+                                            <div class="size mb-0">
+                                                {{ $product->stock->type->name }}: {{ $product->stock->value }}
+                                            </div>
                                         </div>
                                     </div>
+
                                     <div class="cart_qnty d-flex align-items-center ms-md-auto">
-                                        <div class="cart_qnty_btn minus" data-price="{{ $unitPrice }}">
-                                            <i class="las la-minus"></i>
-                                        </div>
+                                        <div class="cart_qnty_btn minus" data-price="{{ $unitPrice }}"><i class="las la-minus"></i></div>
                                         <div class="cart_count" data-quantity="{{ $product->quantity }}">{{ $product->quantity }}</div>
-                                        <div class="cart_qnty_btn plus" data-price="{{ $unitPrice }}">
-                                            <i class="las la-plus"></i>
-                                        </div>
+                                        <div class="cart_qnty_btn plus" data-price="{{ $unitPrice }}"><i class="las la-plus"></i></div>
                                     </div>
+
                                     <div class="cart_price ms-auto">
                                         <p>TK <span class="total-price">{{ $unitPrice * $product->quantity }}</span></p>
                                     </div>
 
-                                    <!-- Hidden inputs for checkout -->
-                                    <input type="hidden" name="products[{{ $product->id }}][product_id]" value="{{ $product->product_id }}">
-                                    <input type="hidden" name="products[{{ $product->id }}][stock_id]" value="{{ $product->stock_id }}">
-                                    <input type="hidden" name="products[{{ $product->id }}][quantity]" class="input-quantity-{{ $product->id }}" value="{{ $product->quantity }}">
+                                    {{-- Hidden inputs for checkout (keyed by $viewKey) --}}
+                                    <input type="hidden" name="products[{{ $viewKey }}][product_id]" value="{{ $pId }}">
+                                    <input type="hidden" name="products[{{ $viewKey }}][stock_id]"   value="{{ $sId }}">
+                                    <input type="hidden" name="products[{{ $viewKey }}][quantity]"
+                                           class="input-quantity-{{ $viewKey }}" value="{{ $product->quantity }}">
 
-
-                                    <div class="cart_remove ms-auto" data-toggle="modal"
-                                         data-target="#exampleModalCenterTitle"
-                                         data-id="{{ $product->id }}">
-                                        <i class="icon-trash"></i>
-                                    </div>
+                                    @unless($isBuyNow)
+                                        <div class="cart_remove ms-auto" data-toggle="modal"
+                                             data-target="#exampleModalCenterTitle"
+                                             data-id="{{ $product->id }}">
+                                            <i class="icon-trash"></i>
+                                        </div>
+                                    @endunless
                                 </div>
                             </div>
                         @endforeach
+
                     </div>
 
                     <!-- Billing Form -->
@@ -108,7 +124,8 @@
                             </div>
                             <div class="mb-2 single_billing_inp">
                                 <label for="full_address">Address <span>*</span></label>
-                                <textarea rows="3" id="user_address" name="user_address" class="form-control" required></textarea>
+                                <textarea rows="3" id="user_address" name="user_address" class="form-control"
+                                          required></textarea>
                             </div>
 
                             <!-- Order Summary -->
@@ -162,7 +179,8 @@
                 let quantity = parseInt($countEl.text());
                 let price = parseFloat($btn.data("price"));
                 let $totalEl = $btn.closest(".single_shop_cart").find(".total-price");
-                let productId = $btn.closest(".single_shop_cart").find("input[name*='products']").val();
+                let viewKey = $btn.closest(".single_shop_cart").data("view-key");
+
 
                 if ($btn.hasClass("plus")) {
                     quantity++;
@@ -174,7 +192,8 @@
                 $totalEl.text((price * quantity).toFixed(2));
 
                 // update hidden input
-                let input = $btn.closest(".single_shop_cart").find(".input-quantity-" + productId);
+                let input = $btn.closest(".single_shop_cart").find(".input-quantity-" + viewKey);
+
                 input.val(quantity);
 
                 updateSummary();
