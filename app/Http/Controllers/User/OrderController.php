@@ -12,6 +12,13 @@ use Illuminate\Support\Str;
 
 class OrderController extends Controller
 {
+    public function index()
+    {
+        $orders = Order::where('user_id', auth()->id())->get();
+
+        return view('user.order.index', compact('orders'));
+    }
+
     public function store(OrderStoreRequest $request)
     {
         $data = $request->validated();

@@ -46,7 +46,7 @@
                                     <i class="las la-arrows-alt-v"></i>
                                     My Profile
                                 </a>
-                                <a href="#">
+                                <a href="{{ route('orders.index') }}">
                                     <i class="las la-gift"></i>
                                     My Order
                                 </a>
