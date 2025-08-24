@@ -215,17 +215,40 @@
     <div class="top_arrival_wrp home-3 section_padding_b">
         <div class="container">
             <h2 class="section_title_3">Top New Arrival</h2>
-            <div class="d-flex align-items-center justify-content-between mb-4">
-                <div></div>
-                <!-- timer -->
-                <div class="seemore_2">
-                    <a href="#">See More <span><i class="las la-angle-right"></i></span></a>
-                </div>
-            </div>
             <div class="product_slider_2">
-                @for($i=0; $i<5; $i++)
-                    @include('user.product.single_product')
-                @endfor
+                @foreach($top_arrival as $product)
+                    <div class="single_toparrival">
+                        <a href="{{ route('products.show', $product) }}">
+                            <div class="topariv_img">
+                                <img loading="lazy" src="{{ Storage::url($product->thumbnail->url) }}" alt="product"/>
+                                <div class="prod_soh">
+                                    <div class="adto_wish">
+                                        <i class="icon-heart"></i>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="topariv_cont">
+                                <h4 class="text-truncate">{{ $product->name }}</h4>
+                                <div class="price mb-1 mt-2">
+                                    @if(($product->offer_price ?? 0) > 0)
+                                        <span class="org_price">TK {{ number_format($product->offer_price, 2) }}</span>
+                                        <span class="org_price"><del>{{ number_format($product->price, 2) }}</del></span>
+                                    @else
+                                        <span class="org_price">TK {{ number_format($product->price, 2) }}</span>
+                                    @endif
+                                </div>
+                            </div>
+                            <div class="full_atc_btn">
+                                <button>
+                                    <span class="me-1"><i class="icon-cart"></i></span>
+                                    View Details
+                                </button>
+                            </div>
+                        </a>
+                    </div>
+
+                @endforeach
             </div>
         </div>
     </div>
@@ -253,10 +276,41 @@
         <div class="container">
             <h2 class="section_title_3">Recommended for you</h2>
             <div class="product_slider_2">
-                @for($i=0; $i<5; $i++)
-                    @include('user.product.single_product')
-                @endfor
+                @foreach($recommended_products as $product)
+                    <div class="single_toparrival">
+                        <a href="{{ route('products.show', $product) }}">
+                            <div class="topariv_img">
+                                <img loading="lazy" src="{{ Storage::url($product->thumbnail->url) }}" alt="product"/>
+                                <div class="prod_soh">
+                                    <div class="adto_wish">
+                                        <i class="icon-heart"></i>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="topariv_cont">
+                                <h4 class="text-truncate">{{ $product->name }}</h4>
+                                <div class="price mb-1 mt-2">
+                                    @if(($product->offer_price ?? 0) > 0)
+                                        <span class="org_price">TK {{ number_format($product->offer_price, 2) }}</span>
+                                        <span class="org_price"><del>{{ number_format($product->price, 2) }}</del></span>
+                                    @else
+                                        <span class="org_price">TK {{ number_format($product->price, 2) }}</span>
+                                    @endif
+                                </div>
+                            </div>
+                            <div class="full_atc_btn">
+                                <button>
+                                    <span class="me-1"><i class="icon-cart"></i></span>
+                                    View Details
+                                </button>
+                            </div>
+                        </a>
+                    </div>
+
+                @endforeach
             </div>
         </div>
     </div>
+
 @endsection
