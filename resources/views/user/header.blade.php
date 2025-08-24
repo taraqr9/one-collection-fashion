@@ -29,7 +29,7 @@
 								<i class="icon-cart"></i>
 							</span>
                         <span class="icon_text">Cart</span>
-                        <span class="pops">{{ auth()->user()->carts()->count() }}</span>
+                        <span class="pops">{{ auth()->user() ? auth()->user()->carts()->count() : 0 }}</span>
                     </a>
                 </div>
                 <div class="position-relative myacwrap home-1">
