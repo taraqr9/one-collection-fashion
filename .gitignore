@@ -21,4 +21,5 @@
 
 # Environment files
 .env
+.htaccess
 laradumps.yaml
