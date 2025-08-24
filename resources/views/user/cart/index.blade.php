@@ -79,8 +79,7 @@
                                     </div>
 
                                     <!-- Hidden inputs for checkout -->
-                                    <!-- Hidden inputs for checkout -->
-                                    <input type="hidden" name="products[{{ $product->id }}][product_id]" value="{{ $product->id }}">
+                                    <input type="hidden" name="products[{{ $product->id }}][product_id]" value="{{ $product->product_id }}">
                                     <input type="hidden" name="products[{{ $product->id }}][stock_id]" value="{{ $product->stock_id }}">
                                     <input type="hidden" name="products[{{ $product->id }}][quantity]" class="input-quantity-{{ $product->id }}" value="{{ $product->quantity }}">
 
