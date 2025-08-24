@@ -13,6 +13,9 @@ class CartController extends Controller
 {
     public function index(): View|RedirectResponse
     {
+        if(!auth()->check()) {
+            return redirect()->route('products.index')->with('error', 'Please add some product first!');
+        }
         if (session('buy_now_mode') && session()->has('buy_now_item')) {
             $item = session('buy_now_item');
 

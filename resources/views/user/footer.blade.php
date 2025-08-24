@@ -1,4 +1,5 @@
-<!-- footer area -->
+@php use App\Enums\SettingKeyEnum;use Illuminate\Support\Facades\Storage; @endphp
+    <!-- footer area -->
 <footer class="colored">
     <div class="container">
         <div class="row">
@@ -6,7 +7,9 @@
                 <div class="row">
                     <div class="col-12 col-md-6 col-lg-12">
                         <div class="footer_logo">
-                            <img loading="lazy" src="{{ url()->asset('user/assets/images/svg/logo.svg') }}" alt="easy shop" />
+                            <img
+                                src="{{ Storage::url(getSettingImages($settings, SettingKeyEnum::Logo->value)['images'][0]) ?? '' }}"
+                                alt="logo"/>
                         </div>
                         <div class="footet_text">
                             <p>

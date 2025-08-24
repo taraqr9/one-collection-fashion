@@ -1,9 +1,12 @@
+@php use App\Enums\SettingKeyEnum;use Illuminate\Support\Facades\Storage; @endphp
 <header class="">
     <div class="container">
         <div class="d-flex align-items-center justify-content-sm-between">
             <div class="logo">
                 <a href="{{ route('home') }}">
-                    <img loading="lazy" src="{{ url()->asset('user/assets/images/svg/logo.svg') }}" alt="logo"/>
+                    <img
+                        src="{{ Storage::url(getSettingImages($settings, SettingKeyEnum::Logo->value)['images'][0]) ?? '' }}"
+                        alt="logo"/>
                 </a>
             </div>
 

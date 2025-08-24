@@ -6,6 +6,7 @@ namespace App\Enums;
 
 enum SettingKeyEnum: string
 {
+    case Logo = 'logo';
     case TopBanner = 'top_banner';
     case MiniTopBanner = 'mini_top_banner';
     case MiniBottomBanner = 'mini_bottom_banner';
@@ -24,6 +25,7 @@ enum SettingKeyEnum: string
     public function label(): string
     {
         return match ($this) {
+            self::Logo => 'Logo',
             self::TopBanner => 'Top Banner',
             self::MiniTopBanner => 'Mini Top Banner',
             self::MiniBottomBanner => 'Mini Bottom Banner',
