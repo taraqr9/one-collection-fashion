@@ -60,7 +60,7 @@ class OrderController extends Controller
                 ->delete();
         });
 
-        return redirect()->route('carts.index')->with('success', 'Order placed successfully!');
+        return redirect()->route('home')->with('success', 'Order placed successfully!');
     }
 
 }
