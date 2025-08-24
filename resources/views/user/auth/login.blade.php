@@ -1,74 +1,73 @@
-<!DOCTYPE html>
-<html lang="en" dir="ltr">
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Login | Control Panel</title>
-    <link rel="shortcut icon" type="image/jpg" href="https://www.jatri.co/src/images/logo/favicon.svg" />
+@extends('user.master')
 
-    <link href="{{ url()->asset('assets/fonts/inter/inter.css') }}" rel="stylesheet" type="text/css">
-    <link href="{{ url()->asset('assets/icons/phosphor/styles.min.css') }}" rel="stylesheet" type="text/css">
-    <link href="{{ url()->asset('assets/css/all.min.css') }}" id="stylesheet" rel="stylesheet" type="text/css">
+@section('title')
+    {{ config('app.name') }}
+@endsection
 
-    <script src="{{ url()->asset('assets/js/bootstrap/bootstrap.bundle.min.js') }}"></script>
-    <script src="{{ url()->asset('assets/js/app.js') }}"></script>
-</head>
+@section('page_content')
+    <!-- breadcrumbs -->
+    <div class="container">
+        <div class="breadcrumbs">
+            <a href="{{ route('home') }}"><i class="las la-home"></i></a>
+            <a href="#" class="active">Login</a>
+        </div>
+    </div>
 
-<body>
 
-<div class="page-content">
-    <div class="content-wrapper">
-        <div class="content-inner">
-            <div class="content d-flex justify-content-center align-items-center" style="background-image: url({{ url('assets/images/login_bg.png') }});">
-
-                <form class="login-form" action="{{ route('login') }}" method="post">
-                    @csrf
-                    <div class="card mb-0">
-                        <div class="card-body">
-                            <div class="text-center mb-3">
-                                <div class="d-inline-flex align-items-center justify-content-center mb-4 mt-2">
-                                    <img src="#" class="h-48px" alt="">
-                                </div>
-                                <h5 class="mb-0">Login to your account</h5>
-                                <span class="d-block text-muted">Enter your credentials below</span>
-                            </div>
-
-                            <div class="mb-3">
-                                <label class="form-label fw-bold">Email</label>
-                                <div class="form-control-feedback form-control-feedback-start">
-                                    <input type="text" class="form-control" name="email" placeholder="example@email.com" value="@if($errors->has('email')){{ $errors->first('email') }}@endif" required>
-                                    <div class="form-control-feedback-icon">
-                                        <i class="ph-at text-muted"></i>
+    <div class="register_wrap section_padding_b">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-xl-5 col-lg-7 col-md-9">
+                    <div class="register_form padding_default shadow_sm">
+                        <h4 class="title_2">Login</h4>
+                        <p class="mb-4 text_md">Login if you a a returning customer</p>
+                        <form action="{{ route('login') }}" method="post">
+                            @csrf
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="single_billing_inp">
+                                        <label>Email Address <span>*</span></label>
+                                        <input type="email" name="email" placeholder="example@mail.com" required/>
                                     </div>
                                 </div>
-                            </div>
-
-                            <div class="mb-3">
-                                <label class="form-label fw-bold">Password</label>
-                                <div class="form-control-feedback form-control-feedback-start">
-                                    <input type="password" class="form-control" name="password" placeholder="•••••••••••">
-                                    <div class="form-control-feedback-icon">
-                                        <i class="ph-lock text-muted"></i>
+                                <div class="col-12">
+                                    <div class="single_billing_inp">
+                                        <label>Password <span>*</span></label>
+                                        <input type="password" name="password" placeholder="type password" required/>
                                     </div>
                                 </div>
-                            </div>
+                                <div class="col-12 mt-2 d-flex justify-content-between align-items-center">
+                                    <div class="custom_check check_2 d-flex align-items-center">
+                                        <input type="checkbox" class="check_inp" hidden id="save-default" />
+                                        <label for="save-default">Remember Me</label>
+                                    </div>
 
-                            @if($errors->has('email'))
-                                <span class="label border-danger text-danger fw-bold">Wrong Credentials!</span>
-                            @endif
-
-                            <div class="mb-3 mt-2">
-                                <button type="submit" class="btn btn-primary w-100">Sign in</button>
+                                    <a href="#" class="text-color">Forgot Password?</a>
+                                </div>
+                                <div class="col-12 mt-3">
+                                    <button type="submit" class="default_btn xs_btn rounded px-4 d-block w-100">Login</button>
+                                </div>
                             </div>
-                        </div>
+                        </form>
+
+{{--                        <div class="dif_regway my-3">--}}
+{{--                            <span class="txt">Or login in with</span>--}}
+{{--                        </div>--}}
+
+{{--                        <div class="d-flex">--}}
+{{--                            <button class="default_btn xs_btn rounded px-4 d-block w-50 text-capitalize bg-facebook"><i--}}
+{{--                                    class="fab fa-facebook-f me-2"></i> Facebook</button>--}}
+{{--                            <button--}}
+{{--                                class="default_btn xs_btn rounded px-4 d-block w-50 ms-3 text-capitalize bg-google"><i--}}
+{{--                                    class="fab fa-google me-2"></i> Google</button>--}}
+{{--                        </div>--}}
+
+                        <p class="text-center mt-3 mb-0">Don't have an account.?
+                            <a href="{{ route('register') }}" class="text-color">Register Now</a>
+                        </p>
                     </div>
-                </form>
-
+                </div>
             </div>
         </div>
     </div>
-</div>
-
-</body>
-</html>
+@endsection

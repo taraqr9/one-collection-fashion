@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('login', [AuthController::class, 'loginView'])->name('login');
 Route::post('login', [AuthController::class, 'login'])->name('login');
+Route::get('register', [AuthController::class, 'registrationView'])->name('register');
+Route::post('register', [AuthController::class, 'registration'])->name('register');
 Route::resource('products', ProductController::class);
 Route::get('subcategories/{category}', [CategoryController::class, 'subcategories']);
 
@@ -20,4 +22,6 @@ Route::middleware('web')->group(function () {
     Route::post('/buy-now', [CartController::class, 'buyNow'])
         ->name('carts.buy-now');
     Route::resource('orders', OrderController::class);
+
+    Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 });

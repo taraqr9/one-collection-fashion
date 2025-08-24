@@ -54,16 +54,16 @@
                                     <i class="icon-cart"></i>
                                     My Cart
                                 </a>
-                                <a href="#">
+                                <a href="{{ route('logout') }}">
                                     <i class="las la-power-off"></i>
-                                    Log out
+                                    Logout
                                 </a>
                             </div>
                         @else
                             <div class="ac_join">
                                 <div class="account_btn d-flex justify-content-between">
-                                    <a href="#" class="default_btn">Login</a>
-                                    <a href="#" class="default_btn second">Sign Up</a>
+                                    <a href="{{ route('login') }}" class="default_btn">Login</a>
+                                    <a href="{{ route('register') }}" class="default_btn second">Sign Up</a>
                                 </div>
                             </div>
                         @endauth

@@ -12,6 +12,10 @@ class User extends Authenticatable
 
     protected $guarded = [];
 
+    protected $casts = [
+        'password' => 'hashed',
+    ];
+
     public function orders(): HasMany
     {
         return $this->hasMany(Order::class);

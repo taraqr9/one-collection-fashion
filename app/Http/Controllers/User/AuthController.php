@@ -4,6 +4,8 @@ namespace App\Http\Controllers\User;
 
 use App\Enums\StatusEnum;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\User\RegistrationRequest;
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -14,7 +16,7 @@ class AuthController extends Controller
     public function loginView(): View|RedirectResponse
     {
         if (Auth::check()) {
-            return redirect('/login');
+            return redirect()->route('home');
         }
 
         return view('user.auth.login');
@@ -23,19 +25,25 @@ class AuthController extends Controller
     public function registrationView(): View|RedirectResponse
     {
         if (Auth::check()) {
-            return redirect('/');
+            return redirect()->route('home');
         }
 
-        return view('user.auth.registration');
+        return view('user.auth.register');
     }
 
-    public function registration(): View|RedirectResponse
+    public function registration(RegistrationRequest $request): View|RedirectResponse
     {
         if (Auth::check()) {
-            return redirect('admin/');
+            return redirect()->route('home');
         }
 
-        return view('user.auth.registration');
+        $user = User::create($request->validated());
+
+        if ($user && Auth::attempt(['email' => $request->email, 'password' => $request->password, 'status' => StatusEnum::Active])) {
+            return redirect()->route('home')->with('success', 'Registration completed successfully!');
+        }
+
+        return redirect()->back()->with('error', 'Registration failed!');
     }
 
     public function login(Request $request): RedirectResponse
@@ -51,6 +59,6 @@ class AuthController extends Controller
     {
         Auth::logout();
 
-        return redirect('admin/');
+        return redirect()->route('home');
     }
 }

@@ -30,15 +30,27 @@
     <img src="{{ url()->asset('user/assets/images/preloader.gif') }}" alt="preloader"/>
 </div>
 
+@if (count($errors) > 0)
+    @foreach ($errors->all() as $error)
+        <div class="alert alert-danger alert-dismissible fade show" role="alert"
+             style="position: fixed; top: 20px; right: 20px; z-index: 9999;">
+            {{ $error }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endforeach
+@endif
+
 @if(session('success'))
-    <div class="alert alert-success alert-dismissible fade show" role="alert" style="position: fixed; top: 20px; right: 20px; z-index: 9999;">
+    <div class="alert alert-success alert-dismissible fade show" role="alert"
+         style="position: fixed; top: 20px; right: 20px; z-index: 9999;">
         {{ session('success') }}
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 @endif
 
 @if(session('error'))
-    <div class="alert alert-danger alert-dismissible fade show" role="alert" style="position: fixed; top: 20px; right: 20px; z-index: 9999;">
+    <div class="alert alert-danger alert-dismissible fade show" role="alert"
+         style="position: fixed; top: 20px; right: 20px; z-index: 9999;">
         {{ session('error') }}
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
@@ -63,7 +75,7 @@
 <script>
     setTimeout(() => {
         const alert = document.querySelector('.alert');
-        if(alert) {
+        if (alert) {
             alert.classList.remove('show');
             alert.classList.add('hide');
         }
