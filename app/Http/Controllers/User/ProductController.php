@@ -45,6 +45,10 @@ class ProductController extends Controller
 
     public function addToCart(AddToCartRequest $request)
     {
+        if(!auth()->check()) {
+            return redirect()->route('login');
+        }
+
         auth()->user()->carts()->create($request->validated());
 
         return redirect()->back()->with('success', 'Added on cart successfully');
