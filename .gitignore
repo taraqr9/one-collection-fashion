@@ -16,8 +16,6 @@
 /storage/framework/views/*
 
 # Build / assets
-/public/build
-/public/hot
 
 # Environment files
 .env
