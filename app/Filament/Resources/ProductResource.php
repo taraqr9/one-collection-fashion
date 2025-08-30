@@ -76,9 +76,11 @@ class ProductResource extends Resource
                             ->nullable(),
 
                         TextInput::make('price')
+                            ->prefix('৳')
                             ->required(),
 
                         TextInput::make('offer_price')
+                            ->prefix('৳')
                             ->default(0),
 
                         RichEditor::make('description')

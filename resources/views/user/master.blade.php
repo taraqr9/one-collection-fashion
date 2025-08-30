@@ -26,9 +26,11 @@
 
 <body>
 
-<div class="preloader">
-    <img src="{{ url()->asset('user/assets/images/preloader.gif') }}" alt="preloader"/>
-</div>
+@if(request()->routeIs('home'))
+    <div class="preloader">
+        <img src="{{ url()->asset('user/assets/images/preloader.gif') }}" alt="preloader"/>
+    </div>
+@endif
 
 @if (count($errors) > 0)
     @foreach ($errors->all() as $error)

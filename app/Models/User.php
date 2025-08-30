@@ -25,4 +25,11 @@ class User extends Authenticatable
     {
         return $this->hasMany(Cart::class);
     }
+
+    public static function getAllActiveUsers(): array
+    {
+        return User::query()
+            ->pluck('name', 'id')
+            ->toArray();
+    }
 }
