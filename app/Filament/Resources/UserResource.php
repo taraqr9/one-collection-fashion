@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Resources\Users;
+namespace App\Filament\Resources;
 
 use App\Filament\Resources\Users\Pages\CreateUser;
 use App\Filament\Resources\Users\Pages\EditUser;

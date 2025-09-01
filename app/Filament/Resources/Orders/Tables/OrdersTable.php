@@ -47,9 +47,9 @@ class OrdersTable
                     ->label('')
                     ->icon('heroicon-o-arrow-path')
                     ->modalHeading('Update Order Status')
-                    ->fillForm(fn($record) => [
+                    ->fillForm(fn ($record) => [
                         'status' => $record->status,
-                        'items' => $record->items->map(fn($item) => [
+                        'items' => $record->items->map(fn ($item) => [
                             'product_name' => $item->product_name,
                             'product_sku' => $item->product?->sku,
                             'variant_sku' => $item->stock?->sku,
@@ -121,7 +121,7 @@ class OrdersTable
                                     ->required()
                                     ->columnSpan(1),
                             ])
-                            ->columns(3)
+                            ->columns(3),
 
                     ])
                     ->modalWidth('6xl')

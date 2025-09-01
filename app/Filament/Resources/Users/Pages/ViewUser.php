@@ -2,7 +2,7 @@
 
 namespace App\Filament\Resources\Users\Pages;
 
-use App\Filament\Resources\Users\UserResource;
+use App\Filament\Resources\UserResource;
 use Filament\Actions\EditAction;
 use Filament\Resources\Pages\ViewRecord;
 
