@@ -20,8 +20,8 @@ return new class extends Migration
             $table->string('product_name'); // snapshot of name at order time
             $table->string('sku')->nullable(); // snapshot from stock table
             $table->unsignedInteger('quantity')->default(1);
-            $table->decimal('price', 10, 2); // per unit price at order time
-            $table->decimal('total', 10, 2); // quantity × price
+            $table->integer('price'); // per unit price at order time
+            $table->integer('total'); // quantity × price
             $table->string('status')->default(OrderStatusEnum::Pending->value);
             $table->timestamps();
         });

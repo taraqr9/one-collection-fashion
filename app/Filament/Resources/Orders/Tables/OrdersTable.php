@@ -6,6 +6,8 @@ use App\Enums\OrderStatusEnum;
 use Filament\Actions\Action;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -45,28 +47,43 @@ class OrdersTable
             ->recordActions([
                 Action::make('UpdateStatus')
                     ->label('')
-                    ->icon('heroicon-o-arrow-path')
+                    ->icon('heroicon-o-check-circle')
                     ->modalHeading('Update Order Status')
                     ->fillForm(fn ($record) => [
                         'status' => $record->status,
-                        'items' => $record->items->map(fn ($item) => [
-                            'product_name' => $item->product_name,
-                            'product_sku' => $item->product?->sku,
-                            'variant_sku' => $item->stock?->sku,
-                            'variant_type' => $item->stock?->type,
-                            'variant_value' => $item->stock?->value,
-                            'variant_unit' => $item->stock?->unit,
-                            'ordered_qty' => $item->quantity,
-                            'price' => $item->price,
-                            'total' => $item->total,
-                            'available_stock' => $item->stock?->stock ?? 0,
-                        ])->toArray(),
+                        'products' => $record->items
+                            ->groupBy('product_id')
+                            ->map(function ($items, $productId) {
+                                $product = $items->first()->product;
+
+                                return [
+                                    'image' => $product?->thumbnail?->url,
+                                    'product_name' => $product?->name,
+                                    'product_sku' => $product?->sku,
+                                    'variants' => $items->map(fn ($item) => [
+                                        'variant_sku' => $item->stock?->sku,
+                                        'variant_type' => $item->stock?->type,
+                                        'variant_value' => $item->stock?->value,
+                                        'variant_unit' => $item->stock?->unit,
+                                        'ordered_qty' => $item->quantity,
+                                        'price' => $item->price,
+                                        'total' => $item->total,
+                                        'available_stock' => $item->stock?->stock ?? 0,
+                                    ])->toArray(),
+                                ];
+                            })->values()->toArray(),
                     ])
                     ->schema([
                         Section::make('Order Items')
                             ->schema([
-                                Repeater::make('items')
+                                Repeater::make('products')
                                     ->schema([
+                                        // product-level info
+                                        FileUpload::make('image')
+                                            ->label('Product Image')
+                                            ->disabled()
+                                            ->columnSpanFull(),
+
                                         TextInput::make('product_name')
                                             ->label('Product')
                                             ->disabled(),
@@ -75,39 +92,23 @@ class OrdersTable
                                             ->label('Product SKU')
                                             ->disabled(),
 
-                                        TextInput::make('variant_sku')
-                                            ->label('Variant SKU')
-                                            ->disabled(),
-
-                                        TextInput::make('variant_type')
-                                            ->label('Type')
-                                            ->disabled(),
-
-                                        TextInput::make('variant_value')
-                                            ->label('Value')
-                                            ->disabled(),
-
-                                        TextInput::make('variant_unit')
-                                            ->label('Unit')
-                                            ->disabled(),
-
-                                        TextInput::make('ordered_qty')
-                                            ->label('Ordered Qty')
-                                            ->disabled(),
-
-                                        TextInput::make('price')
-                                            ->label('Price')
-                                            ->disabled(),
-
-                                        TextInput::make('total')
-                                            ->label('Total')
-                                            ->disabled(),
-
-                                        TextInput::make('available_stock')
-                                            ->label('Available Stock')
-                                            ->disabled(),
+                                        // nested repeater for variants
+                                        Repeater::make('variants')
+                                            ->schema([
+                                                TextInput::make('variant_sku')->label('SKU')->disabled(),
+                                                TextInput::make('variant_type')->label('Type')->disabled(),
+                                                TextInput::make('variant_value')->label('Value')->disabled(),
+                                                TextInput::make('variant_unit')->label('Unit')->disabled(),
+                                                TextInput::make('ordered_qty')->label('Ordered QTY')->disabled(),
+                                                TextInput::make('price')->label('Price')->disabled(),
+                                                TextInput::make('total')->label('Total')->disabled(),
+                                                TextInput::make('available_stock')->label('Available Stock')->disabled(),
+                                            ])
+                                            ->columns(4)
+                                            ->disableItemCreation()
+                                            ->disableItemDeletion()
+                                            ->disableItemMovement(),
                                     ])
-                                    ->columns(5)
                                     ->disableItemCreation()
                                     ->disableItemDeletion()
                                     ->disableItemMovement(),
@@ -118,17 +119,39 @@ class OrdersTable
                                 Select::make('status')
                                     ->label('Update Status')
                                     ->options(OrderStatusEnum::options())
-                                    ->required()
-                                    ->columnSpan(1),
+                                    ->required(),
                             ])
                             ->columns(3),
-
                     ])
                     ->modalWidth('6xl')
                     ->action(function ($data, $record) {
-                        $record->update(['status' => $data['status']]);
+                        $oldStatus = $record->status->value;
+                        $newStatus = $data['status'];
+
+                        // If moving from Pending -> Approved => reduce stock
+                        if ($oldStatus === OrderStatusEnum::Pending->value && $newStatus === OrderStatusEnum::Approved->value) {
+                            foreach ($record->items as $item) {
+                                if ($item->stock) {
+                                    $item->stock->decrement('stock', $item->quantity);
+                                }
+                            }
+                        }
+
+                        // If moving from Approved -> Pending or Approved -> Canceled => restore stock
+                        if ($oldStatus === OrderStatusEnum::Approved->value || $oldStatus === OrderStatusEnum::Completed->value && in_array($newStatus, [OrderStatusEnum::Pending->value, OrderStatusEnum::Canceled->value])) {
+                            foreach ($record->items as $item) {
+                                if ($item->stock) {
+                                    $item->stock->increment('stock', $item->quantity);
+                                }
+                            }
+                        }
+
+                        $record->update(['status' => $newStatus]);
+                        $record->recalcTotals(); // keep totals correct
                     }),
+                EditAction::make()->keyBindings(['command+s', 'ctrl+s']),
             ])
+
             ->toolbarActions([
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),

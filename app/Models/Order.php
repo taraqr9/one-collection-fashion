@@ -27,4 +27,12 @@ class Order extends Model
     {
         return $this->hasMany(OrderItem::class);
     }
+
+    public function recalcTotals(): void
+    {
+        $total = $this->items()->sum('total');
+        $this->total_amount = $total;
+        $this->final_amount = $total - $this->discount;
+        $this->save();
+    }
 }

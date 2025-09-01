@@ -40,7 +40,8 @@ class OrderForm
                             ->label('Address')
                             ->rows(3)
                             ->required(),
-                    ])->columns(2)
+                    ])
+                    ->columns(2)
                     ->columnSpanFull(),
 
                 Section::make('Order Items')
@@ -55,14 +56,22 @@ class OrderForm
                                     ->preload()
                                     ->searchable()
                                     ->required()
-                                    ->afterStateUpdated(function ($state, callable $set) {
+                                    ->afterStateUpdated(function ($state, callable $set, callable $get) {
                                         if ($state) {
                                             $product = Product::find($state);
                                             if ($product) {
-                                                $set('price', $product->price ?? $product->offer_price);
+                                                $price = $product->price ?? $product->offer_price;
+                                                $set('price', $price);
+
+                                                $quantity = $get('quantity') ?? 1;
+                                                $set('quantity', $quantity);
+                                                $set('total', $price * $quantity);
                                             }
                                         } else {
                                             $set('product_name', null);
+                                            $set('price', null);
+                                            $set('quantity', 1);
+                                            $set('total', null);
                                         }
                                     }),
 
@@ -79,14 +88,18 @@ class OrderForm
                                             ->toArray();
                                     })
                                     ->preload()
+                                    ->required()
                                     ->searchable()
                                     ->reactive()
-                                    ->afterStateUpdated(function ($state, callable $set) {
+                                    ->afterStateUpdated(function ($state, callable $set, callable $get) {
                                         if ($state) {
-                                            $stock = Stock::find($state);
+                                            $stock = Stock::with('product')->find($state);
                                             if ($stock) {
+                                                $price = $stock->product->price ?? $stock->product->offer_price ?? 0;
+
+                                                $set('price', $price);
                                                 $set('quantity', 1);
-                                                $set('total', $stock->price);
+                                                $set('total', $price);
                                                 $set('product_name', $stock->product->name);
                                             }
                                         }
@@ -96,15 +109,16 @@ class OrderForm
                                 TextInput::make('price')
                                     ->label('Price')
                                     ->numeric()
+                                    ->required()
                                     ->disabled()
-                                    ->required(),
+                                    ->dehydrated(true),
 
                                 TextInput::make('quantity')
                                     ->label('Quantity')
                                     ->numeric()
                                     ->minValue(1)
                                     ->reactive()
-                                    ->afterStateUpdated(function ($state, callable $set, $get) {
+                                    ->afterStateUpdated(function ($state, callable $set, callable $get) {
                                         $price = $get('price') ?? 0;
                                         $set('total', $price * $state);
                                     }),
@@ -112,8 +126,10 @@ class OrderForm
                                 TextInput::make('total')
                                     ->label('Total')
                                     ->numeric()
-                                    ->disabled(),
+                                    ->disabled()
+                                    ->dehydrated(true),
                             ])
+
                             ->columns(3)
                             ->createItemButtonLabel('Add Item'),
                     ])
