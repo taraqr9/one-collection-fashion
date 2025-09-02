@@ -11,7 +11,7 @@
 @section('page_content')
     <div class="container-lg home_2_hero_wrp home-3">
         <div class="row">
-            <div class="col-xl-9 col-sm-12">
+            <div class="col-xl-12 col-sm-12">
                 <div class="home_2_hero">
                     <div class="container">
                         <div class="hero_slider_active">
@@ -35,34 +35,34 @@
                     </div>
                 </div>
             </div>
-            <div class="col-xl-3 d-none d-sm-block">
-                <div
-                    class="banner_collection home_3_hero mt-5 pt-2 pt-xl-0 mt-xl-0 d-flex flex-xl-column single_hero_slider sm:d-none flex-row gap-3">
-                    <div class="single_picture_active single_bannercol">
-                        @foreach(getSettingImages($settings, SettingKeyEnum::MiniTopBanner->value)['images'] as $image)
-                            <a href="#" class="single_bannercol">
-                                <div class="bancol_img">
-                                    <img loading="lazy"
-                                         src="{{ Storage::url($image) }}"
-                                         alt="mini top banner"/>
-                                </div>
-                            </a>
-                        @endforeach
-                    </div>
-                    <div class="single_picture_active single_bannercol">
-                        @foreach(getSettingImages($settings, SettingKeyEnum::MiniBottomBanner->value)['images'] as $image)
-                            <a href="#" class="single_bannercol">
-                                <div class="bancol_img">
-                                    <img loading="lazy"
-                                         src="{{ Storage::url($image) }}"
-                                         alt="mini top banner"/>
-                                </div>
-                            </a>
-                        @endforeach
-                    </div>
+{{--            <div class="col-xl-3 d-none d-sm-block">--}}
+{{--                <div--}}
+{{--                    class="banner_collection home_3_hero mt-5 pt-2 pt-xl-0 mt-xl-0 d-flex flex-xl-column single_hero_slider sm:d-none flex-row gap-3">--}}
+{{--                    <div class="single_picture_active single_bannercol">--}}
+{{--                        @foreach(getSettingImages($settings, SettingKeyEnum::MiniTopBanner->value)['images'] as $image)--}}
+{{--                            <a href="#" class="single_bannercol">--}}
+{{--                                <div class="bancol_img">--}}
+{{--                                    <img loading="lazy"--}}
+{{--                                         src="{{ Storage::url($image) }}"--}}
+{{--                                         alt="mini top banner"/>--}}
+{{--                                </div>--}}
+{{--                            </a>--}}
+{{--                        @endforeach--}}
+{{--                    </div>--}}
+{{--                    <div class="single_picture_active single_bannercol">--}}
+{{--                        @foreach(getSettingImages($settings, SettingKeyEnum::MiniBottomBanner->value)['images'] as $image)--}}
+{{--                            <a href="#" class="single_bannercol">--}}
+{{--                                <div class="bancol_img">--}}
+{{--                                    <img loading="lazy"--}}
+{{--                                         src="{{ Storage::url($image) }}"--}}
+{{--                                         alt="mini top banner"/>--}}
+{{--                                </div>--}}
+{{--                            </a>--}}
+{{--                        @endforeach--}}
+{{--                    </div>--}}
 
-                </div>
-            </div>
+{{--                </div>--}}
+{{--            </div>--}}
         </div>
     </div>
 
