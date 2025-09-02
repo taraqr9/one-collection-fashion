@@ -1,4 +1,7 @@
-@php use App\Enums\SettingKeyEnum;use Illuminate\Support\Facades\Storage; @endphp
+@php
+    use App\Enums\SettingKeyEnum;
+    use Illuminate\Support\Facades\Storage;
+@endphp
 <header class="">
     <div class="container">
         <div class="d-flex align-items-center justify-content-sm-between">

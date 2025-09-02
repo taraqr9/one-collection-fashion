@@ -21,8 +21,9 @@ class ViewServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        View::composer('*', function ($view) {
-            $view->with('settings', Setting::all());
+        View::composer(['user.header', 'user.footer', 'user.home'], function ($view) {
+            $settings = cache()->rememberForever('settings.all', fn () => Setting::all());
+            $view->with('settings', $settings);
         });
     }
 }
