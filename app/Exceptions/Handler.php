@@ -2,7 +2,9 @@
 
 namespace App\Exceptions;
 
+use App\Models\ErrorLog;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Support\Facades\Auth;
 use Log;
 use Throwable;
 
@@ -45,19 +47,25 @@ class Handler extends ExceptionHandler
      */
     public function register(): void
     {
-        $this->reportable(function (Throwable $ex) {
-            Log::channel('slack')->error($ex->getMessage(), collect($ex->getTrace())->take(5)->toArray());
-        });
-    }
-
-    public function render($request, Throwable $ex)
-    {
-        if (config('app.env') == 'production') {
-            if ($request->is('api/*')) {
-                return response()->fail(message: 'Something went wrong!', code: 500);
+        $this->reportable(function (Throwable $e) {
+            try {
+                ErrorLog::create([
+                    'message' => $e->getMessage(),
+                    'trace'   => substr($e->getTraceAsString(), 0, 2000), // store part of the trace
+                    'file'    => $e->getFile(),
+                    'line'    => $e->getLine(),
+                    'user_id' => Auth::id(),
+                ]);
+            } catch (\Exception $ex) {
+                \Log::error("Failed to store error log: ".$ex->getMessage());
             }
-        }
+        });
 
-        return parent::render($request, $ex);
+        $this->renderable(function (\Throwable $e, $request) {
+            if ($request->is('user/*') || $request->expectsJson()) {
+                return response()->json(['error' => 'Something went wrong. Please try again later.'], 500);
+            }
+            return redirect()->back()->with('error', 'Something went wrong. Please try again later.');
+        });
     }
 }

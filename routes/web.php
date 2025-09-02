@@ -8,6 +8,9 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 
+Route::get('t', function (){
+        throw new \Exception("This is a demo error to test logging.");
+});
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('login', [AuthController::class, 'loginView'])->name('login');
 Route::post('login', [AuthController::class, 'login'])->name('login');
