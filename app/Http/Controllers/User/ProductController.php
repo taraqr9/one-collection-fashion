@@ -45,7 +45,7 @@ class ProductController extends Controller
 
     public function addToCart(AddToCartRequest $request)
     {
-        if(!auth()->check()) {
+        if (! auth()->check()) {
             return redirect()->route('login');
         }
 

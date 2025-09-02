@@ -27,8 +27,10 @@ use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Enums\FiltersLayout;
+use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 
 class SettingResource extends Resource
 {
@@ -94,8 +96,10 @@ class SettingResource extends Resource
 
         return $table
             ->columns([
-                TextColumn::make('name'),
-                TextColumn::make('key'),
+                TextColumn::make('name')
+                    ->searchable(),
+                TextColumn::make('key')
+                    ->searchable(),
                 TextColumn::make('type'),
                 StatusColumn::make(),
             ])
@@ -103,7 +107,27 @@ class SettingResource extends Resource
                 SelectFilter::make('key')
                     ->label('Name')
                     ->options(SettingKeyEnum::options()),
+                Filter::make('search')
+                    ->schema([
+                        TextInput::make('q')
+                            ->label('Search')
+                            ->placeholder('Search...'),
+                    ])
+                    ->indicateUsing(fn (array $data) => ! empty($data['q']) ? ["Search: {$data['q']}"] : [])
+                    ->query(function (Builder $query, array $data) {
+                        $q = $data['q'] ?? null;
+                        if (! $q) {
+                            return;
+                        }
+
+                        $query->where(function (Builder $sub) use ($q) {
+                            $sub->where('name', 'like', "%{$q}%")
+                                ->orWhere('key', 'like', "%{$q}%");
+                        });
+                    }),
             ], layout: FiltersLayout::AboveContent)
+            ->deferFilters(false)
+            ->searchable(false)
             ->actions([
                 ViewAction::make(),
                 EditAction::make()

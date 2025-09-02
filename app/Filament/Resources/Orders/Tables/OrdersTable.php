@@ -50,7 +50,7 @@ class OrdersTable
             ->filters([
                 SelectFilter::make('status')
                     ->options(OrderStatusEnum::options()),
-//                    ->default(OrderStatusEnum::Pending->value),
+                //                    ->default(OrderStatusEnum::Pending->value),
                 Filter::make('search')
                     ->schema([
                         TextInput::make('q')
