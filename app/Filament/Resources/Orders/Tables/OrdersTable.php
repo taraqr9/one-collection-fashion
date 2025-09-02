@@ -27,6 +27,7 @@ class OrdersTable
             ->columns([
                 TextColumn::make('user.name')
                     ->label('Registered User')
+                    ->url(fn ($record) => route('filament.admin.resources.users.view', $record->user_id))
                     ->searchable(),
                 TextColumn::make('user_name')
                     ->label('Order Name'),
