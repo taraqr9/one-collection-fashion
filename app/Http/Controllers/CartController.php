@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Http\Controllers\User;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Models\Cart;
 use App\Models\Stock;
 use Illuminate\Http\RedirectResponse;

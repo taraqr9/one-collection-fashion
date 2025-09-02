@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Http\Controllers\User;
+namespace App\Http\Controllers;
 
 use App\Enums\StatusEnum;
-use App\Http\Controllers\Controller;
 use App\Http\Requests\User\RegistrationRequest;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;

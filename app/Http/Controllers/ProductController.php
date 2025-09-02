@@ -1,10 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\User;
+namespace App\Http\Controllers;
 
 use App\Enums\StatusEnum;
 use App\Filter\ProductFilter;
-use App\Http\Controllers\Controller;
 use App\Http\Requests\User\AddToCartRequest;
 use App\Models\Category;
 use App\Models\Product;
