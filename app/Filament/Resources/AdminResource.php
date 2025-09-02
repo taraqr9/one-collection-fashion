@@ -73,6 +73,7 @@ class AdminResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->paginated([30, 50, 100, 'all'])
             ->columns([
                 TextColumn::make('id')
                     ->searchable(),

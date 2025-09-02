@@ -95,6 +95,7 @@ class SettingResource extends Resource
         //        ], app()->getLocale(), 'filament-tables');
 
         return $table
+            ->paginated([30, 'all'])
             ->columns([
                 TextColumn::make('name')
                     ->searchable(),
