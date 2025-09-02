@@ -26,8 +26,10 @@ class OrdersTable
         return $table
             ->columns([
                 TextColumn::make('user.name')
-                    ->label('Ordered By')
+                    ->label('Registered User')
                     ->searchable(),
+                TextColumn::make('user_name')
+                    ->label('Order Name'),
                 TextColumn::make('order_number'),
                 TextColumn::make('total_amount'),
                 TextColumn::make('items_count')
@@ -47,8 +49,8 @@ class OrdersTable
             ])
             ->filters([
                 SelectFilter::make('status')
-                    ->options(OrderStatusEnum::options())
-                    ->default(OrderStatusEnum::Pending->value),
+                    ->options(OrderStatusEnum::options()),
+//                    ->default(OrderStatusEnum::Pending->value),
                 Filter::make('search')
                     ->schema([
                         TextInput::make('q')
@@ -74,6 +76,7 @@ class OrdersTable
                 Action::make('UpdateStatus')
                     ->label('')
                     ->icon('heroicon-o-check-circle')
+                    ->authorize(fn ($record) => auth()->user()->can('updateStatus', $record))
                     ->modalHeading('Update Order Status')
                     ->fillForm(fn ($record) => [
                         'status' => $record->status,

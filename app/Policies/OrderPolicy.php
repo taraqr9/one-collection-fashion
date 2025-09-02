@@ -41,6 +41,11 @@ class OrderPolicy
         return $admin->can('update_order');
     }
 
+    public function updateStatus(Admin $admin): bool
+    {
+        return $admin->can('update_status_order');
+    }
+
     /**
      * Determine whether the admin can delete the model.
      */

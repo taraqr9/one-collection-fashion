@@ -10,12 +10,13 @@ use App\Filament\Resources\Orders\Schemas\OrderForm;
 use App\Filament\Resources\Orders\Tables\OrdersTable;
 use App\Models\Order;
 use BackedEnum;
+use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 
-class OrderResource extends Resource
+class OrderResource extends Resource implements HasShieldPermissions
 {
     protected static ?string $model = Order::class;
 
@@ -47,6 +48,19 @@ class OrderResource extends Resource
             'create' => CreateOrder::route('/create'),
             'edit' => EditOrder::route('/{record}/edit'),
             'view' => ViewOrder::route('/{record}'),
+        ];
+    }
+
+    public static function getPermissionPrefixes(): array
+    {
+        return [
+            'view',
+            'view_any',
+            'create',
+            'update',
+            'update_status',
+            'delete',
+            'delete_any',
         ];
     }
 }
