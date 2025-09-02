@@ -71,6 +71,7 @@ class CategoryResource extends Resource
 
                 SelectFilter::make('status'),
             ], layout: FiltersLayout::AboveContent)
+            ->deferFilters(false)
 
             ->recordActions([
                 EditAction::make()

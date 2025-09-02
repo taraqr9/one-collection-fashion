@@ -13,7 +13,11 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Components\Section;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Enums\FiltersLayout;
+use Filament\Tables\Filters\Filter;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 
 class OrdersTable
 {
@@ -42,8 +46,30 @@ class OrdersTable
                     ->formatStateUsing(fn ($state) => $state->label()),
             ])
             ->filters([
-                //
-            ])
+                SelectFilter::make('status')
+                    ->options(OrderStatusEnum::options())
+                    ->default(OrderStatusEnum::Pending->value),
+                Filter::make('search')
+                    ->schema([
+                        TextInput::make('q')
+                            ->label('Search')
+                            ->placeholder('Search...'),
+                    ])
+                    ->indicateUsing(fn (array $data) => ! empty($data['q']) ? ["Search: {$data['q']}"] : [])
+                    ->query(function (Builder $query, array $data) {
+                        $q = $data['q'] ?? null;
+                        if (! $q) {
+                            return;
+                        }
+
+                        $query->where(function (Builder $sub) use ($q) {
+                            $sub->where('user_name', 'like', "%{$q}%")
+                                ->orWhere('order_number', 'like', "%{$q}%");
+                        });
+                    }),
+            ], layout: FiltersLayout::AboveContent)
+            ->deferFilters(false)
+            ->searchable(false)
             ->recordActions([
                 Action::make('UpdateStatus')
                     ->label('')
@@ -151,7 +177,6 @@ class OrdersTable
                     }),
                 EditAction::make()->keyBindings(['command+s', 'ctrl+s']),
             ])
-
             ->toolbarActions([
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
