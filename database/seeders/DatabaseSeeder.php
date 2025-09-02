@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Enums\StatusEnum;
 use App\Models\Admin;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
@@ -41,6 +42,14 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             CategorySeeder::class,
+        ]);
+
+        User::factory()->create([
+            'name' => 'Simple User',
+            'phone' => '0180000000',
+            'email' => 'admin@example.com',
+            'password' => '$2y$10$jXVY75E1KZJuxHFU.08k6udGe36z0jcwdGuoqGq0BQ/QFBoWCOAKC', // 12345678
+            'status' => StatusEnum::Active,
         ]);
     }
 }

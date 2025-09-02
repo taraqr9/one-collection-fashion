@@ -40,6 +40,11 @@ class Product extends Model
         return $this->hasMany(Stock::class);
     }
 
+    public function orderedItems(): HasMany
+    {
+        return $this->hasMany(OrderItem::class);
+    }
+
     public function images(): MorphMany
     {
         return $this->morphMany(Image::class, 'imageable');

@@ -20,9 +20,9 @@ return new class extends Migration
             $table->string('user_phone')->nullable();
             $table->string('user_address')->nullable();
             $table->string('order_number')->unique();
-            $table->decimal('total_amount', 10, 2);
-            $table->decimal('discount', 10, 2)->default(0);
-            $table->decimal('final_amount', 10, 2);
+            $table->integer('total_amount');
+            $table->integer('discount')->default(0);
+            $table->integer('final_amount');
             $table->string('payment_method')->default(OrderPaymentMethodEnum::CashOnDelivery->value);
             $table->string('status')->default(OrderStatusEnum::Pending->value); // pending, paid, shipped, completed, cancelled
             $table->timestamps();

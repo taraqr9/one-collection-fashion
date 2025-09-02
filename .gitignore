@@ -7,17 +7,42 @@
 /.idea
 /.vscode
 
-# Laravel storage & logs
-/public/storage
-/storage/*.key
-/storage/logs/laravel.log
-/storage/framework/cache/*
-/storage/framework/sessions/*
-/storage/framework/views/*
-
-# Build / assets
-
-# Environment files
+# Environment & config
 .env
+.env.*
 .htaccess
 laradumps.yaml
+
+# Laravel storage (ignore everything inside, but keep the folder itself)
+storage/*
+!storage/app
+!storage/app/public
+!storage/framework
+!storage/framework/cache
+!storage/framework/sessions
+!storage/framework/views
+!storage/logs
+
+# Keep subfolders but ignore their contents
+storage/app/*
+!storage/app/.gitignore
+
+storage/framework/cache/*
+!storage/framework/cache/.gitignore
+
+storage/framework/sessions/*
+!storage/framework/sessions/.gitignore
+
+storage/framework/views/*
+!storage/framework/views/.gitignore
+
+storage/logs/*
+!storage/logs/.gitignore
+
+# Public storage symlink
+/public/storage
+
+# Build / assets
+/public/hot
+/public/storage
+/public/mix-manifest.json
