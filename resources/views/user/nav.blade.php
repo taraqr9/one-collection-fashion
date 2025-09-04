@@ -22,7 +22,7 @@
                             <ul class="nav-menu-list">
                                 @foreach (Category::whereNull('parent_id')->with('children')->get() as $category)
                                     <li>
-                                        <a href="#"
+                                        <a href="{{ route('products.index', ['category_id' => $category->id]) }}"
                                            class="nav-link {{ $category->children->count() > 0 ? 'has-megamenu' : ''}}">
                                             <span class="menu-text">{{ $category->name }}</span>
                                         </a>
@@ -34,7 +34,11 @@
                                                             <h3 class="submenu-heading">{{ $category->name }}</h3>
                                                             <ul>
                                                                 @foreach ($category->children as $child)
-                                                                    <li><a href="#">{{ $child->name }}</a></li>
+                                                                    <li>
+                                                                        <a href="{{ route('products.index', ['category_id' => $child->parent_id, 'sub_category_id' => $child->id]) }}">
+                                                                            {{ $child->name }}
+                                                                        </a>
+                                                                    </li>
                                                                 @endforeach
                                                             </ul>
                                                         </div>
@@ -45,6 +49,7 @@
                                     </li>
                                 @endforeach
                             </ul>
+
                         </nav>
                     </aside>
                 </div>

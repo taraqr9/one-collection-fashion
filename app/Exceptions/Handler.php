@@ -51,21 +51,27 @@ class Handler extends ExceptionHandler
             try {
                 ErrorLog::create([
                     'message' => $e->getMessage(),
-                    'trace'   => substr($e->getTraceAsString(), 0, 2000), // store part of the trace
-                    'file'    => $e->getFile(),
-                    'line'    => $e->getLine(),
+                    'trace' => substr($e->getTraceAsString(), 0, 2000), // store part of the trace
+                    'file' => $e->getFile(),
+                    'line' => $e->getLine(),
                     'user_id' => Auth::id(),
                 ]);
             } catch (\Exception $ex) {
-                \Log::error("Failed to store error log: ".$ex->getMessage());
+                \Log::error('Failed to store error log: '.$ex->getMessage());
             }
         });
 
         $this->renderable(function (\Throwable $e, $request) {
-            if ($request->is('user/*') || $request->expectsJson()) {
-                return response()->json(['error' => 'Something went wrong. Please try again later.'], 500);
+            try {
+                if ($request->expectsJson()) {
+                    return response()->json(['error' => 'Something went wrong. Please try again later.'], 500);
+                }
+
+                return response()->json(['message' => 'Something went wrong. Please try again later.']);
+            } catch (\Throwable $ex) {
+                return parent::render($request, $e);
             }
-            return redirect()->back()->with('error', 'Something went wrong. Please try again later.');
         });
+
     }
 }
