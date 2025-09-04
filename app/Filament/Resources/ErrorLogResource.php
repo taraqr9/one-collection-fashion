@@ -18,6 +18,7 @@ class ErrorLogResource extends Resource
     protected static ?string $model = ErrorLog::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedExclamationCircle;
+
     protected static string|null|\UnitEnum $navigationGroup = 'System & Monitoring';
 
     protected static ?string $recordTitleAttribute = 'Error Logs';

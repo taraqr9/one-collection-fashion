@@ -37,6 +37,7 @@ class SettingResource extends Resource
     protected static ?string $model = Setting::class;
 
     protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-cog-8-tooth';
+
     protected static string|null|\UnitEnum $navigationGroup = 'Product Management';
 
     public static function form(Schema $schema): Schema

@@ -86,7 +86,7 @@ class Handler extends ExceptionHandler
                 // Handle generic JSON errors
                 if ($request->expectsJson()) {
                     return response()->json([
-                        'error' => 'Something went wrong. Please try again later.'
+                        'error' => 'Something went wrong. Please try again later.',
                     ], 500);
                 }
 

@@ -21,6 +21,7 @@ class OrderResource extends Resource implements HasShieldPermissions
     protected static ?string $model = Order::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedShoppingBag;
+
     protected static string|null|\UnitEnum $navigationGroup = 'Orders & Transactions';
 
     protected static ?string $recordTitleAttribute = 'Order';

@@ -11,7 +11,7 @@
 @section('page_content')
     <div class="container-lg home_2_hero_wrp home-3">
         <div class="row">
-            <div class="col-xl-12 col-sm-12">
+            <div class="col-xl-12 col-sm-12 mb-5">
                 <div class="home_2_hero">
                     <div class="container">
                         <div class="hero_slider_active">
