@@ -45,15 +45,19 @@
 							</span>
                         <span class="icon_text">Account</span>
                     </a>
-                    <div class="myacc_cont" style="margin-top: -10px">
+                    <div class="myacc_cont rounded" style="margin-top: -10px">
                         @auth
-                            <div class="ac_links">
-                                <a href="#">
-                                    <i class="las la-arrows-alt-v"></i>
+                            <div class="border rounded p-2 text-center mb-3 bg-white shadow-sm">
+                                <span class="text-dark">{{ auth()->user()->name }}</span>
+                            </div>
+
+                            <div class="ac_links border rounded p-2">
+                                <a href="{{ route('users.edit', auth()->id()) }}">
+                                    <i class="las la-user"></i>
                                     My Profile
                                 </a>
                                 <a href="{{ route('orders.index') }}">
-                                    <i class="las la-gift"></i>
+                                    <i class="las la-shopping-bag"></i>
                                     My Order
                                 </a>
                                 <a href="{{ route('carts.index') }}">

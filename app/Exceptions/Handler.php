@@ -3,8 +3,10 @@
 namespace App\Exceptions;
 
 use App\Models\ErrorLog;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\ValidationException;
 use Log;
 use Throwable;
 
@@ -63,11 +65,34 @@ class Handler extends ExceptionHandler
 
         $this->renderable(function (\Throwable $e, $request) {
             try {
-                if ($request->expectsJson()) {
-                    return response()->json(['error' => 'Something went wrong. Please try again later.'], 500);
+                // Handle validation errors
+                if ($e instanceof ValidationException) {
+                    return redirect()
+                        ->back()
+                        ->withErrors($e->validator)
+                        ->withInput();
                 }
 
-                return response()->json(['message' => 'Something went wrong. Please try again later.']);
+                // Handle unauthenticated errors (redirect to Filament login)
+                if ($e instanceof AuthenticationException) {
+                    if ($request->expectsJson()) {
+                        return response()->json(['error' => 'Unauthenticated.'], 401);
+                    }
+
+                    // Filament’s login route is auto-registered
+                    return redirect()->guest(route('filament.admin.auth.login'));
+                }
+
+                // Handle generic JSON errors
+                if ($request->expectsJson()) {
+                    return response()->json([
+                        'error' => 'Something went wrong. Please try again later.'
+                    ], 500);
+                }
+
+                // Fallback: redirect back with error message
+                return redirect()->back()->with('error', $e->getMessage());
+
             } catch (\Throwable $ex) {
                 return parent::render($request, $e);
             }
