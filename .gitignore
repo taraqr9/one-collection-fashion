@@ -46,3 +46,6 @@ storage/logs/*
 /public/hot
 /public/storage
 /public/mix-manifest.json
+# Do not ignore Vite build assets
+!/public/build
+
