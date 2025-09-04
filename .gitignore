@@ -13,7 +13,7 @@
 .htaccess
 laradumps.yaml
 
-# Laravel storage (ignore everything inside, but keep the folder itself)
+# Laravel storage (ignore everything inside, but keep the folders)
 storage/*
 !storage/app
 !storage/app/public
@@ -42,10 +42,9 @@ storage/logs/*
 # Public storage symlink
 /public/storage
 
-# Build / assets
+# Frontend build / assets
 /public/hot
-/public/storage
 /public/mix-manifest.json
-# Do not ignore Vite build assets
-!/public/build
 
+# Vite build output - keep tracked for deployment
+!/public/build
