@@ -50,8 +50,8 @@ class OrdersTable
             ])
             ->filters([
                 SelectFilter::make('status')
-                    ->options(OrderStatusEnum::options()),
-                //                    ->default(OrderStatusEnum::Pending->value),
+                    ->options(OrderStatusEnum::options())
+                    ->default(OrderStatusEnum::Pending->value),
                 Filter::make('search')
                     ->schema([
                         TextInput::make('q')
@@ -158,8 +158,14 @@ class OrdersTable
                         $oldStatus = $record->status->value;
                         $newStatus = $data['status'];
 
-                        // If moving from Pending -> Approved => reduce stock
-                        if ($oldStatus === OrderStatusEnum::Pending->value && $newStatus === OrderStatusEnum::Approved->value) {
+                        // Reduce stock if:
+                        // - Pending → Approved/Completed
+                        // - Canceled → Approved/Completed
+                        if (
+                            in_array($oldStatus, [OrderStatusEnum::Pending->value, OrderStatusEnum::Canceled->value])
+                            && in_array($newStatus,
+                                [OrderStatusEnum::Approved->value, OrderStatusEnum::Completed->value])
+                        ) {
                             foreach ($record->items as $item) {
                                 if ($item->stock) {
                                     $item->stock->decrement('stock', $item->quantity);
@@ -167,8 +173,13 @@ class OrdersTable
                             }
                         }
 
-                        // If moving from Approved -> Pending or Approved -> Canceled => restore stock
-                        if ($oldStatus === OrderStatusEnum::Approved->value || $oldStatus === OrderStatusEnum::Completed->value && in_array($newStatus, [OrderStatusEnum::Pending->value, OrderStatusEnum::Canceled->value])) {
+                        // Restore stock if:
+                        // - Approved → Pending/Canceled
+                        // - Completed → Pending/Canceled
+                        if (
+                            in_array($oldStatus, [OrderStatusEnum::Approved->value, OrderStatusEnum::Completed->value])
+                            && in_array($newStatus, [OrderStatusEnum::Pending->value, OrderStatusEnum::Canceled->value])
+                        ) {
                             foreach ($record->items as $item) {
                                 if ($item->stock) {
                                     $item->stock->increment('stock', $item->quantity);
@@ -176,8 +187,11 @@ class OrdersTable
                             }
                         }
 
+                        // Approved → Completed (nothing happens)
+                        // Completed → Approved (nothing happens)
+
                         $record->update(['status' => $newStatus]);
-                        $record->recalcTotals(); // keep totals correct
+                        $record->recalcTotals();
                     }),
                 EditAction::make()->keyBindings(['command+s', 'ctrl+s']),
             ])

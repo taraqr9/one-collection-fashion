@@ -221,11 +221,6 @@
                         <a href="{{ route('products.show', $product) }}">
                             <div class="topariv_img">
                                 <img loading="lazy" src="{{ Storage::url($product->thumbnail->url) }}" alt="product"/>
-                                <div class="prod_soh">
-                                    <div class="adto_wish">
-                                        <i class="icon-heart"></i>
-                                    </div>
-                                </div>
                             </div>
 
                             <div class="topariv_cont">
@@ -281,11 +276,6 @@
                         <a href="{{ route('products.show', $product) }}">
                             <div class="topariv_img">
                                 <img loading="lazy" src="{{ Storage::url($product->thumbnail->url) }}" alt="product"/>
-                                <div class="prod_soh">
-                                    <div class="adto_wish">
-                                        <i class="icon-heart"></i>
-                                    </div>
-                                </div>
                             </div>
 
                             <div class="topariv_cont">

@@ -4323,15 +4323,18 @@ button#mobile_filter_btn {
 
 /* size select box */
 .single_size_opt label {
-    width: 24px;
-    height: 24px;
-    line-height: 24px;
+    display: inline-block;
+    padding: 4px 10px; /* adjust for spacing */
+    min-width: 24px;   /* keeps small values square */
+    height: auto;      /* allow it to grow */
     border: 1px solid #e9e4e4;
     font-size: 12px;
     text-align: center;
     cursor: pointer;
     border-radius: 3px;
+    white-space: nowrap; /* prevent text wrapping */
 }
+
 
 .single_size_opt .size_inp:checked + label {
     border: none;
@@ -6077,9 +6080,10 @@ span.sidebarclose {
 
 .sna_img {
     position: relative;
-    background-color: #f3f3f3;
-    padding: 30px 20px;
+    /*background-color: #f3f3f3;*/
+    /*padding: 30px 20px;*/
     border-radius: 5px 5px 0 0;
+    border-bottom: 5px solid #f7f7f7;
 }
 
 .sna_img img.prd_img {
@@ -7531,13 +7535,14 @@ nav.home-3 {
     height: 230px;
     -o-object-fit: contain;
     object-fit: contain;
-    padding: 24px;
+    /*padding: 24px;*/
     display: inline-block;
 }
 
 .home-3 .topariv_img {
-    background: #f7f7f7;
+    /*background: #f7f7f7;*/
     text-align: center;
+    border-bottom: 5px solid #f7f7f7;
 }
 
 .qk_view {

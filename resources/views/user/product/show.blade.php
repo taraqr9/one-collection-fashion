@@ -117,13 +117,14 @@
                             </div>
                             <div class="shop_filter border-bottom-0 pb-0">
                                 <div class="size_selector mb-3">
-                                    <h5>{{ $product->stocks->first()->type->name }}</h5>
+                                    <h5>{{ $product->stocks?->first()->type->name }}</h5>
                                     <div class="d-flex align-items-center">
                                         @foreach($product->stocks as $stock)
                                             <div class="single_size_opt me-2">
                                                 <input type="radio" hidden name="stock_id" class="size_inp"
                                                        id="stock-{{ $stock->id }}"
-                                                       value="{{ $stock->id }}">
+                                                       value="{{ $stock->id }}"
+                                                    @checked($loop->first)>
                                                 <label for="stock-{{ $stock->id }}">{{ $stock->value }}</label>
                                             </div>
                                         @endforeach
@@ -265,7 +266,7 @@
                 }
             });
 
-            document.getElementById("add-to-cart").addEventListener("click", function(e) {
+            document.getElementById("add-to-cart").addEventListener("click", function (e) {
                 e.preventDefault();
 
                 const url = this.getAttribute("data-url");
@@ -319,7 +320,7 @@
                 form.submit();
             });
 
-            document.getElementById("buy-now").addEventListener("click", function(e) {
+            document.getElementById("buy-now").addEventListener("click", function (e) {
                 e.preventDefault();
 
                 const url = this.getAttribute("data-url");
@@ -339,20 +340,27 @@
                 form.action = url;
 
                 const csrf = document.createElement("input");
-                csrf.type = "hidden"; csrf.name = "_token";
+                csrf.type = "hidden";
+                csrf.name = "_token";
                 csrf.value = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
                 form.appendChild(csrf);
 
                 const pid = document.createElement("input");
-                pid.type = "hidden"; pid.name = "product_id"; pid.value = productId;
+                pid.type = "hidden";
+                pid.name = "product_id";
+                pid.value = productId;
                 form.appendChild(pid);
 
                 const sid = document.createElement("input");
-                sid.type = "hidden"; sid.name = "stock_id"; sid.value = stockSelected.value;
+                sid.type = "hidden";
+                sid.name = "stock_id";
+                sid.value = stockSelected.value;
                 form.appendChild(sid);
 
                 const qty = document.createElement("input");
-                qty.type = "hidden"; qty.name = "quantity"; qty.value = quantity;
+                qty.type = "hidden";
+                qty.name = "quantity";
+                qty.value = quantity;
                 form.appendChild(qty);
 
                 document.body.appendChild(form);
