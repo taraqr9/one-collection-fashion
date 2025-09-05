@@ -79,8 +79,13 @@ class Handler extends ExceptionHandler
                         return response()->json(['error' => 'Unauthenticated.'], 401);
                     }
 
-                    // Filament’s login route is auto-registered
-                    return redirect()->guest(route('filament.admin.auth.login'));
+                    // If the request is for Filament (/admin/*), redirect to Filament login
+                    if ($request->is('admin') || $request->is('admin/*')) {
+                        return redirect()->guest(route('filament.admin.auth.login'));
+                    }
+
+                    // Otherwise, redirect to normal user login
+                    return redirect()->guest(route('login'));
                 }
 
                 // Handle generic JSON errors
