@@ -39,6 +39,11 @@ class ProductResource extends Resource
 {
     protected static ?string $model = Product::class;
 
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::where('status', StatusEnum::Active)->count();
+    }
+
     protected static string|\BackedEnum|null $navigationIcon = Heroicon::OutlinedCube;
 
     protected static string|null|\UnitEnum $navigationGroup = 'Product Management';

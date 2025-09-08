@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\OrderStatusEnum;
 use App\Filament\Resources\Orders\Pages\CreateOrder;
 use App\Filament\Resources\Orders\Pages\EditOrder;
 use App\Filament\Resources\Orders\Pages\ListOrders;
@@ -19,6 +20,11 @@ use Filament\Tables\Table;
 class OrderResource extends Resource implements HasShieldPermissions
 {
     protected static ?string $model = Order::class;
+
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::where('status', OrderStatusEnum::Pending)->count();
+    }
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedShoppingBag;
 

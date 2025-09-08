@@ -20,6 +20,11 @@ class UserResource extends Resource
 {
     protected static ?string $model = User::class;
 
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    }
+
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedUserGroup;
 
     protected static string|null|\UnitEnum $navigationGroup = 'User Management';

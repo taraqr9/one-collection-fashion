@@ -36,6 +36,11 @@ class SettingResource extends Resource
 {
     protected static ?string $model = Setting::class;
 
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    }
+
     protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-cog-8-tooth';
 
     protected static string|null|\UnitEnum $navigationGroup = 'Product Management';

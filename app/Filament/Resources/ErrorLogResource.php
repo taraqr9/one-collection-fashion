@@ -17,6 +17,11 @@ class ErrorLogResource extends Resource
 {
     protected static ?string $model = ErrorLog::class;
 
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    }
+
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedExclamationCircle;
 
     protected static string|null|\UnitEnum $navigationGroup = 'System & Monitoring';

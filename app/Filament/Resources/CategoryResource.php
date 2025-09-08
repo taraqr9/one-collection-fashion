@@ -25,6 +25,11 @@ class CategoryResource extends Resource
 {
     protected static ?string $model = Category::class;
 
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    }
+
     protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-list-bullet';
 
     protected static string|null|\UnitEnum $navigationGroup = 'Product Management';
