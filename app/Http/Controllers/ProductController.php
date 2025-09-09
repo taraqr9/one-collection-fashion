@@ -44,12 +44,49 @@ class ProductController extends Controller
 
     public function addToCart(AddToCartRequest $request)
     {
-        if (! auth()->check()) {
-            return redirect()->route('login');
+        // If user is logged in → save directly to DB
+        if (auth()->check()) {
+            $user = auth()->user();
+
+            // If product+stock already exists in DB cart, update quantity
+            $existing = $user->carts()
+                ->where('product_id', $request->product_id)
+                ->where('stock_id', $request->stock_id)
+                ->first();
+
+            if ($existing) {
+                $existing->increment('quantity', $request->quantity);
+            } else {
+                $user->carts()->create($request->validated());
+            }
+
+            return redirect()->back()->with('success', 'Added to cart successfully');
         }
 
-        auth()->user()->carts()->create($request->validated());
+        // Guest user → save to session
+        $cart = session()->get('cart', []);
 
-        return redirect()->back()->with('success', 'Added on cart successfully');
+        $found = false;
+
+        foreach ($cart as &$item) {
+            if ($item['product_id'] == $request->product_id && $item['stock_id'] == $request->stock_id) {
+                $item['quantity'] += $request->quantity;
+                $found = true;
+                break;
+            }
+        }
+        unset($item);
+
+        if (! $found) {
+            $cart[] = [
+                'product_id' => $request->product_id,
+                'stock_id' => $request->stock_id,
+                'quantity' => $request->quantity,
+            ];
+        }
+
+        session()->put('cart', $cart);
+
+        return redirect()->back()->with('success', 'Added to cart successfully');
     }
 }

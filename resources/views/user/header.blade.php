@@ -1,6 +1,13 @@
 @php
     use App\Enums\SettingKeyEnum;
     use Illuminate\Support\Facades\Storage;
+
+    $cartCount = 0;
+    if(auth()->check()) {
+        $cartCount = auth()->user()->carts()->count();
+    } else {
+        $cartCount = is_array(session('cart')) ? count(session('cart')) : 0;
+    }
 @endphp
 <header class="">
     <div class="container">
@@ -31,11 +38,11 @@
             <div class="header_icon d-flex align-items-center ms-auto ms-sm-0">
                 <div class="shopcart">
                     <a href="{{ route('carts.index') }}" class="icon_wrp text-center d-none d-lg-block">
-							<span class="icon">
-								<i class="icon-cart"></i>
-							</span>
+                        <span class="icon">
+                            <i class="icon-cart"></i>
+                        </span>
                         <span class="icon_text">Cart</span>
-                        <span class="pops">{{ auth()->user() ? auth()->user()->carts()->count() : 0 }}</span>
+                        <span class="pops">{{ $cartCount }}</span>
                     </a>
                 </div>
                 <div class="position-relative myacwrap home-1">

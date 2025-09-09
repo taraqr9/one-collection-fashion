@@ -19,11 +19,12 @@ Route::resource('products', ProductController::class);
 Route::get('subcategories/{category}', [CategoryController::class, 'subcategories']);
 Route::get('/page/{slug}', [SettingController::class, 'show'])->name('page.show');
 
+Route::post('products/add-to-cart', [ProductController::class, 'addToCart'])->name('products.add-to-cart');
+Route::post('/buy-now', [CartController::class, 'buyNow'])->name('carts.buy-now');
+Route::resource('carts', CartController::class)->only(['index', 'destroy']);
+Route::resource('orders', OrderController::class);
+
 Route::middleware(['web', 'auth'])->group(function () {
-    Route::post('products/add-to-cart', [ProductController::class, 'addToCart'])->name('products.add-to-cart');
-    Route::post('/buy-now', [CartController::class, 'buyNow'])->name('carts.buy-now');
-    Route::resource('carts', CartController::class)->only(['index', 'destroy']);
-    Route::resource('orders', OrderController::class);
     Route::resource('users', UserController::class)->only(['edit', 'update']);
 
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');

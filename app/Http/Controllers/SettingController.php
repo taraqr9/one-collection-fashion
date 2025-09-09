@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Setting;
-use Illuminate\Http\Request;
 
 class SettingController extends Controller
 {
@@ -11,7 +10,7 @@ class SettingController extends Controller
     {
         $info = Setting::where('key', $slug)->first();
 
-        if (!$info) {
+        if (! $info) {
             return redirect()->back()->with('error', 'No information found!');
         }
 

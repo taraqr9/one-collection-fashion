@@ -47,11 +47,31 @@ class AuthController extends Controller
 
     public function login(Request $request): RedirectResponse
     {
-        if (Auth::attempt(['email' => $request->email, 'password' => $request->password, 'status' => StatusEnum::Active])) {
-            return redirect()->route('home');
+        if (Auth::attempt([
+            'email' => $request->email,
+            'password' => $request->password,
+            'status' => StatusEnum::Active,
+        ])) {
+            $user = Auth::user();
+
+            // Merge session cart into DB
+            $cart = session()->get('cart', []);
+            foreach ($cart as $item) {
+                $user->carts()->create([
+                    'product_id' => $item['product_id'],
+                    'stock_id' => $item['stock_id'],
+                    'quantity' => $item['quantity'],
+                ]);
+            }
+
+            session()->forget('cart');
+
+            return redirect()->route('home')->with('success', 'Welcome back, '.$user->name);
         }
 
-        return redirect()->back()->withErrors(['email' => $request->email]);
+        return redirect()->back()->withErrors([
+            'email' => 'Invalid credentials or inactive account.',
+        ]);
     }
 
     public function logout(): RedirectResponse

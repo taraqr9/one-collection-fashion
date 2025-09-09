@@ -24,8 +24,7 @@ class OrderForm
                             ->label('User')
                             ->options(User::getAllActiveUsers())
                             ->searchable()
-                            ->preload()
-                            ->required(),
+                            ->preload(),
 
                         TextInput::make('user_name')
                             ->label('Customer Name')

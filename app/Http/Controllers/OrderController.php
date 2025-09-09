@@ -63,11 +63,16 @@ class OrderController extends Controller
                 'final_amount' => $total,
             ]);
 
-            // Only remove DB cart rows when the checkout came from the cart
             if ($mode === 'cart') {
-                Cart::where('user_id', $user_id)
-                    ->whereIn('stock_id', $stock_ids)
-                    ->delete();
+                if ($user_id) {
+                    // Logged-in user → delete items from DB cart
+                    Cart::where('user_id', $user_id)
+                        ->whereIn('stock_id', $stock_ids)
+                        ->delete();
+                } else {
+                    // Guest user → clear session cart
+                    session()->forget('cart');
+                }
             }
 
             // Always clear buy-now artifacts (harmless if absent)

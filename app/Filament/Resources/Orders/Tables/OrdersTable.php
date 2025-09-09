@@ -27,8 +27,10 @@ class OrdersTable
             ->columns([
                 TextColumn::make('user.name')
                     ->label('Registered User')
-                    ->url(fn ($record) => route('filament.admin.resources.users.view', $record->user_id))
-                    ->searchable(),
+                    ->getStateUsing(fn ($record) => $record->user?->name ?? 'Guest')
+                    ->badge()
+                    ->color(fn ($record) => $record->user_id ? 'success' : 'gray')
+                    ->url(fn ($record) => $record->user_id ? route('filament.admin.resources.users.view', $record->user_id) : null),
                 TextColumn::make('user_name')
                     ->label('Order Name'),
                 TextColumn::make('order_number'),

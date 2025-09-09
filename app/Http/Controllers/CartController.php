@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cart;
+use App\Models\Product;
 use App\Models\Stock;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -12,9 +13,7 @@ class CartController extends Controller
 {
     public function index(): View|RedirectResponse
     {
-        if (! auth()->check()) {
-            return redirect()->route('products.index')->with('error', 'Please add some product first!');
-        }
+        // Handle buy now checkout (works for both guest & logged in)
         if (session('buy_now_mode') && session()->has('buy_now_item')) {
             $item = session('buy_now_item');
 
@@ -34,12 +33,41 @@ class CartController extends Controller
             ]);
         }
 
+        // Reset buy now mode
         session()->forget(['buy_now_mode', 'buy_now_item']);
 
-        $products = auth()->user()->carts()->with(['product.thumbnail', 'stock', 'product'])->get();
-        if ($products->isEmpty()) {
-            return redirect()->back()->with('error', 'Cart is empty');
+        // Logged in user → get cart from DB
+        if (auth()->check()) {
+            $products = auth()->user()->carts()
+                ->with(['product.thumbnail', 'stock', 'product'])
+                ->get();
+
+            if ($products->isEmpty()) {
+                return redirect()->route('products.index')->with('error', 'Cart is empty');
+            }
+
+            return view('user.cart.index', [
+                'products' => $products,
+                'checkoutMode' => 'cart',
+            ]);
         }
+
+        // Guest user → get cart from session
+        $cart = session()->get('cart', []);
+
+        if (empty($cart)) {
+            return redirect()->route('products.index')->with('error', 'Cart is empty');
+        }
+
+        $products = collect($cart)->map(function ($item) {
+            return (object) [
+                'id' => $item['product_id'],
+                'product' => Product::with('thumbnail')->find($item['product_id']),
+                'stock' => Stock::find($item['stock_id']),
+                'stock_id' => $item['stock_id'],
+                'quantity' => (int) $item['quantity'],
+            ];
+        });
 
         return view('user.cart.index', [
             'products' => $products,
