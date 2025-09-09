@@ -34,11 +34,11 @@
                     <div class="col-6">
                         <div class="footer_menu">
                             <h4 class="footer_title">Information</h4>
-                            <a href="#">About Us</a>
-                            <a href="#">Return Policy</a>
-                            <a href="#">Terms & condition</a>
-                            <a href="#">Privacy Policy</a>
-                            <a href="#">FAQ</a>
+                            <a href="{{ route('page.show', SettingKeyEnum::AboutUs->value) }}">About Us</a>
+                            <a href="{{ route('page.show', SettingKeyEnum::ReturnPolicy->value) }}">Return Policy</a>
+                            <a href="{{ route('page.show', SettingKeyEnum::TermsAndConditions->value) }}">Terms & condition</a>
+                            <a href="{{ route('page.show', SettingKeyEnum::PrivacyPolicy->value) }}">Privacy Policy</a>
+                            <a href="{{ route('page.show', SettingKeyEnum::FAQ->value) }}">FAQ</a>
                         </div>
                     </div>
                 </div>

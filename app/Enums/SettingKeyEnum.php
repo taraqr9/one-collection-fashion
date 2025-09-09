@@ -21,6 +21,7 @@ enum SettingKeyEnum: string
     case ReturnPolicy = 'return_policy';
     case PrivacyPolicy = 'privacy_policy';
     case TermsAndConditions = 'terms_and_conditions';
+    case FAQ = 'faq';
 
     public function label(): string
     {
@@ -40,6 +41,7 @@ enum SettingKeyEnum: string
             self::ReturnPolicy => 'Return Policy',
             self::PrivacyPolicy => 'Privacy Policy',
             self::TermsAndConditions => 'Terms and Conditions',
+            self::FAQ => 'FAQ',
         };
     }
 
