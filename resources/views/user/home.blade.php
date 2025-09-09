@@ -220,7 +220,9 @@
                     <div class="single_toparrival">
                         <a href="{{ route('products.show', $product) }}">
                             <div class="topariv_img">
-                                <img loading="lazy" src="{{ Storage::url($product->thumbnail->url) }}" alt="product"/>
+                                <img loading="lazy"
+                                     src="{{ $product->thumbnail?->url ? Storage::url($product->thumbnail->url) : asset('assets/images/no-image.png') }}"
+                                     alt="{{ $product->name }}"/>
                             </div>
 
                             <div class="topariv_cont">
@@ -275,7 +277,9 @@
                     <div class="single_toparrival">
                         <a href="{{ route('products.show', $product) }}">
                             <div class="topariv_img">
-                                <img loading="lazy" src="{{ Storage::url($product->thumbnail->url) }}" alt="product"/>
+                                <img loading="lazy"
+                                     src="{{ $product->thumbnail?->url ? Storage::url($product->thumbnail->url) : asset('assets/images/no-image.png') }}"
+                                     alt="{{ $product->name }}"/>
                             </div>
 
                             <div class="topariv_cont">

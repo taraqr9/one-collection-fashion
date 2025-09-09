@@ -8,8 +8,8 @@ enum SettingKeyEnum: string
 {
     case Logo = 'logo';
     case TopBanner = 'top_banner';
-    case MiniTopBanner = 'mini_top_banner';
-    case MiniBottomBanner = 'mini_bottom_banner';
+    //    case MiniTopBanner = 'mini_top_banner';
+    //    case MiniBottomBanner = 'mini_bottom_banner';
     case MidBanner = 'mid_banner';
     case ShopByCategoryOne = 'shop_by_category_one';
     case ShopByCategoryTwo = 'shop_by_category_two';
@@ -27,8 +27,8 @@ enum SettingKeyEnum: string
         return match ($this) {
             self::Logo => 'Logo',
             self::TopBanner => 'Top Banner',
-            self::MiniTopBanner => 'Mini Top Banner',
-            self::MiniBottomBanner => 'Mini Bottom Banner',
+            //            self::MiniTopBanner => 'Mini Top Banner',
+            //            self::MiniBottomBanner => 'Mini Bottom Banner',
             self::MidBanner => 'Mid Banner',
             self::ShopByCategoryOne => 'Shop By Category One',
             self::ShopByCategoryTwo => 'Shop By Category Two',

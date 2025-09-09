@@ -22,16 +22,15 @@
             </div>
             <div class="col-lg-4 mb-3 mb-md-0">
                 <div class="row">
-                    <div class="col-6">
-                        <div class="footer_menu">
-                            <h4 class="footer_title">My Account</h4>
-                            <a href="#">Orders</a>
-                            <a href="#">Wishlist</a>
-                            <a href="#">Track Order</a>
-                            <a href="#">Manage Account</a>
-                            <a href="#">Return Order</a>
+                    @if(auth()->user())
+                        <div class="col-6">
+                            <div class="footer_menu">
+                                <h4 class="footer_title">My Account</h4>
+                                <a href="{{ route('users.edit', auth()->user()) }}">Profile</a>
+                                <a href="{{ route('orders.index', auth()->user()) }}">Orders</a>
+                            </div>
                         </div>
-                    </div>
+                    @endif
                     <div class="col-6">
                         <div class="footer_menu">
                             <h4 class="footer_title">Information</h4>
@@ -83,7 +82,9 @@
     <div class="container">
         <div class="row align-items-center">
             <div class="col-md-12">
-                <p class="copyright_text text-center"> &copy; {{ config('app.name') }} - All Right Reserved</p>
+                <p class="copyright_text text-center">
+                    &copy; {{ date('Y') }} {{ config('app.name') }} - All Rights Reserved
+                </p>
             </div>
         </div>
     </div>

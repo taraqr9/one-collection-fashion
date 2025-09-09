@@ -58,23 +58,35 @@
             <div class="row">
                 <div class="col-lg-6">
                     <div class="product_view_slider">
-                        @foreach($product->productImages as $img)
+                        @if($product->productImages->count() > 0)
+                            @foreach($product->productImages as $img)
+                                <div class="single_viewslider">
+                                    <a data-fancybox data-src="{{ url()->asset('assets/images/slider-1.png') }}"
+                                       data-caption="Hello world">
+                                        <img loading="lazy" src="{{Storage::url( $img->url) }}"
+                                             alt="{{ $product->name }}">
+                                    </a>
+                                </div>
+                            @endforeach
+                        @else
                             <div class="single_viewslider">
                                 <a data-fancybox data-src="{{ url()->asset('assets/images/slider-1.png') }}"
                                    data-caption="Hello world">
-                                    <img loading="lazy" src="{{Storage::url( $img->url) }}" alt="{{ $product->name }}">
+                                    <img loading="lazy" src="{{ asset('assets/images/no-image.png') }}">
                                 </a>
                             </div>
-                        @endforeach
+                        @endif
                     </div>
                     <!-- sub thumb -->
                     <div class="product_viewslid_nav">
-                        @foreach($product->productImages as $img)
-                            <div class="single_viewslid_nav" data-fancybox="gallery"
-                                 data-src="assets/images/slider-1.png">
-                                <img loading="lazy" src="{{Storage::url( $img->url) }}" alt="{{ $product->name }}">
-                            </div>
-                        @endforeach
+                        @if($product->productImages->count() > 0)
+                            @foreach($product->productImages as $img)
+                                <div class="single_viewslid_nav" data-fancybox="gallery"
+                                     data-src="assets/images/slider-1.png">
+                                    <img loading="lazy" src="{{Storage::url( $img->url) }}" alt="{{ $product->name }}">
+                                </div>
+                            @endforeach
+                        @endif
                     </div>
                 </div>
 
@@ -115,23 +127,25 @@
                                     <span class="org_price ms-0">TK {{ $product->price }}</span>
                                 @endif
                             </div>
-                            <div class="shop_filter border-bottom-0 pb-0">
-                                <div class="size_selector mb-3">
-                                    <h5>{{ $product->stocks?->first()->type->name }}</h5>
-                                    <div class="d-flex align-items-center">
-                                        @foreach($product->stocks as $stock)
-                                            <div class="single_size_opt me-2">
-                                                <input type="radio" hidden name="stock_id" class="size_inp"
-                                                       id="stock-{{ $stock->id }}"
-                                                       value="{{ $stock->id }}"
-                                                    @checked($loop->first)>
-                                                <label for="stock-{{ $stock->id }}">{{ $stock->value }}</label>
-                                            </div>
-                                        @endforeach
+                            @if($product->stocks->count() > 0 )
+                                <div class="shop_filter border-bottom-0 pb-0">
+                                    <div class="size_selector mb-3">
+                                        <h5>{{ $product->stocks?->first()->type->name }}</h5>
+                                        <div class="d-flex align-items-center">
+                                            @foreach($product->stocks as $stock)
+                                                <div class="single_size_opt me-2">
+                                                    <input type="radio" hidden name="stock_id" class="size_inp"
+                                                           id="stock-{{ $stock->id }}"
+                                                           value="{{ $stock->id }}"
+                                                        @checked($loop->first)>
+                                                    <label for="stock-{{ $stock->id }}">{{ $stock->value }}</label>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                        <div id="size-error" class="text-danger mt-1"></div>
                                     </div>
-                                    <div id="size-error" class="text-danger mt-1"></div>
                                 </div>
-                            </div>
+                            @endif
                             <div class="cart_qnty ms-md-auto">
                                 <p>Quantity</p>
                                 <div class="input-group" style="width: 120px;">
@@ -205,7 +219,8 @@
                             <div class="single_new_arrive">
                                 <div class="sna_img">
                                     <img loading="lazy" class="prd_img"
-                                         src="{{ Storage::url($product->thumbnail->url) }}" alt="product"/>
+                                         src="{{ $product->thumbnail?->url ? Storage::url($product->thumbnail->url) : asset('assets/images/no-image.png') }}"
+                                         alt="product"/>
 
                                 </div>
                                 <div class="sna_content">

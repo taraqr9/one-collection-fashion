@@ -63,7 +63,7 @@
                                 <div class="single_new_arrive">
                                     <div class="sna_img">
                                         <img loading="lazy" class="prd_img"
-                                             src="{{ $product->thumbnail_url }}"
+                                             src="{{ $product->thumbnail?->url ? Storage::url($product->thumbnail->url) : asset('assets/images/no-image.png') }}"
                                              alt="product"/>
 
                                     </div>
