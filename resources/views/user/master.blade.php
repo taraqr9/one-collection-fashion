@@ -15,8 +15,9 @@
     <link rel="stylesheet" href="{{ url()->asset('user/assets/css/nice-select.css') }}"/>
     <link rel="stylesheet" href="{{ url()->asset('user/assets/css/fontawesome.css') }}"/>
 
-{{--    <link rel="stylesheet" href="{{ url()->asset('user/assets/css/style.css') }}"/>--}}
-    <link rel="stylesheet" href="{{ asset('user/assets/css/style.css') }}?v={{ filemtime(public_path('user/assets/css/style.css')) }}">
+    {{--    <link rel="stylesheet" href="{{ url()->asset('user/assets/css/style.css') }}"/>--}}
+    <link rel="stylesheet"
+          href="{{ asset('user/assets/css/style.css') }}?v={{ filemtime(public_path('user/assets/css/style.css')) }}">
 
     <link rel="stylesheet" href="{{ url()->asset('user/assets/css/responsive.css') }}"/>
 

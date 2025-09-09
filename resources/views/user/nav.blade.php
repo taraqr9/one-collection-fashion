@@ -8,8 +8,10 @@
                 <div class="header-nav-department">
                     <aside class="header-department">
                         <a class="bars text-white header-department-text department-title"
-                            href="{{ route('products.index') }}">
-                            <span class="icon"> <i class="fal fa-bars" style="color: white;"></i></span>
+                           href="javascript:void(0);"
+                           id="categoryToggle">
+
+                        <span class="icon"> <i class="fal fa-bars" style="color: white;"></i></span>
                             <span class="icon_text">All categories</span>
                         </a>
 
