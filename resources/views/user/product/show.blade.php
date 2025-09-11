@@ -228,9 +228,11 @@
 
                                     <div class="ratprice">
                                         <div class="price">
-                                            <span class="org_price"> TK {{ $product->price }}</span>
-                                            @if($product->offer_price > 0)
-                                                <span class="prev_price"> TK {{ $product->offer_price }}</span>
+                                            @if(($product->offer_price ?? 0) > 0)
+                                                <span class="org_price">TK {{ $product->offer_price }}</span>
+                                                <span class="org_price"><del>{{ $product->price }}</del></span>
+                                            @else
+                                                <span class="org_price">TK {{ $product->price }}</span>
                                             @endif
                                         </div>
 

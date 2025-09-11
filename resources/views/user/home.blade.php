@@ -147,10 +147,10 @@
                                 <h4 class="text-truncate">{{ $product->name }}</h4>
                                 <div class="price mb-1 mt-2">
                                     @if(($product->offer_price ?? 0) > 0)
-                                        <span class="org_price">TK {{ number_format($product->offer_price, 2) }}</span>
-                                        <span class="org_price"><del>{{ number_format($product->price, 2) }}</del></span>
+                                        <span class="org_price">TK {{ $product->offer_price }}</span>
+                                        <span class="org_price"><del>{{ $product->price }}</del></span>
                                     @else
-                                        <span class="org_price">TK {{ number_format($product->price, 2) }}</span>
+                                        <span class="org_price">TK {{ $product->price }}</span>
                                     @endif
                                 </div>
                             </div>
@@ -204,10 +204,10 @@
                                 <h4 class="text-truncate">{{ $product->name }}</h4>
                                 <div class="price mb-1 mt-2">
                                     @if(($product->offer_price ?? 0) > 0)
-                                        <span class="org_price">TK {{ number_format($product->offer_price, 2) }}</span>
-                                        <span class="org_price"><del>{{ number_format($product->price, 2) }}</del></span>
+                                        <span class="org_price">TK {{ $product->offer_price }}</span>
+                                        <span class="org_price"><del>{{ $product->price }}</del></span>
                                     @else
-                                        <span class="org_price">TK {{ number_format($product->price, 2) }}</span>
+                                        <span class="org_price">TK {{ $product->price }}</span>
                                     @endif
                                 </div>
                             </div>
