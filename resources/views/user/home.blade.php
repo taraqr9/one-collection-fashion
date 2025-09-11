@@ -5,7 +5,7 @@
 @extends('user.master')
 
 @section('title')
-    {{ config('app.name') }}
+    Home
 @endsection
 
 @section('page_content')
@@ -35,96 +35,14 @@
                     </div>
                 </div>
             </div>
-{{--            <div class="col-xl-3 d-none d-sm-block">--}}
-{{--                <div--}}
-{{--                    class="banner_collection home_3_hero mt-5 pt-2 pt-xl-0 mt-xl-0 d-flex flex-xl-column single_hero_slider sm:d-none flex-row gap-3">--}}
-{{--                    <div class="single_picture_active single_bannercol">--}}
-{{--                        @foreach(getSettingImages($settings, SettingKeyEnum::MiniTopBanner->value)['images'] as $image)--}}
-{{--                            <a href="#" class="single_bannercol">--}}
-{{--                                <div class="bancol_img">--}}
-{{--                                    <img loading="lazy"--}}
-{{--                                         src="{{ Storage::url($image) }}"--}}
-{{--                                         alt="mini top banner"/>--}}
-{{--                                </div>--}}
-{{--                            </a>--}}
-{{--                        @endforeach--}}
-{{--                    </div>--}}
-{{--                    <div class="single_picture_active single_bannercol">--}}
-{{--                        @foreach(getSettingImages($settings, SettingKeyEnum::MiniBottomBanner->value)['images'] as $image)--}}
-{{--                            <a href="#" class="single_bannercol">--}}
-{{--                                <div class="bancol_img">--}}
-{{--                                    <img loading="lazy"--}}
-{{--                                         src="{{ Storage::url($image) }}"--}}
-{{--                                         alt="mini top banner"/>--}}
-{{--                                </div>--}}
-{{--                            </a>--}}
-{{--                        @endforeach--}}
-{{--                    </div>--}}
-
-{{--                </div>--}}
-{{--            </div>--}}
         </div>
     </div>
 
-{{--    <!-- features area -->--}}
-{{--    <section class="features_area section_padding">--}}
-{{--        <div class="container">--}}
-{{--            <div class="row justify-content-center">--}}
-{{--                <div class="col-xl-10">--}}
-{{--                    <div class="row justify-content-center gx-2 gx-md-4">--}}
-{{--                        <div class="col-sm-4 mb-3 mb-sm-0">--}}
-{{--                            <div--}}
-{{--                                class="single_feature d-flex flex-column flex-sm-row align-items-center justify-content-center">--}}
-{{--                                <div class="feature_icon">--}}
-{{--                                    <img loading="lazy"--}}
-{{--                                         src="{{ url()->asset('user/assets/images/svg/delivery-van.svg') }}"--}}
-{{--                                         alt="icon"/>--}}
-{{--                                </div>--}}
-{{--                                <div class="feature_content">--}}
-{{--                                    <h4>Free shipping</h4>--}}
-{{--                                    <p>Orders over TK 200</p>--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
-{{--                        <div class="col-sm-4 mb-3 mb-sm-0">--}}
-{{--                            <div--}}
-{{--                                class="single_feature d-flex flex-column flex-sm-row align-items-center justify-content-center">--}}
-{{--                                <div class="feature_icon">--}}
-{{--                                    <img loading="lazy"--}}
-{{--                                         src="{{ url()->asset('user/assets/images/svg/money-back.svg') }}" alt="icon"/>--}}
-{{--                                </div>--}}
-{{--                                <div class="feature_content">--}}
-{{--                                    <h4>Money Returns</h4>--}}
-{{--                                    <p>30 Days money return</p>--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
-{{--                        <div class="col-sm-4">--}}
-{{--                            <div--}}
-{{--                                class="single_feature d-flex flex-column flex-sm-row align-items-center justify-content-center">--}}
-{{--                                <div class="feature_icon">--}}
-{{--                                    <img loading="lazy"--}}
-{{--                                         src="{{ url()->asset('user/assets/images/svg/service-hours.svg') }}"--}}
-{{--                                         alt="icon"/>--}}
-{{--                                </div>--}}
-{{--                                <div class="feature_content">--}}
-{{--                                    <h4>24/7 Support</h4>--}}
-{{--                                    <p>Customer support</p>--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
-{{--            </div>--}}
-{{--        </div>--}}
-{{--    </section>--}}
-
-    <!-- categories -->
     <div class="shop_bycat section_padding_b">
         <div class="container">
             <h2 class="section_title_3">Shop by category</h2>
             <div class="row gx-2 gy-2">
-                @if(!empty(getSettingImages($settings, SettingKeyEnum::ShopByCategoryOne->value)['images']))
+                @if(!empty(getSettingImages($settings, SettingKeyEnum::ShopByCategoryOne->value)['images'][0]))
                     <div class="col-lg-4 col-6">
                         <a href="#" class="single_shopbycat bg_1"
                            style="background-image: url({{ Storage::url(getSettingImages($settings, SettingKeyEnum::ShopByCategoryOne->value)['images'][0]) ?? '' }})">
@@ -138,7 +56,7 @@
                     </div>
                 @endif
 
-                @if(!empty(getSettingImages($settings, SettingKeyEnum::ShopByCategoryTwo->value)['images']))
+                @if(!empty(getSettingImages($settings, SettingKeyEnum::ShopByCategoryTwo->value)['images'][0]))
                     <div class="col-lg-4 col-6">
                         <a href="#" class="single_shopbycat bg_1"
                            style="background-image: url({{ Storage::url(getSettingImages($settings, SettingKeyEnum::ShopByCategoryTwo->value)['images'][0]) ?? '' }})">
@@ -152,7 +70,7 @@
                     </div>
                 @endif
 
-                @if(!empty(getSettingImages($settings, SettingKeyEnum::ShopByCategoryTwo->value)['images']))
+                @if(!empty(getSettingImages($settings, SettingKeyEnum::ShopByCategoryThree->value)['images'][0]))
                     <div class="col-lg-4 col-6">
                         <a href="#" class="single_shopbycat bg_1"
                            style="background-image: url({{ Storage::url(getSettingImages($settings, SettingKeyEnum::ShopByCategoryThree->value)['images'][0]) ?? '' }})">
@@ -166,7 +84,7 @@
                     </div>
                 @endif
 
-                @if(!empty(getSettingImages($settings, SettingKeyEnum::ShopByCategoryFour->value)['images']))
+                @if(!empty(getSettingImages($settings, SettingKeyEnum::ShopByCategoryFour->value)['images'][0]))
                     <div class="col-lg-4 col-6">
                         <a href="#" class="single_shopbycat bg_1"
                            style="background-image: url({{ Storage::url(getSettingImages($settings, SettingKeyEnum::ShopByCategoryFour->value)['images'][0]) }})">
@@ -180,7 +98,7 @@
                     </div>
                 @endif
 
-                @if(!empty(getSettingImages($settings, SettingKeyEnum::ShopByCategoryFive->value)['images']))
+                @if(!empty(getSettingImages($settings, SettingKeyEnum::ShopByCategoryFive->value)['images'][0]))
                     <div class="col-lg-4 col-6">
                         <a href="#" class="single_shopbycat bg_1"
                            style="background-image: url({{ Storage::url(getSettingImages($settings, SettingKeyEnum::ShopByCategoryFive->value)['images'][0]) }})">
@@ -194,7 +112,7 @@
                     </div>
                 @endif
 
-                @if(!empty(getSettingImages($settings, SettingKeyEnum::ShopByCategorySix->value)['images']))
+                @if(!empty(getSettingImages($settings, SettingKeyEnum::ShopByCategorySix->value)['images'][0]))
                     <div class="col-lg-4 col-6">
                         <a href="#" class="single_shopbycat bg_1"
                            style="background-image: url({{ Storage::url(getSettingImages($settings, SettingKeyEnum::ShopByCategorySix->value)['images'][0]) }})">

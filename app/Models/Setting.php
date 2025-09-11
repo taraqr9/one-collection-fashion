@@ -7,6 +7,7 @@ use App\Enums\SettingTypeEnum;
 use App\Enums\StatusEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 
 class Setting extends Model
@@ -26,6 +27,7 @@ class Setting extends Model
     {
         parent::boot();
 
+        // Handle file cleanup on update
         static::updated(function ($model) {
             $old = $model->getOriginal('value');
             $new = $model->value;
@@ -40,7 +42,29 @@ class Setting extends Model
                     Storage::disk('public')->delete($path);
                 }
             }
+
+            // refresh cache
+            self::refreshCache();
         });
+
+        // Bust cache when a new setting is created
+        static::created(function ($model) {
+            self::refreshCache();
+        });
+
+        // Bust cache when a setting is deleted
+        static::deleted(function ($model) {
+            self::refreshCache();
+        });
+    }
+
+    /**
+     * Clear and refresh settings cache.
+     */
+    protected static function refreshCache(): void
+    {
+        Cache::forget('settings.all');
+        Cache::rememberForever('settings.all', fn () => self::all());
     }
 
     private function extractPaths($val): array
