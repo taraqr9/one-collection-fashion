@@ -40,8 +40,8 @@
 
     <div class="shop_bycat section_padding_b">
         <div class="container">
-            <h2 class="section_title_3">Shop by category</h2>
-            <div class="row gx-2 gy-2">
+            <h2 class=" border-bottom">Shop by category</h2>
+            <div class="row gx-2 gy-2 mt-2">
                 @if(!empty(getSettingImages($settings, SettingKeyEnum::ShopByCategoryOne->value)['images'][0]))
                     <div class="col-lg-4 col-6">
                         <a href="#" class="single_shopbycat bg_1"
@@ -132,8 +132,8 @@
     <!-- top new arrival -->
     <div class="top_arrival_wrp home-3 section_padding_b">
         <div class="container">
-            <h2 class="section_title_3">Top New Arrival</h2>
-            <div class="product_slider_2">
+            <h2 class="section_title_3 border-bottom">Top New Arrival</h2>
+            <div class="product_slider_2 mt-2">
                 @foreach($top_arrival as $product)
                     <div class="single_toparrival">
                         <a href="{{ route('products.show', $product) }}">
@@ -189,8 +189,8 @@
 
     <div class="top_arrival_wrp home-3 section_padding_b">
         <div class="container">
-            <h2 class="section_title_3">Recommended for you</h2>
-            <div class="product_slider_2">
+            <h2 class="section_title_3 border-bottom">Recommended for you</h2>
+            <div class="product_slider_2 mt-2">
                 @foreach($recommended_products as $product)
                     <div class="single_toparrival">
                         <a href="{{ route('products.show', $product) }}">

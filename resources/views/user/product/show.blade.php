@@ -209,10 +209,10 @@
     <!-- new arrive -->
     <section class="new_arrive section_padding_b">
         <div class="container">
-            <div class="d-flex align-items-start justify-content-between">
+            <div class="d-flex align-items-start justify-content-between border-bottom">
                 <h2 class="section_title_2">Related products</h2>
             </div>
-            <div class="row gy-4">
+            <div class="row gy-4 mt-3">
                 @foreach($product->category->products()->where('id', '!=', $product->id)->inRandomOrder()->take(4)->get() as $product)
                     <div class="col-lg-3 col-sm-6">
                         <a href="{{ route('products.show', $product) }}">
