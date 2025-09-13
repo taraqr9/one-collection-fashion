@@ -1255,15 +1255,6 @@ ul,
     transition: all 0.3s cubic-bezier(0.29, 1.39, 0.86, 1.15);
 }
 
-/* .axil-mainmenu.aside-category-menu .header-department .header-department-text {
-  font-size: 16px;
-  background: var(--primary-color);
-  margin-bottom: 0;
-  display: flex;
-  padding: 15px 60px;
-  position: relative;
-} */
-
 .axil-mainmenu.aside-category-menu
 .header-department
 .department-nav-menu
@@ -1406,21 +1397,43 @@ img {
     height: auto;
 }
 
-.axil-mainmenu.aside-category-menu
-.header-department
-.department-nav-menu
+/* Submenu arrows */
 .nav-link.has-megamenu:after {
-    content: "";
-    font-family: var(--font-awesome);
-    font-weight: 400;
+    content: "\f107"; /* FontAwesome down arrow */
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
     color: #c5c5c5;
     font-size: 14px;
     position: absolute;
     top: 50%;
-    transform: translateY(-50%);
     right: 0;
-    transition: var(--transition);
+    transform: translateY(-50%); /* only vertical centering initially */
+    transform-origin: center; /* rotate around center */
+    transition: transform 0.3s ease;
 }
+
+
+/* Rotate arrow when hovering parent li (including submenu) */
+.nav-menu-list > li:hover > a.has-megamenu:after {
+    transform: rotate(270deg); /* rotate while keeping at right */
+}
+
+/* Top "All categories" arrow (already working) */
+.header-department .department-title .icon i {
+    display: inline-block;
+    transition: transform 0.3s ease;
+    color: white;
+}
+
+.header-department:hover .department-title .icon i {
+    transform: rotate(90deg);
+}
+
+
+
+
+
+
 
 .axil-mainmenu.aside-category-menu
 .header-department
@@ -1954,7 +1967,7 @@ img {
 .department-title,
 .department-title i {
     color: var(--color-black);
-    font-weight: 500;
+    /*font-weight: 500;*/
 }
 
 .axil-mobile-toggle .menu-btn {

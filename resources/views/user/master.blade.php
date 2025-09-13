@@ -14,6 +14,8 @@
     <link rel="stylesheet" href="{{ url()->asset('user/assets/css/line-awesome.css') }}"/>
     <link rel="stylesheet" href="{{ url()->asset('user/assets/css/nice-select.css') }}"/>
     <link rel="stylesheet" href="{{ url()->asset('user/assets/css/fontawesome.css') }}"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
 
     {{--    <link rel="stylesheet" href="{{ url()->asset('user/assets/css/style.css') }}"/>--}}
     <link rel="stylesheet"
@@ -76,6 +78,7 @@
 <script src="{{ url()->asset('user/assets/js/jquery.nice-select.min.js') }}"></script>
 <script src="{{ url()->asset('user/assets/js/fontawesome.js') }}"></script>
 <script src="{{ url()->asset('user/assets/js/app.js') }}"></script>
+
 
 <script>
     setTimeout(() => {

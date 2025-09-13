@@ -10,10 +10,12 @@
                         <a class="bars text-white header-department-text department-title"
                            href="javascript:void(0);"
                            id="categoryToggle">
-
-                        <span class="icon"> <i class="fal fa-bars" style="color: white;"></i></span>
+                            <span class="icon">
+                                <i class="fas fa-angle-right"></i>
+                            </span>
                             <span class="icon_text">All categories</span>
                         </a>
+
 
                         <nav class="department-nav-menu sub-menu">
 
