@@ -3528,13 +3528,6 @@ h2.section_title_3 {
     padding: 16px;
 }
 
-.topariv_cont h4 {
-    font-size: 18px;
-    line-height: 24px;
-    margin-bottom: 4px;
-    text-transform: uppercase;
-}
-
 .topariv_cont a {
     color: var(--secondary-color);
 }
@@ -5992,6 +5985,13 @@ span.sidebarclose {
 }
 
 .sna_content h4 {
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 1.5;
+    margin-bottom: 5px;
+}
+
+.topariv_cont h4 {
     font-size: 18px;
     font-weight: 500;
     line-height: 1.5;
