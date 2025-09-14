@@ -144,11 +144,11 @@
                             </div>
 
                             <div class="topariv_cont">
-                                <h4 class="text-truncate">{{ $product->name }}</h4>
+                                <h4 class="text-truncate text-black text-sm">{{ $product->name }}</h4>
                                 <div class="price mb-1 mt-2">
                                     @if(($product->offer_price ?? 0) > 0)
                                         <span class="org_price">TK {{ $product->offer_price }}</span>
-                                        <span class="org_price"><del>{{ $product->price }}</del></span>
+                                        <span class="org_price text-black text-sm"><del>{{ $product->price }}</del></span>
                                     @else
                                         <span class="org_price">TK {{ $product->price }}</span>
                                     @endif
@@ -162,7 +162,6 @@
                             </div>
                         </a>
                     </div>
-
                 @endforeach
             </div>
         </div>
@@ -201,11 +200,11 @@
                             </div>
 
                             <div class="topariv_cont">
-                                <h4 class="text-truncate">{{ $product->name }}</h4>
+                                <h4 class="text-truncate text-black text-sm">{{ $product->name }}</h4>
                                 <div class="price mb-1 mt-2">
                                     @if(($product->offer_price ?? 0) > 0)
                                         <span class="org_price">TK {{ $product->offer_price }}</span>
-                                        <span class="org_price"><del>{{ $product->price }}</del></span>
+                                        <span class="org_price text-black text-sm"><del>{{ $product->price }}</del></span>
                                     @else
                                         <span class="org_price">TK {{ $product->price }}</span>
                                     @endif
