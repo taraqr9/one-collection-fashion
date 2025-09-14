@@ -4,7 +4,7 @@
 @extends('user.master')
 
 @section('title')
-    {{ config('app.name') }}
+    Cart
 @endsection
 
 @section('page_content')

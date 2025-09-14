@@ -2,7 +2,7 @@
 @extends('user.master')
 
 @section('title')
-    {{ config('app.name') }}
+    {{ $product->name }}
 @endsection
 
 @section('external_css')

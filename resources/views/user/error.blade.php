@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Global Service LTD</title>
-    <link rel="shortcut icon" type="image/jpg" href="https://www.jatri.co/src/images/logo/favicon.svg"/>
+    <link rel="shortcut icon" type="image/jpg" href="#"/>
 </head>
 
 <body>

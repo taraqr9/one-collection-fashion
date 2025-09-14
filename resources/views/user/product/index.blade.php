@@ -5,7 +5,7 @@
 @extends('user.master')
 
 @section('title')
-    {{ config('app.name') }}
+    All Products
 @endsection
 
 @section('page_content')

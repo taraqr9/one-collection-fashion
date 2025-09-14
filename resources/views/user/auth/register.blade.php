@@ -1,7 +1,7 @@
 @extends('user.master')
 
 @section('title')
-    {{ config('app.name') }}
+    Registration
 @endsection
 
 @section('page_content')
