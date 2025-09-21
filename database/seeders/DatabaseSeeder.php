@@ -36,20 +36,25 @@ class DatabaseSeeder extends Seeder
 
         $super_admin->assignRole('super-admin');
 
-//        Admin::factory()->count(20)->create()->each(function ($admin) {
-//            $admin->assignRole('admin');
-//        });
+        /**
+         * Only run these when NOT in production
+         */
+        if (! app()->environment('production')) {
+            Admin::factory()->count(20)->create()->each(function ($admin) {
+                $admin->assignRole('admin');
+            });
 
-//        $this->call([
-//            CategorySeeder::class,
-//        ]);
+            $this->call([
+                CategorySeeder::class,
+            ]);
 
-//        User::factory()->create([
-//            'name' => 'Simple User',
-//            'phone' => '0180000000',
-//            'email' => 'admin@example.com',
-//            'password' => '$2y$10$jXVY75E1KZJuxHFU.08k6udGe36z0jcwdGuoqGq0BQ/QFBoWCOAKC', // 12345678
-//            'status' => StatusEnum::Active,
-//        ]);
+            User::factory()->create([
+                'name' => 'Simple User',
+                'phone' => '0180000000',
+                'email' => 'admin@example.com',
+                'password' => '$2y$10$jXVY75E1KZJuxHFU.08k6udGe36z0jcwdGuoqGq0BQ/QFBoWCOAKC', // 12345678
+                'status' => StatusEnum::Active,
+            ]);
+        }
     }
 }
