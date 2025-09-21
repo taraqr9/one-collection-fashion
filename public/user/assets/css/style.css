@@ -1295,8 +1295,8 @@ ul,
     .header-department
     .department-nav-menu
     .nav-menu-list {
-        height: 100%;
-        overflow: auto;
+        overflow: visible; /* instead of auto */
+        height: auto;
     }
 }
 
@@ -1310,38 +1310,41 @@ ul,
     position: relative;
 }
 
-.axil-mainmenu.aside-category-menu
-.header-department
-.department-nav-menu
-> ul
-> li:hover
-.department-megamenu {
-    pointer-events: auto;
-    visibility: visible;
-    opacity: 1;
-    transform: translateX(0);
-}
+/* Base hover styles - only for screens 990px and above */
+@media only screen and (min-width: 990px) {
+    .axil-mainmenu.aside-category-menu
+    .header-department
+    .department-nav-menu
+    > ul
+    > li:hover
+    .department-megamenu {
+        pointer-events: auto !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        transform: translateX(0) !important;
+    }
 
-.axil-mainmenu.aside-category-menu
-.header-department
-.department-nav-menu
-> ul
-> li:hover
-.department-megamenu
-.department-submenu {
-    opacity: 1;
-    transform: translateX(0);
-}
+    .axil-mainmenu.aside-category-menu
+    .header-department
+    .department-nav-menu
+    > ul
+    > li:hover
+    .department-megamenu
+    .department-submenu {
+        opacity: 1 !important;
+        transform: translateX(0) !important;
+    }
 
-.axil-mainmenu.aside-category-menu
-.header-department
-.department-nav-menu
-> ul
-> li:hover
-.department-megamenu
-.featured-product {
-    opacity: 1;
-    transform: translateY(0);
+    .axil-mainmenu.aside-category-menu
+    .header-department
+    .department-nav-menu
+    > ul
+    > li:hover
+    .department-megamenu
+    .featured-product {
+        opacity: 1 !important;
+        transform: translateY(0) !important;
+    }
 }
 
 .axil-mainmenu.aside-category-menu
@@ -1435,6 +1438,8 @@ img {
 
 
 
+
+
 .axil-mainmenu.aside-category-menu
 .header-department
 .department-nav-menu
@@ -1456,27 +1461,49 @@ img {
     left: 0;
 }
 
-.axil-mainmenu.aside-category-menu .header-department .department-megamenu {
-    position: absolute;
-    top: 0;
-    left: 100%;
-    width: 990px;
-    z-index: 3;
-    transform: translateX(10px);
-    visibility: hidden;
-    opacity: 0;
-    pointer-events: none;
-    transition: all 0.3s ease-in-out;
-    margin-left: 1px;
-}
+/* Hover dropdown for screens 990px and above */
+@media only screen and (min-width: 900px) {
+    .axil-mainmenu.aside-category-menu .header-department .department-nav-menu {
+        position: absolute !important;
+        top: 100% !important;
+        left: 0 !important;
+        right: 0 !important;
+        background-color: var(--color-white) !important;
+        border: 1px solid #f3f3f3 !important;
+        padding: 6px 0 !important;
+        transition: var(--transition) !important;
+        z-index: 999999 !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
+        pointer-events: none !important;
+    }
 
-@media only screen and (max-width: 1320px) {
+    .axil-mainmenu.aside-category-menu .header-department:hover .department-nav-menu {
+        visibility: visible !important;
+        opacity: 1 !important;
+        pointer-events: auto !important;
+    }
+
     .axil-mainmenu.aside-category-menu .header-department .department-megamenu {
-        width: 870px;
+        position: absolute !important;
+        top: 0 !important;
+        left: 100% !important;
+        width: 990px !important;
+        z-index: 999999 !important;
+        transform: translateX(10px) !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
+        pointer-events: none !important;
+        transition: all 0.3s ease-in-out !important;
+        margin-left: 1px !important;
+    }
+
+    .axil-mainmenu.aside-category-menu .header-department .department-megamenu .department-megamenu-wrap .department-submenu-wrap {
+        margin-left: 50px !important;
     }
 }
 
-@media only screen and (max-width: 1199px) {
+@media only screen and (max-width: 989px) {
     .axil-mainmenu.aside-category-menu .header-department .department-megamenu {
         position: initial;
         visibility: visible;
@@ -8015,7 +8042,7 @@ span.remove_cart:hover {
     z-index: 5;
 }
 
-@media only screen and (max-width: 1199px) {
+@media only screen and (max-width: 989px) {
     .axil-mainmenu.aside-category-menu .header-department .department-nav-menu {
         position: fixed;
         top: 0;
