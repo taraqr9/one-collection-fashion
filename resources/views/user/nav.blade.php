@@ -19,7 +19,7 @@
 
                         <nav class="department-nav-menu sub-menu">
 
-                            <div class="">
+                            <div class="category-icon">
                                 <i class="fas fa-times sidebar-close" style=""></i>
                             </div>
 
