@@ -62,3 +62,35 @@
     </div>
     <!-- End Main Menu Area  -->
 </nav>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Toggle main menu
+        const toggle = document.getElementById("categoryToggle");
+        const headerDept = document.querySelector(".header-department");
+        const closeBtn = document.querySelector(".sidebar-close");
+
+        if (toggle && headerDept) {
+            toggle.addEventListener("click", function () {
+                headerDept.classList.toggle("open");
+            });
+        }
+
+        if (closeBtn && headerDept) {
+            closeBtn.addEventListener("click", function () {
+                headerDept.classList.remove("open");
+            });
+        }
+
+        // Toggle submenus on click
+        document.querySelectorAll(".department-nav-menu .nav-link.has-megamenu").forEach(link => {
+            link.addEventListener("click", function(e) {
+                e.preventDefault(); // stop redirect
+                const li = this.closest("li");
+                li.classList.toggle("open");
+            });
+        });
+    });
+</script>
+
+
