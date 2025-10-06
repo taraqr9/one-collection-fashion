@@ -182,9 +182,9 @@
                             </div>
                         @endif
                         <div class="share_icons footer_icon d-flex">
-                            <a href="#"><i class="lab la-facebook-f"></i></a>
-                            <a href="#"><i class="lab la-twitter"></i></a>
-                            <a href="#"><i class="lab la-instagram"></i></a>
+                            <a href="{{ url('https://www.facebook.com/profile.php?id=61579179642363') }}"><i class="lab la-facebook-f"></i></a>
+                            <a href="{{ url('https://www.instagram.com/metrobag.net.bd/') }}"><i class="lab la-instagram"></i></a>
+{{--                            <a href="#"><i class="lab la-twitter"></i></a>--}}
                         </div>
                     </div>
                 </div>

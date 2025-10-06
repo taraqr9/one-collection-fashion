@@ -13,8 +13,8 @@
                         </div>
                         <div class="footet_text">
                             <p>
-                                Lorem ipsum, or lipsum as it is sometimes kno wn, is dummy text used in laying out
-                                print, gra phic or web designs the passage.
+                                চেনা জগতে আমরা আনছি অচেনা চমক,
+                                সবসময়, সবকিছু, সবার জন্য...!
                             </p>
                         </div>
                     </div>
@@ -65,9 +65,11 @@
                         </div>
                         <div class="footer_social col-lg-6 col-lg-12">
                             <div class="footer_icon d-flex">
-                                <a href="#" class="facebook"><i class="lab la-facebook-f"></i></a>
-                                <a href="#" class="twitter"><i class="lab la-twitter"></i></a>
-                                <a href="#" class="instagram"><i class="lab la-instagram"></i></a>
+                                <a href="{{ url('https://www.facebook.com/profile.php?id=61579179642363') }}"
+                                   class="facebook"><i class="lab la-facebook-f"></i></a>
+                                <a href="{{ url('https://www.instagram.com/metrobag.net.bd/') }}" class="instagram"><i
+                                        class="lab la-instagram"></i></a>
+                                {{--                                <a href="" class="twitter"><i class="lab la-twitter"></i></a>--}}
                             </div>
                         </div>
                     </div>
