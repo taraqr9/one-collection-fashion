@@ -1,4 +1,13 @@
-<!DOCTYPE html>
+@php
+    use App\Enums\SettingKeyEnum;
+
+    $favicon = isset(getSettingImages($settings, SettingKeyEnum::Logo->value)['images'][0])
+        ? Storage::url(getSettingImages($settings, SettingKeyEnum::Logo->value)['images'][0])
+        : (isset(getSettingImages($settings, SettingKeyEnum::Logo->value)['images'][0])
+            ? Storage::url(getSettingImages($settings, SettingKeyEnum::Logo->value)['images'][0])
+            : asset('favicon.ico'));
+@endphp
+    <!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
     <title>@yield('title') | {{ config('app.name') }}</title>
@@ -7,6 +16,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <link rel="icon" type="image/png" href="{{ $favicon }}">
 
     <link rel="stylesheet" href="{{ url()->asset('user/assets/css/bootstrap.min.css') }}"/>
     <link rel="stylesheet" href="{{ url()->asset('user/assets/css/jquery-ui.css') }}"/>
