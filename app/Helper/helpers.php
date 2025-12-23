@@ -50,12 +50,14 @@ if (! function_exists('getSettingImages')) {
             return [
                 'name' => null,
                 'images' => [],
+                'url' => null,
             ];
         }
 
         return [
             'name' => $setting->name,
             'images' => $setting->value['images'] ?? [],
+            'url' => $setting->url,
         ];
     }
 }

@@ -16,7 +16,7 @@
                     <div class="container">
                         <div class="hero_slider_active">
                             @foreach(getSettingImages($settings, SettingKeyEnum::TopBanner->value)['images'] as $image)
-                                <div class="single_hero_slider bg-3">
+                                <div class="bg-3">
                                     <div class="container">
                                         <div class="row align-items-center">
                                             <div class="col-lg-12 col-sm-12">
@@ -44,7 +44,8 @@
             <div class="row gx-2 gy-2 mt-2">
                 @if(!empty(getSettingImages($settings, SettingKeyEnum::ShopByCategoryOne->value)['images'][0]))
                     <div class="col-lg-4 col-6">
-                        <a href="#" class="single_shopbycat bg_1"
+                        <a href="{{ getSettingImages($settings, SettingKeyEnum::ShopByCategoryOne->value)['url'] ?? '' }}"
+                           class="single_shopbycat bg_1"
                            style="background-image: url({{ Storage::url(getSettingImages($settings, SettingKeyEnum::ShopByCategoryOne->value)['images'][0]) ?? '' }})">
                             <div class="shopcat_cont">
                                 <h4>{{ getSettingImages($settings, SettingKeyEnum::ShopByCategoryOne->value)['name'] ?? '' }}</h4>
@@ -58,7 +59,8 @@
 
                 @if(!empty(getSettingImages($settings, SettingKeyEnum::ShopByCategoryTwo->value)['images'][0]))
                     <div class="col-lg-4 col-6">
-                        <a href="#" class="single_shopbycat bg_1"
+                        <a href="{{ getSettingImages($settings, SettingKeyEnum::ShopByCategoryOne->value)['url'] ?? '' }}"
+                           class="single_shopbycat bg_1"
                            style="background-image: url({{ Storage::url(getSettingImages($settings, SettingKeyEnum::ShopByCategoryTwo->value)['images'][0]) ?? '' }})">
                             <div class="shopcat_cont">
                                 <h4>{{ getSettingImages($settings, SettingKeyEnum::ShopByCategoryTwo->value)['name'] ?? '' }}</h4>
@@ -72,7 +74,8 @@
 
                 @if(!empty(getSettingImages($settings, SettingKeyEnum::ShopByCategoryThree->value)['images'][0]))
                     <div class="col-lg-4 col-6">
-                        <a href="#" class="single_shopbycat bg_1"
+                        <a href="{{ getSettingImages($settings, SettingKeyEnum::ShopByCategoryOne->value)['url'] ?? '' }}"
+                           class="single_shopbycat bg_1"
                            style="background-image: url({{ Storage::url(getSettingImages($settings, SettingKeyEnum::ShopByCategoryThree->value)['images'][0]) ?? '' }})">
                             <div class="shopcat_cont">
                                 <h4>{{ getSettingImages($settings, SettingKeyEnum::ShopByCategoryThree->value)['name'] ?? ''}}</h4>
@@ -86,7 +89,8 @@
 
                 @if(!empty(getSettingImages($settings, SettingKeyEnum::ShopByCategoryFour->value)['images'][0]))
                     <div class="col-lg-4 col-6">
-                        <a href="#" class="single_shopbycat bg_1"
+                        <a href="{{ getSettingImages($settings, SettingKeyEnum::ShopByCategoryOne->value)['url'] ?? '' }}"
+                           class="single_shopbycat bg_1"
                            style="background-image: url({{ Storage::url(getSettingImages($settings, SettingKeyEnum::ShopByCategoryFour->value)['images'][0]) }})">
                             <div class="shopcat_cont">
                                 <h4>{{ getSettingImages($settings, SettingKeyEnum::ShopByCategoryFour->value)['name'] }}</h4>
@@ -100,7 +104,8 @@
 
                 @if(!empty(getSettingImages($settings, SettingKeyEnum::ShopByCategoryFive->value)['images'][0]))
                     <div class="col-lg-4 col-6">
-                        <a href="#" class="single_shopbycat bg_1"
+                        <a href="{{ getSettingImages($settings, SettingKeyEnum::ShopByCategoryOne->value)['url'] ?? '' }}"
+                           class="single_shopbycat bg_1"
                            style="background-image: url({{ Storage::url(getSettingImages($settings, SettingKeyEnum::ShopByCategoryFive->value)['images'][0]) }})">
                             <div class="shopcat_cont">
                                 <h4>{{ getSettingImages($settings, SettingKeyEnum::ShopByCategoryFive->value)['name'] }}</h4>
@@ -114,7 +119,8 @@
 
                 @if(!empty(getSettingImages($settings, SettingKeyEnum::ShopByCategorySix->value)['images'][0]))
                     <div class="col-lg-4 col-6">
-                        <a href="#" class="single_shopbycat bg_1"
+                        <a href="{{ getSettingImages($settings, SettingKeyEnum::ShopByCategoryOne->value)['url'] ?? '' }}"
+                           class="single_shopbycat bg_1"
                            style="background-image: url({{ Storage::url(getSettingImages($settings, SettingKeyEnum::ShopByCategorySix->value)['images'][0]) }})">
                             <div class="shopcat_cont">
                                 <h4>{{ getSettingImages($settings, SettingKeyEnum::ShopByCategorySix->value)['name'] }}</h4>

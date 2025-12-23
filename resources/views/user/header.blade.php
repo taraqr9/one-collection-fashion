@@ -37,7 +37,7 @@
 
             <div class="header_icon d-flex align-items-center ms-auto ms-sm-0">
                 <div class="shopcart">
-                    <a href="{{ route('carts.index') }}" class="icon_wrp text-center d-none d-lg-block">
+                    <a href="{{ route('carts.index') }}" class="icon_wrp text-center d-lg-block">
                         <span class="icon">
                             <i class="icon-cart"></i>
                         </span>
